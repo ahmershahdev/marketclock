@@ -34,6 +34,7 @@ updates:
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
-      # Types must match the Node 22 runtime used in CI and Docker.
-      - dependency-name: "@types/node"
+      # Majors are upgraded by hand: they need peer ranges (openapi-typescript, eslint-config-next)
+      # and the Node 22 runtime to line up first.
+      - dependency-name: "*"
         update-types: [version-update:semver-major]
