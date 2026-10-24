@@ -14,19 +14,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const markets = await api.markets();
-  if (!markets.ok) return pages;
+  const years = [year, year + 1];
+  const yearIndexes: MetadataRoute.Sitemap = years.map((y) => ({
+    url: absoluteUrl(`/holidays/${y}`),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+  if (!markets.ok) return pages.concat(yearIndexes);
 
   return pages.concat(
+    yearIndexes,
     markets.data.flatMap((market) => [
       {
         url: absoluteUrl(`/markets/${market.code}`),
-        changeFrequency: "monthly" as const,
+        changeFrequency: "daily" as const,
         priority: 0.8,
       },
-      ...[year, year + 1].map((y) => ({
-        url: absoluteUrl(`/markets/${market.code}?year=${y}`),
+      ...years.map((y) => ({
+        url: absoluteUrl(`/markets/${market.code}/${y}`),
         changeFrequency: "monthly" as const,
-        priority: 0.6,
+        priority: 0.7,
       })),
     ]),
   );
