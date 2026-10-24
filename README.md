@@ -115,6 +115,36 @@ requests a minute (`RATE_LIMIT_PER_MINUTE`), with `RateLimit-Limit` and `RateLim
 headers and a 429 `rate_limited` error past it. For Postman, Bruno or Insomnia, import
 `/api/v1/openapi.json`.
 
+## Security
+
+- **Input:** every query is validated by Pydantic (MIC codes only, ISO dates, capped ranges,
+  unknown parameters rejected). Database access goes through SQLAlchemy with bound parameters,
+  so there is no string-built SQL.
+- **Headers:** the web app sends a Content Security Policy (no plugins, no foreign scripts, styles
+  or frames, `frame-ancestors 'none'` except on the embed card), HSTS, `X-Content-Type-Options`,
+  `Referrer-Policy`, `Permissions-Policy` and `X-Frame-Options`, and hides `X-Powered-By`. API
+  responses carry `default-src 'none'`.
+- **Abuse:** 120 requests a minute per client on the API, keyed on the address the reverse proxy
+  saw so a forged header cannot reset it.
+- **Output:** React escapes everything it renders; the embed card and JSON-LD escape their own
+  text. No user content is ever stored or shown back.
+- **No accounts:** nothing personal is stored, so there are no passwords to hash, no sessions and
+  no cookies, and CSRF does not apply to the read-only API. The watchlist lives in the browser.
+- **Supply chain:** exact version pins, Dependabot, CodeQL on every pull request, non-root Docker
+  images.
+
+## Caching
+
+1. **Redis (API):** holidays per library version, market and year, for 7 days; an outage only
+   skips the cache.
+2. **Next.js data cache (web server):** the market list and holidays per market and year, for
+   hours, so a page that lists 30 markets does not make 30 API calls on every visit. Failed calls
+   are never cached.
+3. **HTTP:** reference data is `public, max-age=300`, calendar feeds an hour, and live status,
+   health and errors `no-store`.
+4. **Browser:** hashed static files are cached for good, and the service worker keeps the offline
+   page and its assets.
+
 ## Architecture
 
 ```mermaid
