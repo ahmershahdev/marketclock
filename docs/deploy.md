@@ -28,8 +28,12 @@ are published, both on `127.0.0.1` for a reverse proxy in front.
    }
    ```
 
-   With nginx, proxy `/` to `http://127.0.0.1:3000` and add a certificate with certbot. The web
-   app proxies `/api/v1/*` to the API itself, so one upstream is enough.
+   With nginx, proxy `/` to `http://127.0.0.1:3000` with
+   `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;` and add a certificate with
+   certbot. The web app proxies `/api/v1/*` to the API itself, so one upstream is enough.
+
+   The API rate limit (`RATE_LIMIT_PER_MINUTE`, default 120 per client) keys on the last
+   `X-Forwarded-For` entry, so the reverse proxy must set it. Caddy does by default.
 5. Check:
 
    ```bash

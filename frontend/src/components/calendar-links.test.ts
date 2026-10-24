@@ -10,5 +10,6 @@ describe("calendar feed links", () => {
       "https://calendar.google.com/calendar/render?cid=webcal%3A%2F%2Fmarketclock.ahmershah.dev%2Fapi%2Fv1%2Fmarkets%2FXNYS%2Fcalendar.ics",
     );
     expect(urls.download).toBe("/api/v1/markets/XNYS/calendar.ics?year=2027");
+    expect(urls.csv).toBe("/api/v1/markets/XNYS/holidays.csv?year=2027");
   });
 });

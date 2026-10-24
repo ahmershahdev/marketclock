@@ -34,6 +34,11 @@ const ENDPOINTS = [
     summary: "Open or closed now for every market.",
   },
   {
+    path: "/markets/{code}/holidays.csv",
+    params: "year",
+    summary: "The same closures and half days as a CSV download.",
+  },
+  {
     path: "/markets/{code}/calendar.ics",
     params: "year (optional)",
     summary: "iCalendar feed of closures and early closes: this year and next, or one year.",
@@ -82,10 +87,15 @@ const ENDPOINTS = [
 ];
 
 const RULES = [
-  ["Versioned", "Everything lives under /api/v1 and returns JSON."],
+  ["Versioned", "Everything lives under /api/v1; JSON, plus CSV and iCalendar downloads."],
   ["Plain dates", "Dates are ISO YYYY-MM-DD. Timezones only matter for “open right now”."],
   ["Capped ranges", "Ranges include both ends: at most 400 days, or 10 years."],
+  ["Fair use", "120 requests a minute per client; RateLimit headers say what is left."],
   ["Validated", "Market codes, dates and categories are checked against the library."],
+  [
+    "Any client",
+    "Import /api/v1/openapi.json into Postman, Bruno or Insomnia for a ready collection.",
+  ],
 ];
 
 export default function DevelopersPage() {
@@ -107,7 +117,7 @@ export default function DevelopersPage() {
       </PageHeader>
 
       <section className="container-page">
-        <div className="grid gap-px overflow-hidden rounded-2xl border border-rule bg-rule md:grid-cols-4">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-rule bg-rule md:grid-cols-3">
           {RULES.map(([title, body]) => (
             <div key={title} className="bg-surface p-6">
               <p className="mb-3 eyebrow">{title}</p>

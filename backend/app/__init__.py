@@ -6,6 +6,7 @@ from app.cache import Cache, MemoryCache, RedisCache
 from app.config import Config
 from app.db import make_engine
 from app.errors import register_error_handlers
+from app.ratelimit import register_rate_limit
 from app.seed import seed_official_closures, seed_settlement_cycles
 
 
@@ -28,5 +29,6 @@ def create_app(config: Config | None = None, cache: Cache | None = None) -> Flas
         print(f"Seeded {cycles} settlement cycles and {closures} official closures")
 
     register_error_handlers(app)
+    register_rate_limit(app, config.rate_limit)
     app.register_blueprint(api)
     return app

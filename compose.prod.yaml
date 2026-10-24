@@ -37,6 +37,7 @@ services:
       MARKETCLOCK_ENV: prod
       DATABASE_URL: mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/marketclock?charset=utf8mb4
       REDIS_URL: redis://redis:6379/0
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-120}
     # Migrations and the sourced seed rows are idempotent, so they run on every start.
     command: >-
       sh -c "alembic upgrade head && flask --app wsgi seed &&

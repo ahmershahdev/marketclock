@@ -15,6 +15,11 @@ const ENDPOINTS = [
     "open, closed or hours_unknown now or at the given time, with closes_at or opens_at in exchange time; GET /status returns every market.",
   ],
   [
+    "GET /markets/{code}/holidays.csv",
+    "year",
+    "Closures and half days of one year as CSV: date, name, category, half_day, close_time.",
+  ],
+  [
     "GET /markets/{code}/calendar.ics",
     "year (optional)",
     "iCalendar feed of closures and early closes for subscribing in Google Calendar, Apple Calendar or Outlook; without year it covers this year and next.",
@@ -59,6 +64,11 @@ const ERRORS = [
   ],
   ["year_out_of_range", 400, "The library has no data for that market in that year."],
   ["invalid_range", 400, "start is after end, or the range is longer than 400 days."],
+  [
+    "rate_limited",
+    429,
+    "More than 120 requests a minute from one client; Retry-After says when to retry.",
+  ],
   [
     "no_default_cycle",
     400,
@@ -135,6 +145,8 @@ export function llmsFull(markets: Market[] | null): string {
     "- Dates are ISO YYYY-MM-DD. Other forms, including Unix timestamps, are rejected.",
     "- Ranges include both ends and cover at most 400 days.",
     "- Unknown query parameters are rejected.",
+    "- At most 120 requests a minute per client; responses carry RateLimit-Limit and RateLimit-Remaining.",
+    "- Import /api/v1/openapi.json into Postman, Bruno or Insomnia for a ready-made collection.",
     "- Market codes are case-sensitive MICs.",
     "",
     "### Examples",

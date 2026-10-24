@@ -90,6 +90,7 @@ Base URL `/api/v1`, JSON only, read-only. Full schema at
 | `GET /markets/{code}/holidays` | `year` | closures and half days with names and close times |
 | `GET /markets/{code}/status` | `at`? | open, closed or hours unknown, with the next close or open |
 | `GET /status` | `at`? | the same for every market |
+| `GET /markets/{code}/holidays.csv` | `year` | the same as CSV |
 | `GET /markets/{code}/calendar.ics` | `year`? | iCalendar feed: this year and next, or one year |
 | `GET /markets/{code}/is-trading-day` | `date` | true or false |
 | `GET /markets/{code}/next-trading-day` | `date` | first trading day after the date |
@@ -107,7 +108,10 @@ curl "http://localhost:5000/api/v1/settlement?markets=XNYS,XLON&trade_date=2026-
 # {"markets":["XNYS","XLON"],"trade_date":"2026-12-23","cycle":2,"settlement_date":"2026-12-29",...}
 ```
 
-Every error has one shape: `{"error": {"code", "message", "params"}}`.
+Every error has one shape: `{"error": {"code", "message", "params"}}`. Each client gets 120
+requests a minute (`RATE_LIMIT_PER_MINUTE`), with `RateLimit-Limit` and `RateLimit-Remaining`
+headers and a 429 `rate_limited` error past it. For Postman, Bruno or Insomnia, import
+`/api/v1/openapi.json`.
 
 ## Architecture
 

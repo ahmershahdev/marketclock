@@ -43,6 +43,7 @@ describe("llms.txt", () => {
       "invalid_range",
       "invalid_markets",
       "no_default_cycle",
+      "rate_limited",
     ]) {
       expect(full).toContain(`\`${code}\``);
     }

@@ -221,3 +221,24 @@ def test_calendar_feed_near_the_end_of_the_data(client: FlaskClient) -> None:
 def test_calendar_feed_errors(client: FlaskClient) -> None:
     assert client.get("/api/v1/markets/NYSE/calendar.ics").status_code == 404
     assert client.get("/api/v1/markets/XLON/calendar.ics?year=1990").status_code == 400
+
+
+def test_holidays_csv(client: FlaskClient) -> None:
+    response = client.get("/api/v1/markets/XNYS/holidays.csv?year=2026")
+
+    assert response.status_code == 200
+    assert response.mimetype == "text/csv"
+    assert 'filename="XNYS-holidays-2026.csv"' in response.headers["Content-Disposition"]
+    lines = response.get_data(as_text=True).splitlines()
+    assert lines[0] == "date,name,category,half_day,close_time"
+    assert "2026-12-24,Christmas Eve (markets close at 1:00pm),half_day,true,13:00" in lines
+    assert "2026-12-25,Christmas Day,public,false," in lines
+    assert len(lines) == 13
+
+
+def test_holidays_csv_without_session_data(client: FlaskClient) -> None:
+    body = client.get("/api/v1/markets/XNZE/holidays.csv?year=2026").get_data(as_text=True)
+
+    half = [line for line in body.splitlines() if ",half_day,true," in line]
+    assert half
+    assert all(line.endswith(",true,") for line in half)
