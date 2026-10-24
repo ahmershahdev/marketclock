@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useDeferredValue, useState } from "react";
+import { Flag } from "@/components/flag";
 import { ArrowIcon } from "@/components/icons";
 import { inputClass } from "@/components/ui";
 import type { Market } from "@/lib/api/types";
@@ -60,7 +61,12 @@ export function MarketTable({ markets }: { markets: Market[] }) {
                   </Link>
                 </td>
                 <td className="py-5 pr-4 text-lg">{market.name}</td>
-                <td className="py-5 pr-4 text-ink-2">{market.country}</td>
+                <td className="py-5 pr-4 text-ink-2">
+                  <span className="inline-flex items-center gap-2.5">
+                    <Flag code={market.country_code} className="w-6" />
+                    {market.country}
+                  </span>
+                </td>
                 <td className="py-5 pr-4 font-mono text-xs text-ink-2">{market.timezone}</td>
                 <td className="py-5 pr-4 font-mono text-xs text-ink-2">
                   {weekendLabel(market.weekend)}

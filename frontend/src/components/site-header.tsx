@@ -76,7 +76,7 @@ export function SiteHeader() {
           onClick={() => setOpen(false)}
           aria-label="MarketClock home"
         >
-          <LogoMark className="size-7 transition-transform duration-700 ease-out-expo group-hover:rotate-[360deg]" />
+          <LogoMark className="size-9 transition-transform duration-700 ease-out-expo group-hover:scale-110" />
           <span className="font-display text-lg font-semibold tracking-[-0.03em]">MarketClock</span>
         </Link>
 

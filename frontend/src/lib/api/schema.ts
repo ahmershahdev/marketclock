@@ -196,6 +196,8 @@ export interface components {
       code: string;
       /** Country */
       country: string;
+      /** Country Code */
+      country_code: string;
       /** First Year */
       first_year: number;
       /** Last Year */

@@ -22,8 +22,8 @@ pages.
 - **API skeleton.** Flask app factory, config per environment, MySQL through SQLAlchemy 2 and
   Alembic, Redis cache, one JSON error shape, and `GET /api/v1/health` (503 when MySQL or Redis
   is down).
-- **Markets.** All 30 markets in the library with name, country, timezone, weekend and years of
-  data; name, country and timezone carry the exchange's website as their source.
+- **Markets.** All 30 markets in the library with name, country (with flag), timezone, weekend
+  and years of data; name, country and timezone carry the exchange's website as their source.
 - **Holidays and trading days.** For each of the 30 markets in the library: closures and half
   days of a year, whether a date is a trading day, the next and previous trading day, and the
   trading days in a range (both ends included, at most 400 days). Each market uses its own
@@ -33,7 +33,8 @@ pages.
 - **Web app.** Landing page with a 3D globe (three.js), live clocks and a weekend demo; markets
   list, per-market year calendar, settlement and overlap tools, a browser-only watchlist and an
   API reference. Light, dark and system themes, including the market picker dropdown and the
-  scrollbars. A custom scroll rail (drag, click to jump, scroll progress) on mouse devices.
+  scrollbars. Black and gold brand from the MarketClock emblem (header mark, footer emblem,
+  favicon, app icons and social share image). A custom scroll rail (drag, click to jump, scroll progress) on mouse devices.
 - **404, error and offline pages.** The 404 and error pages spell their code in 3D calendar
   tiles (three.js) that follow the pointer. A service worker serves a CSS 3D offline page when
   there is no connection, and the page reloads itself once the connection is back.
@@ -146,6 +147,7 @@ the library.
 
 ## License
 
-[MIT](LICENSE). Holiday data comes from the `holidays` library (MIT).
+[MIT](LICENSE). Holiday data comes from the `holidays` library (MIT). Country flags are from
+[flag-icons](https://github.com/lipis/flag-icons) (MIT, licence in `frontend/public/flags`).
 
 Built by [Syed Ahmer Shah](https://ahmershah.dev).

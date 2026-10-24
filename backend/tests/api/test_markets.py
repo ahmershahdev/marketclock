@@ -107,6 +107,7 @@ def test_list_markets(client: FlaskClient) -> None:
         "code": "XNYS",
         "name": "New York Stock Exchange",
         "country": "United States",
+        "country_code": "US",
         "timezone": "America/New_York",
         "weekend": [5, 6],
         "categories": ["half_day", "public"],

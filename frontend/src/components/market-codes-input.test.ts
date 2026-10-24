@@ -7,6 +7,7 @@ function market(code: string, name: string, country: string): Market {
     code,
     name,
     country,
+    country_code: "XX",
     timezone: "UTC",
     weekend: [5, 6],
     categories: ["public"],

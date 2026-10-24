@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { ApiError, ApiOffline } from "@/components/api-offline";
+import { Flag } from "@/components/flag";
 import { ArrowIcon } from "@/components/icons";
 import { CalendarLegend, MonthGrid, type Closure } from "@/components/month-grid";
 import { Skeleton } from "@/components/ui";
@@ -61,7 +62,7 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
 
   if (!holidays.ok) {
     return (
-      <Shell code={code} name={market.name}>
+      <Shell code={code} name={market.name} countryCode={market.country_code}>
         {holidays.kind === "offline" ? (
           <ApiOffline what="This market's calendar" />
         ) : (
@@ -82,7 +83,7 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
   const earlyCloses = holidays.data.holidays.length - fullCloses;
 
   return (
-    <Shell code={code} name={market.name}>
+    <Shell code={code} name={market.name} countryCode={market.country_code}>
       <div className="grid gap-px overflow-hidden rounded-2xl border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
         {[
           ["Country", market.country],
@@ -180,10 +181,12 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
 function Shell({
   code,
   name,
+  countryCode,
   children,
 }: {
   code: string;
   name?: string;
+  countryCode?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -202,9 +205,10 @@ function Shell({
           </h1>
           {name && (
             <p
-              className="mt-4 rise text-display text-3xl text-ink-2 md:text-4xl"
+              className="mt-4 flex rise items-center gap-4 text-display text-3xl text-ink-2 md:text-4xl"
               style={{ animationDelay: "100ms" }}
             >
+              {countryCode && <Flag code={countryCode} className="w-10 md:w-12" />}
               {name}
             </p>
           )}

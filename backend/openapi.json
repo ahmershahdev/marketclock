@@ -151,6 +151,10 @@
             "title": "Country",
             "type": "string"
           },
+          "country_code": {
+            "title": "Country Code",
+            "type": "string"
+          },
           "first_year": {
             "title": "First Year",
             "type": "integer"
@@ -183,6 +187,7 @@
           "code",
           "name",
           "country",
+          "country_code",
           "timezone",
           "weekend",
           "categories",

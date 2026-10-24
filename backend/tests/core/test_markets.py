@@ -8,10 +8,12 @@ def test_every_library_market_has_info() -> None:
     assert set(MARKET_INFO) == market_codes()
 
 
-def test_info_has_https_sources_and_area_timezones() -> None:
+def test_info_has_https_sources_area_timezones_and_country_codes() -> None:
     for info in MARKET_INFO.values():
         assert info.source_url.startswith("https://")
         assert "/" in info.timezone
+        assert len(info.country_code) == 2
+        assert info.country_code.isupper()
 
 
 def test_market_combines_library_and_info() -> None:
