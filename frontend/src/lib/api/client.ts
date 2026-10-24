@@ -57,11 +57,11 @@ export const api = {
   markets: () => get<Market[]>("/markets"),
   holidays: (code: string, year: number) =>
     get<HolidaysResponse>(`/markets/${encodeURIComponent(code)}/holidays`, { year }),
-  settlement: (markets: string[], tradeDate: string, cycle: number) =>
+  settlement: (markets: string[], tradeDate: string, cycle: number | null) =>
     get<SettlementResponse>("/settlement", {
       markets: markets.join(","),
       trade_date: tradeDate,
-      cycle,
+      ...(cycle === null ? {} : { cycle }),
     }),
   overlap: (markets: string[], start: string, end: string) =>
     get<OverlapResponse>("/overlap", { markets: markets.join(","), start, end }),

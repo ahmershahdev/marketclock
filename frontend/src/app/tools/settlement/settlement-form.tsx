@@ -7,12 +7,12 @@ import { api, type ApiResult } from "@/lib/api/client";
 import type { SettlementResponse } from "@/lib/api/types";
 import { WEEKDAY_SHORT, isValidIsoDate, weekdayOf } from "@/lib/calendar";
 
-const CYCLES = [0, 1, 2, 3];
+const CYCLES: (number | null)[] = [null, 0, 1, 2, 3];
 
 export function SettlementForm() {
   const [codes, setCodes] = useState("XNYS");
   const [tradeDate, setTradeDate] = useState("");
-  const [cycle, setCycle] = useState(1);
+  const [cycle, setCycle] = useState<number | null>(null);
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState<ApiResult<SettlementResponse> | null>(null);
 
@@ -50,10 +50,13 @@ export function SettlementForm() {
           </Field>
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-2 eyebrow">Cycle</legend>
-            <div className="grid grid-cols-4 gap-2">
+            <p className="-mt-1 mb-1 text-xs text-ink-3">
+              Auto uses the cycle in force on the trade date, where a source is on file.
+            </p>
+            <div className="grid grid-cols-5 gap-2">
               {CYCLES.map((n) => (
                 <label
-                  key={n}
+                  key={n ?? "default"}
                   className={`cursor-pointer rounded-xl border py-3 text-center font-mono text-sm transition-colors has-focus-visible:outline-2 has-focus-visible:outline-accent ${
                     n === cycle
                       ? "border-ink bg-ink text-paper"
@@ -63,12 +66,12 @@ export function SettlementForm() {
                   <input
                     type="radio"
                     name="cycle"
-                    value={n}
+                    value={n ?? "default"}
                     checked={n === cycle}
                     onChange={() => setCycle(n)}
                     className="sr-only"
                   />
-                  T+{n}
+                  {n === null ? "Auto" : `T+${n}`}
                 </label>
               ))}
             </div>
@@ -127,11 +130,27 @@ function ResultView({ result }: { result: ApiResult<SettlementResponse> | null }
           {WEEKDAY_SHORT[weekdayOf(data.settlement_date)]}, open on {data.markets.join(" and ")}
         </p>
       </div>
-      <p className="text-sm text-ink-3">
-        {data.trade_date_is_trading_day
-          ? "Counted in trading days on every market listed."
-          : `${data.trade_date} is not a trading day on every market, so counting starts from the next one.`}
-      </p>
+      <div className="space-y-2 text-sm text-ink-3">
+        <p>
+          {data.trade_date_is_trading_day
+            ? "Counted in trading days on every market listed."
+            : `${data.trade_date} is not a trading day on every market, so counting starts from the next one.`}
+        </p>
+        {data.default_cycles.map((found) => (
+          <p key={found.market}>
+            {found.market}: T+{found.days} since {found.effective_from} (
+            <a
+              href={found.source_url}
+              target="_blank"
+              rel="noreferrer"
+              className="underline decoration-rule-strong underline-offset-4 hover:text-ink"
+            >
+              source
+            </a>
+            )
+          </p>
+        ))}
+      </div>
     </>
   );
 }

@@ -18,9 +18,14 @@ const ENDPOINTS = [
     "Trading days in a range, both ends included.",
   ],
   [
+    "GET /markets/{code}/settlement-cycle",
+    "date",
+    "The settlement cycle in force on a date, with its effective date and regulator source, or null when none is on file.",
+  ],
+  [
     "GET /settlement",
-    "markets, trade_date, cycle",
-    "T+n settlement date: the n-th day after the trade date on which every listed market is open (cycle 0 to 10, up to 10 markets).",
+    "markets, trade_date, cycle (optional)",
+    "T+n settlement date: the n-th day after the trade date on which every listed market is open (cycle 0 to 10, up to 10 markets). Without cycle, the longest cycle in force on the trade date is used and its sources are returned.",
   ],
   ["GET /overlap", "markets, start, end", "Days in a range on which every listed market trades."],
 ] as const;
@@ -34,6 +39,11 @@ const ERRORS = [
   ],
   ["year_out_of_range", 400, "The library has no data for that market in that year."],
   ["invalid_range", 400, "start is after end, or the range is longer than 400 days."],
+  [
+    "no_default_cycle",
+    400,
+    "cycle was left out and no settlement cycle is on file for a listed market.",
+  ],
   ["invalid_markets", 400, "The markets list is empty, repeats a code, or has more than 10 codes."],
 ] as const;
 

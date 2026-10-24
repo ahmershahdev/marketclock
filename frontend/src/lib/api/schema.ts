@@ -106,6 +106,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/markets/{code}/settlement-cycle": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Settlement cycle in force on a date, with its source; null when none is known */
+    get: operations["getSettlementCycle"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/markets/{code}/trading-days": {
     parameters: {
       query?: never;
@@ -176,6 +193,20 @@ export interface components {
        */
       trading_day: string;
     };
+    /** CycleSource */
+    CycleSource: {
+      /** Days */
+      days: number;
+      /**
+       * Effective From
+       * Format: date
+       */
+      effective_from: string;
+      /** Market */
+      market: string;
+      /** Source Url */
+      source_url: string;
+    };
     /** ErrorDetail */
     ErrorDetail: {
       /** Code */
@@ -245,6 +276,18 @@ export interface components {
       /** Weekend */
       weekend: number[];
     };
+    /** MarketCycleResponse */
+    MarketCycleResponse: {
+      /** @default null */
+      cycle: components["schemas"]["CycleSource"] | null;
+      /**
+       * Date
+       * Format: date
+       */
+      date: string;
+      /** Market */
+      market: string;
+    };
     /** MarketList */
     MarketList: components["schemas"]["Market"][];
     /** OverlapResponse */
@@ -270,6 +313,13 @@ export interface components {
     SettlementResponse: {
       /** Cycle */
       cycle: number;
+      /**
+       * Cycle From
+       * @enum {string}
+       */
+      cycle_from: "query" | "default";
+      /** Default Cycles */
+      default_cycles: components["schemas"]["CycleSource"][];
       /** Markets */
       markets: string[];
       /**
@@ -562,6 +612,48 @@ export interface operations {
       };
     };
   };
+  getSettlementCycle: {
+    parameters: {
+      query: {
+        date: string;
+      };
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["MarketCycleResponse"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unknown market */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   getTradingDays: {
     parameters: {
       query: {
@@ -652,7 +744,7 @@ export interface operations {
       query: {
         markets: string;
         trade_date: string;
-        cycle: number;
+        cycle?: number | null;
       };
       header?: never;
       path?: never;

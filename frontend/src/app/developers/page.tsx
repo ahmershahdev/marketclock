@@ -43,9 +43,15 @@ const ENDPOINTS = [
     summary: "Trading days in a range, both ends included, at most 400 days.",
   },
   {
+    path: "/markets/{code}/settlement-cycle",
+    params: "date",
+    summary: "The settlement cycle in force on a date, with its regulator source, or null.",
+  },
+  {
     path: "/settlement",
     params: "markets, trade_date, cycle",
-    summary: "T+n settlement date: the n-th day after the trade on which every market is open.",
+    summary:
+      "T+n settlement date: the n-th day after the trade on which every market is open. Without cycle, the cycle in force is used.",
   },
   {
     path: "/overlap",
