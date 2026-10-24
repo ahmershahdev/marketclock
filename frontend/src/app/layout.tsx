@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { RevealObserver } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -15,6 +16,8 @@ const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"], axes: [
 const jetbrainsMono = JetBrains_Mono({ variable: "--font-jetbrains-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   title: {
     default: "MarketClock: trading days and settlement dates",
     template: "%s | MarketClock",
