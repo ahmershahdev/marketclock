@@ -31,7 +31,9 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 
 - `market`: code (MIC, primary key), name, country, timezone, open time, close time, early close
   time, source URL
-- `settlement_cycle`: market, days (`n` in T+n), effective from, source URL
+- `settlement_cycle` (built): market, days (`n` in T+n), effective from, source URL; unique on
+  (market, effective from). Loaded by `flask --app wsgi seed` from `app/seed.py`, which only
+  holds rows whose source page was read and confirmed.
 - `official_closure`: market, date, kind (closed, half day), name, source URL, checked on
 - `finding`: market, date, kind (missing in library, extra in library, name differs), status
   (open, reported, fixed upstream, not a bug), upstream link
@@ -52,7 +54,9 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
   `year_out_of_range` (400), `invalid_range` (400), `invalid_markets` (400).
 - Settlement: T+n is the n-th day after the trade date on which every listed market is open.
   T+0 is the trade date when all markets are open, otherwise the next such day. The cycle is
-  a query parameter (0 to 10); stored per-market cycles come later.
+  a query parameter (0 to 10). Without it, each market's cycle in force on the trade date is
+  looked up and the longest one is used; a market with none on file is a 400
+  (`no_default_cycle`).
 
 ## Decisions
 
