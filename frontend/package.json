@@ -10,7 +10,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "api:types": "openapi-typescript ../backend/openapi.json -o src/lib/api/schema.ts && prettier --write src/lib/api/schema.ts"
   },
   "dependencies": {
     "@react-three/fiber": "9.8.2",
@@ -27,6 +28,7 @@
     "@types/three": "0.186.0",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.3",
+    "openapi-typescript": "7.13.0",
     "prettier": "3.9.10",
     "prettier-plugin-tailwindcss": "0.8.1",
     "tailwindcss": "4.3.3",

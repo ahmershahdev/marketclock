@@ -1,6 +1,17 @@
-// Hand-written draft; replace with types generated from the OpenAPI schema in M2.
+import type { components } from "./schema";
+
+type Schemas = components["schemas"];
 
 export type IsoDate = string;
+
+export type MarketHoliday = Schemas["Holiday"];
+export type HolidaysResponse = Schemas["HolidaysResponse"];
+export type TradingDayResponse = Schemas["TradingDayResponse"];
+export type AdjacentTradingDayResponse = Schemas["AdjacentTradingDayResponse"];
+export type TradingDaysResponse = Schemas["TradingDaysResponse"];
+export type ApiErrorBody = Schemas["ErrorResponse"];
+
+// Hand-written until the markets, settlement and overlap endpoints are in the OpenAPI schema.
 
 export interface Market {
   code: string;
@@ -10,26 +21,6 @@ export interface Market {
   // Python weekday numbers: Monday is 0, not Sunday.
   weekend: number[];
   categories: string[];
-}
-
-export interface MarketHoliday {
-  date: IsoDate;
-  name: string;
-  category: string;
-  half_day: boolean;
-  close_time: string | null;
-}
-
-export interface HolidaysResponse {
-  market: string;
-  year: number;
-  holidays: MarketHoliday[];
-}
-
-export interface TradingDayResponse {
-  market: string;
-  date: IsoDate;
-  is_trading_day: boolean;
 }
 
 export interface SettlementResponse {
@@ -44,8 +35,4 @@ export interface OverlapResponse {
   start: IsoDate;
   end: IsoDate;
   days: IsoDate[];
-}
-
-export interface ApiErrorBody {
-  error: { code: string; message: string; params: Record<string, unknown> };
 }
