@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ScrollRail } from "@/components/scroll-rail";
 import { ServiceWorker } from "@/components/service-worker";
+import { WatchlistAlerts } from "@/components/watchlist-alerts";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteFooter />
         <ScrollRail />
         <ServiceWorker />
+        <WatchlistAlerts />
       </body>
     </html>
   );

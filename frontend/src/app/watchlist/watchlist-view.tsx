@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AlertsToggle } from "@/components/alerts-toggle";
 import { CloseIcon, StarIcon } from "@/components/icons";
 import { ButtonLink, Panel, Skeleton } from "@/components/ui";
 import { api } from "@/lib/api/client";
@@ -140,10 +141,13 @@ export function WatchlistView() {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {codes.map((code) => (
-        <WatchCard key={code} code={code} today={today} onRemove={() => remove(code)} />
-      ))}
+    <div className="flex flex-col gap-6">
+      <AlertsToggle />
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {codes.map((code) => (
+          <WatchCard key={code} code={code} today={today} onRemove={() => remove(code)} />
+        ))}
+      </div>
     </div>
   );
 }

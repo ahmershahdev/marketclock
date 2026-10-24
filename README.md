@@ -64,7 +64,8 @@ calendar pages, and it checks the library's dates against what each exchange pub
 
 **Web app**
 - Markets list with flags, per-market year calendars, settlement and overlap tools, a browser-only
-  watchlist (no accounts), data-quality page and API reference.
+  watchlist (no accounts) with optional notifications the day before a watched market closes,
+  data-quality page and API reference.
 - Light, dark and system themes, themed scrollbars and dropdowns, custom scroll rail, 3D globe,
   3D 404 and error pages, CSS 3D offline page served by a service worker.
 - One broken widget never takes a page down: 3D scenes and demos fail on their own, page errors

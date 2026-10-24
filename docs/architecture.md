@@ -100,6 +100,7 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | A trading day without session hours is `hours_unknown`, not open | no guessing hours; weekends and holidays still come from the library |
 | Rate limit in Flask on Redis (`INCR` per client per minute), no Flask-Limiter | a fixed window is a few lines; it keys on the last `X-Forwarded-For` entry set by our reverse proxy, skips internal callers (the web app's server-side calls), and lets requests through if Redis is down |
 | No hand-made Postman collection | clients import `openapi.json` directly, so there is nothing to drift |
+| Watchlist alerts as browser notifications while a tab is open, no Web Push | push needs a server that stores a subscription per visitor; checking on load and every 30 minutes keeps everything in the browser |
 | No email features | no accounts and nothing personal is stored; contact is a `mailto:` link. Closure alerts by email would need consent, unsubscribe and a provider, so they wait until someone asks |
 | Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
 | Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |
