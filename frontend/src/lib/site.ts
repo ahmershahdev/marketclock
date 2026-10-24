@@ -35,6 +35,11 @@ export const PAGES = [
     description: "Upcoming closures for the markets you follow, stored in your browser.",
   },
   {
+    path: "/data-quality",
+    title: "Data quality",
+    description: "Library dates checked against each exchange's published calendar.",
+  },
+  {
     path: "/developers",
     title: "API",
     description: "Endpoints, parameters and rules of the MarketClock REST API.",

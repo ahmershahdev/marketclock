@@ -3,6 +3,7 @@ import type {
   HolidaysResponse,
   Market,
   OverlapResponse,
+  DataQualityReport,
   SettlementResponse,
 } from "./types";
 
@@ -63,6 +64,7 @@ export const api = {
       trade_date: tradeDate,
       ...(cycle === null ? {} : { cycle }),
     }),
+  dataQuality: () => get<DataQualityReport>("/data-quality"),
   overlap: (markets: string[], start: string, end: string) =>
     get<OverlapResponse>("/overlap", { markets: markets.join(","), start, end }),
 };

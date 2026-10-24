@@ -27,6 +27,11 @@ const ENDPOINTS = [
     "markets, trade_date, cycle (optional)",
     "T+n settlement date: the n-th day after the trade date on which every listed market is open (cycle 0 to 10, up to 10 markets). Without cycle, the longest cycle in force on the trade date is used and its sources are returned.",
   ],
+  [
+    "GET /data-quality",
+    "",
+    "Library dates compared with each exchange's published calendar (whole years), with every difference and its source.",
+  ],
   ["GET /overlap", "markets, start, end", "Days in a range on which every listed market trades."],
 ] as const;
 

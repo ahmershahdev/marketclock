@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
-import { RevealObserver } from "@/components/reveal";
 import { ScrollRail } from "@/components/scroll-rail";
 import { ServiceWorker } from "@/components/service-worker";
 import { SiteFooter } from "@/components/site-footer";
@@ -58,7 +57,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
-        <RevealObserver />
         <ScrollRail />
         <ServiceWorker />
       </body>
