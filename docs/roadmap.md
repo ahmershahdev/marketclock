@@ -32,17 +32,17 @@ in CI, and seed data.
 
 - [ ] Settlement cycle per market, stored with its source and effective date (cycles change,
   for example the US moved from T+2 to T+1)
-- [ ] `GET /api/v1/settlement?market=&trade_date=&cycle=`
-- [ ] Two-market settlement: the date must be a trading day on both markets
-- [ ] `GET /api/v1/overlap?markets=&start=&end=`
-- [ ] Domain logic in plain Python with 100% branch coverage, including year boundaries
+- [x] `GET /api/v1/settlement?markets=&trade_date=&cycle=`
+- [x] Two-market settlement: the date must be a trading day on both markets
+- [x] `GET /api/v1/overlap?markets=&start=&end=`
+- [x] Domain logic in plain Python with 100% branch coverage, including year boundaries
 
 ## M4. Web app (target 2026-12-27)
 
-- [ ] Next.js + TypeScript + Tailwind, typed API client generated from the OpenAPI schema
-- [ ] Month view per market, with closures and early closes
-- [ ] Settlement calculator and overlap tool
-- [ ] Watchlist of upcoming closures (stored in the browser, no accounts)
+- [x] Next.js + TypeScript + Tailwind, typed API client generated from the OpenAPI schema
+- [x] Month view per market, with closures and early closes
+- [x] Settlement calculator and overlap tool
+- [x] Watchlist of upcoming closures (stored in the browser, no accounts)
 - [ ] Server-rendered public pages per market and year, sitemap, titles and descriptions
   (sitemap, robots.txt, llms.txt and llms-full.txt done)
 - [x] `frontend` CI job (lint, type check, Vitest, build), added as a required check

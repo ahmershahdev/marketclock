@@ -12,9 +12,9 @@ financial markets in the Python [holidays](https://github.com/vacanza/holidays) 
 NASDAQ, LSE, PSX, Tadawul, SIFMA and more), through a REST API, a web app and public calendar
 pages.
 
-> Status: early build. M1 (API skeleton) is done. M2 is under way: the markets, holidays and
-> trading-day endpoints work and the web app shows live data; caching and early-close times come
-> next. Settlement and overlap tools wait for M3.
+> Status: early build. M1 is done. M2 and M3 are nearly done: markets, holidays, trading days,
+> settlement and overlap all work end to end. Still open: the Redis cache, early-close times,
+> and per-market settlement cycles with their sources. Data quality (M5) and launch (M6) follow.
 > See [docs/roadmap.md](docs/roadmap.md) and [docs/status.md](docs/status.md).
 
 ## What works today
@@ -28,6 +28,9 @@ pages.
   days of a year, whether a date is a trading day, the next and previous trading day, and the
   trading days in a range (both ends included, at most 400 days). Each market uses its own
   weekend. Inputs are checked: MIC codes only, ISO dates, years the library has data for.
+- **Settlement and overlap.** T+0 to T+10 settlement dates counted in days on which every listed
+  market is open (up to 10 markets), and the days in a range when all of them trade. Trade
+  dates that fall on a closed day are reported, and counting starts from the next open day.
 - **OpenAPI schema.** Generated from the Pydantic models, committed as `backend/openapi.json`,
   served at `/api/v1/openapi.json`, and turned into the web app's TypeScript types.
 - **Web app.** Landing page with a 3D globe (three.js), live clocks and a weekend demo; markets
@@ -47,9 +50,8 @@ pages.
 
 - **Early-close times.** Half days are listed today; the closing time per market comes with the
   market metadata.
-- **Settlement dates.** `T+n` for a trade on one market, or across two markets, where the
-  settlement day must be open on both.
-- **Market overlap.** Days when two or more markets are all open.
+- **Default settlement cycles.** Each market's own cycle (T+1, T+2) with its regulator source and
+  effective date, so the calculator can suggest it.
 - **Public pages.** One page per market and year ("PSX holidays 2027"), rendered on the server
   for search engines.
 - **Data quality.** Each market's dates compared with the calendar the exchange publishes,

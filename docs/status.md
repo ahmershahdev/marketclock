@@ -22,6 +22,8 @@ Last updated: 2026-10-24. Update at the end of every work session.
 - Custom scroll rail, 3D 404 and error pages (instanced three.js tiles), `global-error.tsx`,
   CSS 3D offline page with a service worker (checked: with the server stopped, navigation shows
   the styled offline page from cache).
+- M3: `GET /api/v1/settlement` and `/overlap` (`app/core/settlement.py`); the web app tools work
+  end to end. Brand emblem, gold accent and country flags merged in #8. 94 backend tests.
 - Web app (M4 started early, merged in #1): grotesque type, lime theme, 3D globe hero, markets,
   calendars, tools, watchlist and API pages. Data views show an offline state until the M2
   endpoints exist.
@@ -30,8 +32,10 @@ Last updated: 2026-10-24. Update at the end of every work session.
 
 1. M2: Redis cache per (market, year, library version).
 2. M2: session hours and early-close times (`market` table with source URLs, Alembic migration),
-   then fill `close_time` on half days.
-3. M3: settlement and overlap endpoints; the web app tools show an error until then.
+   then fill `close_time` on half days. Needs the official source page per market.
+3. M3: settlement cycle per market with source and effective date. Needs regulator sources.
+4. M5: official closures table and comparison job, starting with PSX, Tadawul and SIFMA.
+5. M6: production image and deploy to `marketclock.ahmershah.dev`, screenshots, Lighthouse.
 
 ## Open questions
 
