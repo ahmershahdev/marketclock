@@ -1,6 +1,9 @@
+from importlib.metadata import version
+
 from flask import Blueprint, Response, current_app, request
 from pydantic import BaseModel
 
+from app.cache import cached, get_cache
 from app.core import calendar, markets
 from app.schemas import (
     AdjacentTradingDayResponse,
@@ -17,6 +20,8 @@ from app.schemas import (
 )
 
 bp = Blueprint("markets", __name__, url_prefix="/markets")
+
+HOLIDAYS_TTL = 7 * 24 * 3600
 
 
 def parse_query[Q: BaseModel](model: type[Q]) -> Q:
@@ -43,25 +48,29 @@ def get_market(code: str) -> Response:
     return json_response(market_model(markets.get_market(code)))
 
 
+def holidays_json(code: str, year: int) -> str:
+    found = calendar.market_holidays(code, year)
+    body = HolidaysResponse(
+        market=code,
+        year=year,
+        holidays=[
+            Holiday(
+                date=h.date, name=h.name, category=h.category, half_day=h.category == "half_day"
+            )
+            for h in found
+        ],
+    )
+    return body.model_dump_json()
+
+
 @bp.get("/<code>/holidays")
 def holidays(code: str) -> Response:
     query = parse_query(YearQuery)
-    found = calendar.market_holidays(code, query.year)
-    return json_response(
-        HolidaysResponse(
-            market=code,
-            year=query.year,
-            holidays=[
-                Holiday(
-                    date=h.date,
-                    name=h.name,
-                    category=h.category,
-                    half_day=h.category == "half_day",
-                )
-                for h in found
-            ],
-        )
-    )
+    key = f"holidays:{version('holidays')}:{code}:{query.year}"
+    body, hit = cached(get_cache(), key, HOLIDAYS_TTL, lambda: holidays_json(code, query.year))
+    response = current_app.response_class(body, mimetype="application/json")
+    response.headers["X-Cache"] = "hit" if hit else "miss"
+    return response
 
 
 @bp.get("/<code>/is-trading-day")

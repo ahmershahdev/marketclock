@@ -1,5 +1,6 @@
 import time
 from collections.abc import Callable
+from contextlib import suppress
 from typing import Protocol
 
 from flask import current_app
@@ -44,6 +45,8 @@ class MemoryCache:
         self.available = True
 
     def get(self, key: str) -> str | None:
+        if not self.available:
+            raise RedisError("cache is down")
         item = self._items.get(key)
         if item is None:
             return None
@@ -54,10 +57,28 @@ class MemoryCache:
         return value
 
     def set(self, key: str, value: str, ttl_seconds: int) -> None:
+        if not self.available:
+            raise RedisError("cache is down")
         self._items[key] = (value, self._clock() + ttl_seconds)
 
     def ping(self) -> bool:
         return self.available
+
+
+def cached(
+    cache: Cache, key: str, ttl_seconds: int, compute: Callable[[], str]
+) -> tuple[str, bool]:
+    # A cache outage must not fail the request, so Redis errors fall back to computing.
+    try:
+        hit = cache.get(key)
+    except RedisError:
+        return compute(), False
+    if hit is not None:
+        return hit, True
+    value = compute()
+    with suppress(RedisError):
+        cache.set(key, value, ttl_seconds)
+    return value, False
 
 
 def get_cache() -> Cache:

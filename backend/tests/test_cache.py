@@ -1,6 +1,7 @@
+import pytest
 from redis import RedisError
 
-from app.cache import MemoryCache, RedisCache
+from app.cache import MemoryCache, RedisCache, cached
 
 
 class Clock:
@@ -62,3 +63,42 @@ def test_redis_cache_reports_an_unreachable_server() -> None:
 
 def test_redis_cache_builds_from_a_url() -> None:
     assert isinstance(RedisCache.from_url("redis://localhost:6379/0"), RedisCache)
+
+
+def test_memory_cache_simulates_an_outage() -> None:
+    cache = MemoryCache()
+    cache.available = False
+
+    with pytest.raises(RedisError):
+        cache.get("k")
+    with pytest.raises(RedisError):
+        cache.set("k", "v", 10)
+
+
+def test_cached_computes_once() -> None:
+    cache = MemoryCache()
+    calls: list[int] = []
+
+    def compute() -> str:
+        calls.append(1)
+        return "value"
+
+    assert cached(cache, "k", 60, compute) == ("value", False)
+    assert cached(cache, "k", 60, compute) == ("value", True)
+    assert len(calls) == 1
+
+
+def test_cached_computes_when_the_cache_is_down() -> None:
+    cache = MemoryCache()
+    cache.available = False
+
+    assert cached(cache, "k", 60, lambda: "value") == ("value", False)
+
+
+class WriteFails(MemoryCache):
+    def set(self, key: str, value: str, ttl_seconds: int) -> None:
+        raise RedisError("read-only replica")
+
+
+def test_cached_survives_a_failed_write() -> None:
+    assert cached(WriteFails(), "k", 60, lambda: "value") == ("value", False)
