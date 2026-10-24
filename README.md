@@ -38,6 +38,8 @@ calendar pages, and it checks the library's dates against what each exchange pub
 
 **Calendars**
 - Closures and half days for every market and year the library covers, with names in English.
+- Open right now: each market's state with a countdown to the close or open, in exchange time.
+  Weekends and holidays work for all 30 markets; hours need a session on file.
 - Calendar subscriptions: an iCalendar feed per market for Google Calendar, Apple Calendar and
   Outlook, rolling over to cover this year and next.
 - Is a date a trading day, the next and previous trading day, and every trading day in a range,
@@ -84,6 +86,8 @@ Base URL `/api/v1`, JSON only, read-only. Full schema at
 | `GET /markets` | | every market with country, flag code, timezone, weekend, session |
 | `GET /markets/{code}` | | one market |
 | `GET /markets/{code}/holidays` | `year` | closures and half days with names and close times |
+| `GET /markets/{code}/status` | `at`? | open, closed or hours unknown, with the next close or open |
+| `GET /status` | `at`? | the same for every market |
 | `GET /markets/{code}/calendar.ics` | `year`? | iCalendar feed: this year and next, or one year |
 | `GET /markets/{code}/is-trading-day` | `date` | true or false |
 | `GET /markets/{code}/next-trading-day` | `date` | first trading day after the date |
@@ -185,7 +189,7 @@ sequenceDiagram
 
 | Layer | Tools |
 |---|---|
-| API | Python 3.12, Flask 3.1, Pydantic 2.14, SQLAlchemy 2.1, Alembic 1.20, PyMySQL, gunicorn 26 |
+| API | Python 3.12, Flask 3.1, Pydantic 2.14, SQLAlchemy 2.1, Alembic 1.20, PyMySQL, gunicorn 26, tzdata |
 | Data | `holidays` 0.107 (exact pin), MySQL 8.4 LTS (utf8mb4), Redis 8.2 |
 | Web | Next.js 16.4 (App Router, Cache Components), React 19.3, TypeScript 5.9 strict, Tailwind CSS 4.3, three.js 0.186 with React Three Fiber |
 | Contract | OpenAPI 3.1 from Pydantic, `openapi-typescript` for the web app's types |

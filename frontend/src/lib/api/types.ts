@@ -14,4 +14,5 @@ export type SettlementResponse = Schemas["SettlementResponse"];
 export type OverlapResponse = Schemas["OverlapResponse"];
 export type MarketQuality = Schemas["MarketQuality"];
 export type DataQualityReport = Schemas["DataQualityReport"];
+export type MarketStatus = Schemas["MarketStatusResponse"];
 export type ApiErrorBody = Schemas["ErrorResponse"];

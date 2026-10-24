@@ -7,3 +7,4 @@ pydantic==2.14.1
 pymysql==1.2.3
 redis==8.1.0
 sqlalchemy==2.1.6
+tzdata==2026.5

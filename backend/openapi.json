@@ -340,6 +340,83 @@
         "title": "MarketQuality",
         "type": "object"
       },
+      "MarketStatusList": {
+        "items": {
+          "$ref": "#/components/schemas/MarketStatusResponse"
+        },
+        "title": "MarketStatusList",
+        "type": "array"
+      },
+      "MarketStatusResponse": {
+        "properties": {
+          "closes_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Closes At"
+          },
+          "detail": {
+            "enum": [
+              "regular",
+              "early_close",
+              "before_open",
+              "after_close",
+              "weekend",
+              "holiday"
+            ],
+            "title": "Detail",
+            "type": "string"
+          },
+          "local_time": {
+            "format": "date-time",
+            "title": "Local Time",
+            "type": "string"
+          },
+          "market": {
+            "title": "Market",
+            "type": "string"
+          },
+          "opens_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Opens At"
+          },
+          "state": {
+            "enum": [
+              "open",
+              "closed",
+              "hours_unknown"
+            ],
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "market",
+          "state",
+          "detail",
+          "local_time",
+          "closes_at",
+          "opens_at"
+        ],
+        "title": "MarketStatusResponse",
+        "type": "object"
+      },
       "OverlapResponse": {
         "properties": {
           "count": {
@@ -1085,6 +1162,72 @@
         "summary": "Settlement cycle in force on a date, with its source; null when none is known"
       }
     },
+    "/api/v1/markets/{code}/status": {
+      "get": {
+        "operationId": "getMarketStatus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "At"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketStatusResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown market"
+          }
+        },
+        "summary": "Open or closed now (or at a given time), with the next close or open"
+      }
+    },
     "/api/v1/markets/{code}/trading-days": {
       "get": {
         "operationId": "getTradingDays",
@@ -1300,6 +1443,54 @@
           }
         },
         "summary": "Settlement date T+n: the n-th day after the trade date on which every market is open"
+      }
+    },
+    "/api/v1/status": {
+      "get": {
+        "operationId": "listMarketStatus",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "At"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketStatusList"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          }
+        },
+        "summary": "Open or closed now (or at a given time) for every market"
       }
     }
   }

@@ -4,6 +4,7 @@ from app.api.health import bp as health_bp
 from app.api.markets import bp as markets_bp
 from app.api.quality import bp as quality_bp
 from app.api.settlement import bp as settlement_bp
+from app.api.status import bp as status_bp
 from app.openapi import build
 
 api = Blueprint("api", __name__, url_prefix="/api/v1")
@@ -11,6 +12,7 @@ api.register_blueprint(health_bp)
 api.register_blueprint(markets_bp)
 api.register_blueprint(settlement_bp)
 api.register_blueprint(quality_bp)
+api.register_blueprint(status_bp)
 
 
 @api.get("/openapi.json")

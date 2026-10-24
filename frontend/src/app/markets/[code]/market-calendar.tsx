@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
-import { Suspense } from "react";
 import { ApiError, ApiOffline } from "@/components/api-offline";
 import { CalendarLinks } from "@/components/calendar-links";
 import { Flag } from "@/components/flag";
+import { MarketStatusBadge } from "@/components/market-status-badge";
 import { ArrowIcon } from "@/components/icons";
 import { CalendarLegend, MonthGrid, type Closure } from "@/components/month-grid";
 import { Skeleton } from "@/components/ui";
@@ -234,6 +234,11 @@ function Shell({
               {countryCode && <Flag code={countryCode} className="w-10 md:w-12" />}
               {name}
             </p>
+          )}
+          {name && (
+            <div className="mt-5">
+              <MarketStatusBadge code={code} />
+            </div>
           )}
         </div>
         <WatchButton code={code} />

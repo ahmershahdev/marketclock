@@ -1,15 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useEffect, useState } from "react";
 import { Flag } from "@/components/flag";
 import { ArrowIcon } from "@/components/icons";
 import { inputClass } from "@/components/ui";
-import type { Market } from "@/lib/api/types";
+import { api } from "@/lib/api/client";
+import type { Market, MarketStatus } from "@/lib/api/types";
+import { TONE_DOT, statusLabel } from "@/lib/market-status";
 import { weekendLabel } from "@/lib/calendar";
 
 export function MarketTable({ markets }: { markets: Market[] }) {
   const [query, setQuery] = useState("");
+  const [statuses, setStatuses] = useState<Map<string, MarketStatus>>(new Map());
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    api.allStatus().then((result) => {
+      if (!cancelled && result.ok) {
+        setStatuses(new Map(result.data.map((item) => [item.market, item])));
+        setNow(Date.now());
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const deferred = useDeferredValue(query.trim().toLowerCase());
   const visible = deferred
     ? markets.filter((market) =>
@@ -36,10 +53,10 @@ export function MarketTable({ markets }: { markets: Market[] }) {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[640px] border-collapse text-left">
+        <table className="w-full min-w-[760px] border-collapse text-left">
           <thead>
             <tr className="border-b border-rule-strong">
-              {["Code", "Market", "Country", "Timezone", "Weekend"].map((heading) => (
+              {["Code", "Market", "Now", "Country", "Timezone", "Weekend"].map((heading) => (
                 <th key={heading} scope="col" className="py-3 pr-4 eyebrow font-normal">
                   {heading}
                 </th>
@@ -64,6 +81,9 @@ export function MarketTable({ markets }: { markets: Market[] }) {
                   </Link>
                 </td>
                 <td className="py-5 pr-4 text-lg">{market.name}</td>
+                <td className="py-5 pr-4 text-sm text-ink-2">
+                  <StatusCell status={statuses.get(market.code)} now={now} />
+                </td>
                 <td className="py-5 pr-4 text-ink-2">
                   <span className="inline-flex items-center gap-2.5">
                     <Flag code={market.country_code} className="w-6" />
@@ -86,5 +106,17 @@ export function MarketTable({ markets }: { markets: Market[] }) {
         )}
       </div>
     </div>
+  );
+}
+
+function StatusCell({ status, now }: { status?: MarketStatus; now: number }) {
+  if (!status) return <span className="text-ink-3">-</span>;
+  const label = statusLabel(status, now);
+  const short = label.text.split(" · ")[0];
+  return (
+    <span className="inline-flex items-center gap-2 whitespace-nowrap" title={label.text}>
+      <span className={`size-1.5 rounded-full ${TONE_DOT[label.tone]}`} />
+      {short.replace("Trading day", "Hours n/a")}
+    </span>
   );
 }
