@@ -117,6 +117,13 @@ OPERATIONS = (
         schemas.DataQualityReport,
     ),
     Operation(
+        "/api/v1/add-trading-days",
+        "addTradingDays",
+        "Move a date by n trading days (negative goes back) on every listed market",
+        schemas.AddDaysQuery,
+        schemas.AddDaysResponse,
+    ),
+    Operation(
         "/api/v1/overlap",
         "getOverlap",
         "Days from start to end on which every market trades, at most 400 days",

@@ -1,6 +1,39 @@
 {
   "components": {
     "schemas": {
+      "AddDaysResponse": {
+        "properties": {
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "days": {
+            "title": "Days",
+            "type": "integer"
+          },
+          "markets": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Markets",
+            "type": "array"
+          },
+          "result": {
+            "format": "date",
+            "title": "Result",
+            "type": "string"
+          }
+        },
+        "required": [
+          "markets",
+          "date",
+          "days",
+          "result"
+        ],
+        "title": "AddDaysResponse",
+        "type": "object"
+      },
       "AdjacentTradingDayResponse": {
         "properties": {
           "date": {
@@ -702,6 +735,75 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/add-trading-days": {
+      "get": {
+        "operationId": "addTradingDays",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "markets",
+            "required": true,
+            "schema": {
+              "description": "Comma-separated MICs, such as XNYS,XLON",
+              "title": "Markets",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "title": "Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "days",
+            "required": true,
+            "schema": {
+              "title": "Days",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddDaysResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown market"
+          }
+        },
+        "summary": "Move a date by n trading days (negative goes back) on every listed market"
+      }
+    },
     "/api/v1/data-quality": {
       "get": {
         "operationId": "getDataQuality",

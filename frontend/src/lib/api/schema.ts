@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+  "/api/v1/add-trading-days": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Move a date by n trading days (negative goes back) on every listed market */
+    get: operations["addTradingDays"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/data-quality": {
     parameters: {
       query?: never;
@@ -246,6 +263,23 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** AddDaysResponse */
+    AddDaysResponse: {
+      /**
+       * Date
+       * Format: date
+       */
+      date: string;
+      /** Days */
+      days: number;
+      /** Markets */
+      markets: string[];
+      /**
+       * Result
+       * Format: date
+       */
+      result: string;
+    };
     /** AdjacentTradingDayResponse */
     AdjacentTradingDayResponse: {
       /**
@@ -529,6 +563,48 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  addTradingDays: {
+    parameters: {
+      query: {
+        markets: string;
+        date: string;
+        days: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AddDaysResponse"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unknown market */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   getDataQuality: {
     parameters: {
       query?: never;

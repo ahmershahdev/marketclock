@@ -7,6 +7,7 @@ from app.core.settlement import (
     Cycle,
     InvalidMarketsError,
     NoDefaultCycleError,
+    add_trading_days,
     cycle_on,
     default_cycles,
     overlap,
@@ -115,3 +116,15 @@ def test_default_cycles_name_the_markets_without_one() -> None:
         default_cycles(["XNYS", "XKAR", "XSAU"], {"XNYS": [T1]}, date(2026, 1, 2))
 
     assert error.value.markets == ["XKAR", "XSAU"]
+
+
+def test_add_trading_days_forward_and_back() -> None:
+    assert add_trading_days(["XNYS"], date(2026, 7, 2), 1) == date(2026, 7, 6)
+    assert add_trading_days(["XNYS"], date(2026, 7, 6), -1) == date(2026, 7, 2)
+    assert add_trading_days(["XNYS", "XLON"], date(2026, 12, 23), 3) == date(2026, 12, 30)
+
+
+@pytest.mark.parametrize("days", [0, 401, -401])
+def test_add_trading_days_bounds(days: int) -> None:
+    with pytest.raises(InvalidRangeError):
+        add_trading_days(["XNYS"], date(2026, 7, 2), days)

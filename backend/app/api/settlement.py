@@ -6,6 +6,8 @@ from app.core.calendar import UnknownMarketError, market_codes
 from app.cycles import load_cycles
 from app.db import get_engine
 from app.schemas import (
+    AddDaysQuery,
+    AddDaysResponse,
     CycleSource,
     DateQuery,
     MarketCycleResponse,
@@ -63,6 +65,14 @@ def settlement_date() -> Response:
             settlement_date=found.settlement_date,
         )
     )
+
+
+@bp.get("/add-trading-days")
+def add_trading_days() -> Response:
+    query = parse_query(AddDaysQuery)
+    found = settlement.add_trading_days(query.markets, query.date, query.days)
+    body = AddDaysResponse(markets=query.markets, date=query.date, days=query.days, result=found)
+    return json_response(body)
 
 
 @bp.get("/overlap")

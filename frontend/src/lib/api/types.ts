@@ -12,6 +12,7 @@ export type AdjacentTradingDayResponse = Schemas["AdjacentTradingDayResponse"];
 export type TradingDaysResponse = Schemas["TradingDaysResponse"];
 export type SettlementResponse = Schemas["SettlementResponse"];
 export type OverlapResponse = Schemas["OverlapResponse"];
+export type AddDaysResponse = Schemas["AddDaysResponse"];
 export type MarketQuality = Schemas["MarketQuality"];
 export type DataQualityReport = Schemas["DataQualityReport"];
 export type MarketStatus = Schemas["MarketStatusResponse"];

@@ -1,4 +1,5 @@
 import type {
+  AddDaysResponse,
   ApiErrorBody,
   HolidaysResponse,
   Market,
@@ -68,6 +69,8 @@ export const api = {
   dataQuality: () => get<DataQualityReport>("/data-quality"),
   status: (code: string) => get<MarketStatus>(`/markets/${encodeURIComponent(code)}/status`),
   allStatus: () => get<MarketStatus[]>("/status"),
+  addTradingDays: (markets: string[], date: string, days: number) =>
+    get<AddDaysResponse>("/add-trading-days", { markets: markets.join(","), date, days }),
   overlap: (markets: string[], start: string, end: string) =>
     get<OverlapResponse>("/overlap", { markets: markets.join(","), start, end }),
 };

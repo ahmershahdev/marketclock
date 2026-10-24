@@ -8,6 +8,7 @@ from app.core.calendar import MAX_RANGE_DAYS, InvalidRangeError, check_year, mar
 
 MAX_MARKETS = 10
 MAX_CYCLE = 10
+MAX_SHIFT = 400
 
 
 class InvalidMarketsError(ValueError):
@@ -77,6 +78,18 @@ def settlement_date(codes: Sequence[str], trade_date: date, cycle: int) -> Settl
         day += timedelta(days=1)
         counted += _open_on_all(calendars, day)
     return Settlement(trade_date, trading, day)
+
+
+def add_trading_days(codes: Sequence[str], day: date, days: int) -> date:
+    if days == 0 or abs(days) > MAX_SHIFT:
+        raise InvalidRangeError(f"days must be from -{MAX_SHIFT} to {MAX_SHIFT}, not 0")
+    calendars = _calendars(codes)
+    step = timedelta(days=1 if days > 0 else -1)
+    counted = 0
+    while counted < abs(days):
+        day += step
+        counted += _open_on_all(calendars, day)
+    return day
 
 
 def overlap(codes: Sequence[str], start: date, end: date) -> list[date]:

@@ -67,6 +67,12 @@ class SettlementQuery(Query):
     cycle: Annotated[int, Field(ge=0, le=10)] | None = None
 
 
+class AddDaysQuery(Query):
+    markets: MarketCodes
+    date: IsoDate
+    days: int
+
+
 class OverlapQuery(Query):
     markets: MarketCodes
     start: IsoDate
@@ -157,6 +163,13 @@ class SettlementResponse(BaseModel):
     default_cycles: list[CycleSource]
     trade_date_is_trading_day: bool
     settlement_date: dt.date
+
+
+class AddDaysResponse(BaseModel):
+    markets: list[str]
+    date: dt.date
+    days: int
+    result: dt.date
 
 
 class OverlapResponse(BaseModel):
