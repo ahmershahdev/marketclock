@@ -33,8 +33,8 @@ Last updated: 2026-10-24. Update at the end of every work session.
 
 ## Next session
 
-1. M2: session hours for more markets (NYSE done). The Nasdaq hours page timed out; others not yet
-   researched.
+1. M2: session hours for more markets. On file: XNYS, XHKG, XASX, XLON (early close only).
+   Tried and blocked or down: Nasdaq (timeout), TSX (site down), JPX, Tadawul, NSE (403), SGX.
 2. M3: settlement cycles for more markets. Candidates found but not verifiable from here:
    PSX T+1 from 2026-02-09 (PSX/SECP pages were down or blocked), BSE/NSE T+1 from 2023-01-27
    (BSE blocks automated access), LSE T+2 from 2014-10-06 (AFME note now 404).

@@ -439,8 +439,15 @@
       "TradingSession": {
         "properties": {
           "close": {
-            "title": "Close",
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Close"
           },
           "early_close": {
             "anyOf": [
@@ -454,8 +461,15 @@
             "title": "Early Close"
           },
           "open": {
-            "title": "Open",
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Open"
           },
           "source_url": {
             "title": "Source Url",
