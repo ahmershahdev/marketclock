@@ -151,6 +151,27 @@ class OverlapResponse(BaseModel):
     days: list[dt.date]
 
 
+class QualityDifference(BaseModel):
+    date: dt.date
+    kind: Literal["missing_in_library", "extra_in_library", "category_differs"]
+    library: Literal["public", "half_day"] | None
+    official: Literal["public", "half_day"] | None
+    official_name: str | None
+
+
+class MarketQuality(BaseModel):
+    market: str
+    years: list[int]
+    official_days: int
+    checked_on: dt.date
+    sources: list[str]
+    differences: list[QualityDifference]
+
+
+class DataQualityReport(BaseModel):
+    markets: list[MarketQuality]
+
+
 class ErrorDetail(BaseModel):
     code: str
     message: str

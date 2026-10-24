@@ -87,6 +87,13 @@ OPERATIONS = (
         schemas.SettlementResponse,
     ),
     Operation(
+        "/api/v1/data-quality",
+        "getDataQuality",
+        "Library dates compared with each exchange's published calendar, with every difference",
+        schemas.Query,
+        schemas.DataQualityReport,
+    ),
+    Operation(
         "/api/v1/overlap",
         "getOverlap",
         "Days from start to end on which every market trades, at most 400 days",
@@ -119,7 +126,7 @@ def _responses(op: Operation) -> dict[str, Any]:
         "200": {"description": "OK", **_content(op.response)},
         "400": {"description": "Invalid parameter", **error},
     }
-    if op.path != "/api/v1/markets":
+    if op.path not in {"/api/v1/markets", "/api/v1/data-quality"}:
         responses["404"] = {"description": "Unknown market", **error}
     return responses
 
