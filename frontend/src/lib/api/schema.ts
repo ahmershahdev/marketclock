@@ -370,11 +370,11 @@ export interface components {
     /** TradingSession */
     TradingSession: {
       /** Close */
-      close: string;
+      close: string | null;
       /** Early Close */
       early_close: string | null;
       /** Open */
-      open: string;
+      open: string | null;
       /** Source Url */
       source_url: string;
     };

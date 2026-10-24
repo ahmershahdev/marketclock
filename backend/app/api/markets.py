@@ -23,7 +23,7 @@ bp = Blueprint("markets", __name__, url_prefix="/markets")
 
 HOLIDAYS_TTL = 7 * 24 * 3600
 # Bump when cached holiday JSON changes for reasons other than a library upgrade.
-HOLIDAYS_CACHE_VERSION = 2
+HOLIDAYS_CACHE_VERSION = 3
 
 
 def parse_query[Q: BaseModel](model: type[Q]) -> Q:

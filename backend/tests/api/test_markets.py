@@ -172,8 +172,23 @@ def test_errors_are_not_cached(client: FlaskClient) -> None:
 
 
 def test_markets_without_session_data(client: FlaskClient) -> None:
-    body = get_json(client, "/api/v1/markets/XLON")
+    body = get_json(client, "/api/v1/markets/XKAR")
 
     assert body["session"] is None
-    half_days = get_json(client, "/api/v1/markets/XLON/holidays?year=2026")["holidays"]
+
+
+def test_half_days_without_a_known_early_close(client: FlaskClient) -> None:
+    holidays = get_json(client, "/api/v1/markets/XNZE/holidays?year=2026")["holidays"]
+    half_days = [h for h in holidays if h["half_day"]]
+
+    assert half_days
     assert all(h["close_time"] is None for h in half_days)
+
+
+def test_early_close_without_regular_hours(client: FlaskClient) -> None:
+    session = get_json(client, "/api/v1/markets/XLON")["session"]
+
+    assert session["open"] is None
+    assert session["early_close"] == "12:30"
+    holidays = get_json(client, "/api/v1/markets/XLON/holidays?year=2026")["holidays"]
+    assert {h["close_time"] for h in holidays if h["half_day"]} == {"12:30"}

@@ -58,8 +58,8 @@ class OverlapQuery(Query):
 
 
 class TradingSession(BaseModel):
-    open: str
-    close: str
+    open: str | None
+    close: str | None
     early_close: str | None
     source_url: str
 

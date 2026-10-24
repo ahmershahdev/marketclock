@@ -84,7 +84,11 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
 
   return (
     <Shell code={code} name={market.name} countryCode={market.country_code}>
-      <div className="grid gap-px overflow-hidden rounded-2xl border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
+      <div
+        className={`grid gap-px overflow-hidden rounded-2xl border border-rule bg-rule sm:grid-cols-2 ${
+          market.session ? "lg:grid-cols-5" : "lg:grid-cols-4"
+        }`}
+      >
         {[
           ["Country", market.country],
           ["Timezone", market.timezone],
@@ -96,6 +100,27 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
             <p className="font-mono text-sm">{value}</p>
           </div>
         ))}
+        {market.session && (
+          <div className="bg-surface p-5">
+            <p className="mb-2 eyebrow">Hours</p>
+            <p className="font-mono text-sm">
+              {market.session.open && market.session.close
+                ? `${market.session.open} to ${market.session.close}`
+                : "Not on file"}
+            </p>
+            <p className="mt-1 text-xs text-ink-3">
+              {market.session.early_close && `Early close ${market.session.early_close}. `}
+              <a
+                href={market.session.source_url}
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-rule-strong underline-offset-4 hover:text-ink"
+              >
+                Source
+              </a>
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="mt-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">

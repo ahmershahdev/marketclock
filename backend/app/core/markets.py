@@ -16,8 +16,8 @@ class MarketInfo:
 
 @dataclass(frozen=True)
 class TradingSession:
-    open: str
-    close: str
+    open: str | None
+    close: str | None
     early_close: str | None
     source_url: str
 
@@ -171,10 +171,28 @@ MARKET_INFO: dict[str, MarketInfo] = {
 }
 
 
-# Local exchange time. Only sessions whose source page was read and confirmed.
+# Local exchange time, continuous trading only (lunch breaks and auctions are left out).
+# Only sessions whose source page was read and confirmed; None where the page is silent.
 SESSIONS: dict[str, TradingSession] = {
     "XNYS": TradingSession(
         "09:30", "16:00", "13:00", "https://www.nyse.com/markets/hours-calendars"
+    ),
+    "XHKG": TradingSession(
+        "09:30",
+        "16:00",
+        "12:00",
+        "https://www.hkex.com.hk/Services/Trading-hours-and-Severe-Weather-Arrangements/"
+        "Trading-Hours/Securities-Market?sc_lang=en",
+    ),
+    "XASX": TradingSession(
+        "10:00",
+        "16:00",
+        None,
+        "https://www.asx.com.au/markets/market-resources/trading-hours-calendar/"
+        "cash-market-trading-hours",
+    ),
+    "XLON": TradingSession(
+        None, None, "12:30", "https://www.londonstockexchange.com/equities-trading/business-days"
     ),
 }
 
