@@ -9,7 +9,7 @@ const CELL: Record<DayKind, string> = {
   open: "text-ink hover:bg-sunken",
   weekend:
     "text-ink-3 bg-[repeating-linear-gradient(135deg,var(--rule)_0_1px,transparent_1px_6px)]",
-  closed: "bg-accent text-accent-ink",
+  closed: "bg-closed text-closed-ink",
   early: "text-early ring-1 ring-inset ring-early/60 bg-early/10",
 };
 

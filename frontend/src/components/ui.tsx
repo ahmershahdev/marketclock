@@ -49,7 +49,7 @@ export function ButtonLink({
       href={href}
       className={`group inline-flex items-center gap-3 rounded-full px-5 py-3 text-sm font-medium transition-[background-color,color,border-color,transform] duration-300 active:scale-[0.98] ${
         variant === "solid"
-          ? "bg-ink text-paper hover:bg-accent hover:text-accent-ink"
+          ? "bg-accent text-accent-ink hover:bg-ink hover:text-paper"
           : "border border-rule-strong text-ink hover:border-ink"
       }`}
     >

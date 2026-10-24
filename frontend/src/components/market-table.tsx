@@ -65,7 +65,7 @@ export function MarketTable({ markets }: { markets: Market[] }) {
                 <td className="py-5 pr-4 font-mono text-xs text-ink-2">
                   {weekendLabel(market.weekend)}
                 </td>
-                <td className="py-5 pr-2 text-right text-ink-3 transition-[color,transform] group-hover:translate-x-1 group-hover:text-accent">
+                <td className="py-5 pr-2 text-right text-ink-3 transition-[color,transform] group-hover:translate-x-1 group-hover:text-signal">
                   <ArrowIcon className="ml-auto" />
                 </td>
               </tr>

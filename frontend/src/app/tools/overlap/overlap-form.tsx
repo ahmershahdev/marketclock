@@ -102,7 +102,7 @@ function ResultView({ result }: { result: ApiResult<OverlapResponse> | null }) {
   if (!result.ok) {
     return (
       <div className="flex h-full flex-col justify-between gap-8">
-        <p className="eyebrow text-accent">
+        <p className="eyebrow text-closed">
           {result.kind === "offline" ? "API not reachable" : "Request failed"}
         </p>
         <p className="text-display text-5xl">
@@ -125,7 +125,7 @@ function ResultView({ result }: { result: ApiResult<OverlapResponse> | null }) {
     <div className="flex rise flex-col gap-8">
       <div>
         <p className="eyebrow">Shared trading days, {result.data.markets.join(" / ")}</p>
-        <p className="mt-2 text-display tabular text-[clamp(4rem,12vw,9rem)] text-accent">
+        <p className="mt-2 text-display text-[clamp(4rem,12vw,9rem)] text-signal tabular">
           {result.data.days.length}
         </p>
       </div>
@@ -140,7 +140,7 @@ function ResultView({ result }: { result: ApiResult<OverlapResponse> | null }) {
                 <li key={day}>
                   <time
                     dateTime={day}
-                    className="grid size-9 place-items-center rounded-md bg-sunken font-mono tabular text-xs"
+                    className="grid size-9 place-items-center rounded-md bg-sunken font-mono text-xs tabular"
                   >
                     {Number(day.slice(8))}
                   </time>

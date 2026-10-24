@@ -3,29 +3,34 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { CloseIcon, MenuIcon } from "@/components/icons";
+import { ArrowIcon, CloseIcon, MenuIcon } from "@/components/icons";
 import { LogoMark } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NAV_LINKS } from "@/lib/nav";
 
+function isActive(pathname: string | null, href: string) {
+  return pathname !== null && (pathname === href || pathname.startsWith(`${href}/`));
+}
+
 function DesktopLinks({ pathname }: { pathname: string | null }) {
-  const isActive = (href: string) =>
-    pathname !== null && (pathname === href || pathname.startsWith(`${href}/`));
   return (
-    <ul className="flex items-center gap-1">
-      {NAV_LINKS.map((link) => (
-        <li key={link.href}>
-          <Link
-            href={link.href}
-            aria-current={isActive(link.href) ? "page" : undefined}
-            className={`rounded-full px-3.5 py-1.5 text-sm transition-colors ${
-              isActive(link.href) ? "bg-sunken text-ink" : "text-ink-2 hover:text-ink"
-            }`}
-          >
-            {link.label}
-          </Link>
-        </li>
-      ))}
+    <ul className="flex items-center gap-0.5">
+      {NAV_LINKS.map((link) => {
+        const active = isActive(pathname, link.href);
+        return (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              aria-current={active ? "page" : undefined}
+              className={`relative block rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
+                active ? "bg-ink text-paper" : "text-ink-2 hover:bg-sunken hover:text-ink"
+              }`}
+            >
+              {link.label}
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -40,7 +45,7 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -57,33 +62,49 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header
-      className={`sticky top-0 z-50 border-b transition-[background-color,border-color] duration-500 ${
-        scrolled || open ? "border-rule bg-paper/75 backdrop-blur-xl" : "border-transparent"
-      }`}
-    >
-      <div className="container-page flex h-16 items-center justify-between gap-6">
+    <header className="sticky top-0 z-50 px-3 pt-3 md:px-5">
+      <div
+        className={`relative mx-auto flex h-14 max-w-[1440px] items-center justify-between gap-4 rounded-full border pr-2 pl-5 transition-[background-color,border-color,box-shadow] duration-500 ${
+          scrolled || open
+            ? "border-rule bg-surface/80 shadow-[0_8px_30px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl"
+            : "border-transparent"
+        }`}
+      >
         <Link
           href="/"
           className="group flex items-center gap-2.5"
           onClick={() => setOpen(false)}
           aria-label="MarketClock home"
         >
-          <LogoMark className="size-6 transition-transform duration-700 ease-out-expo group-hover:rotate-[360deg]" />
-          <span className="text-[15px] font-semibold tracking-tight">MarketClock</span>
+          <LogoMark className="size-7 transition-transform duration-700 ease-out-expo group-hover:rotate-[360deg]" />
+          <span className="font-display text-lg font-semibold tracking-[-0.03em]">MarketClock</span>
         </Link>
 
-        <nav aria-label="Main" className="hidden md:block">
+        <nav
+          aria-label="Main"
+          className="absolute left-1/2 hidden -translate-x-1/2 rounded-full border border-rule bg-surface/60 p-1 backdrop-blur-xl lg:block"
+        >
           <Suspense fallback={<DesktopLinks pathname={null} />}>
             <ActiveDesktopLinks />
           </Suspense>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <ThemeToggle />
+          <Link
+            href="/markets"
+            className="group hidden items-center gap-2 rounded-full bg-accent px-4 py-2 text-[13px] font-semibold text-accent-ink transition-transform active:scale-95 sm:inline-flex"
+          >
+            Open calendars
+            <ArrowIcon
+              width={14}
+              height={14}
+              className="transition-transform group-hover:translate-x-0.5"
+            />
+          </Link>
           <button
             type="button"
-            className="grid size-9 place-items-center rounded-full border border-rule md:hidden"
+            className="grid size-10 place-items-center rounded-full border border-rule bg-surface lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -98,7 +119,7 @@ export function SiteHeader() {
         id="mobile-nav"
         aria-label="Mobile"
         hidden={!open}
-        className="container-page h-[calc(100dvh-4rem)] overflow-y-auto pt-8 pb-12 md:hidden"
+        className="mx-auto mt-2 h-[calc(100dvh-5.5rem)] max-w-[1440px] overflow-y-auto rounded-3xl border border-rule bg-surface p-6 lg:hidden"
       >
         <ul className="flex flex-col">
           {NAV_LINKS.map((link, index) => (

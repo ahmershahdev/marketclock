@@ -97,14 +97,14 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
 
       <div className="mt-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <div className="flex items-end gap-6">
-          <h2 className="text-display tabular text-8xl md:text-[10rem]">{year}</h2>
+          <h2 className="text-display text-8xl tabular md:text-[10rem]">{year}</h2>
           <div className="flex gap-2 pb-4">
             <YearLink code={code} year={year - 1} label="Previous year" flip />
             <YearLink code={code} year={year + 1} label="Next year" />
           </div>
         </div>
         <div className="flex flex-col gap-4 md:items-end">
-          <p className="tabular text-ink-2">
+          <p className="text-ink-2 tabular">
             <span className="text-ink">{fullCloses}</span> closures,{" "}
             <span className="text-ink">{earlyCloses}</span> early closes
           </p>
@@ -146,7 +146,7 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
                   holiday.date < today ? "text-ink-3" : ""
                 }`}
               >
-                <time dateTime={holiday.date} className="font-mono tabular text-sm">
+                <time dateTime={holiday.date} className="font-mono text-sm tabular">
                   {holiday.date}
                 </time>
                 <span className="hidden eyebrow md:block">
@@ -155,7 +155,7 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
                 <span className="text-lg">{holiday.name}</span>
                 <span
                   className={`rounded-full border px-2.5 py-1 eyebrow ${
-                    holiday.half_day ? "border-early/50 text-early" : "border-accent/50 text-accent"
+                    holiday.half_day ? "border-early/50 text-early" : "border-closed/50 text-closed"
                   }`}
                 >
                   {holiday.half_day

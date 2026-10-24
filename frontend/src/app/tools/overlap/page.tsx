@@ -14,7 +14,7 @@ export default function OverlapPage() {
         eyebrow="Tools / Overlap"
         title={
           <>
-            When are <em className="text-accent">all of them</em> open?
+            When are <em className="text-signal">all of them</em> open?
           </>
         }
         lead="Days on which every market in the set is trading. Ranges include both ends and are capped at 400 days."

@@ -99,7 +99,7 @@ function ResultView({ result }: { result: ApiResult<SettlementResponse> | null }
   if (!result.ok) {
     return (
       <>
-        <p className="eyebrow text-accent">
+        <p className="eyebrow text-closed">
           {result.kind === "offline" ? "API not reachable" : "Request failed"}
         </p>
         <p className="text-display text-5xl">
@@ -120,7 +120,7 @@ function ResultView({ result }: { result: ApiResult<SettlementResponse> | null }
         Settles on, T+{data.cycle} from {data.trade_date}
       </p>
       <div className="rise">
-        <p className="text-display tabular text-[clamp(3rem,9vw,7rem)] text-accent">
+        <p className="text-display text-[clamp(3rem,9vw,7rem)] text-signal tabular">
           {data.settlement_date}
         </p>
         <p className="mt-2 font-mono text-sm text-ink-2">

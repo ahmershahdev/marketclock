@@ -29,19 +29,19 @@ export function BigClock() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-2 eyebrow">
-        <span className="size-1.5 animate-pulse-dot rounded-full bg-accent text-accent" />
+        <span className="size-1.5 animate-pulse-dot rounded-full bg-signal text-signal" />
         Your time
         <span className="text-ink-2">{zone && `${zone.replaceAll("_", " ")}`}</span>
       </div>
       <p
-        className="font-mono tabular text-[clamp(2.75rem,8vw,6.5rem)] leading-none font-light tracking-[-0.06em]"
+        className="font-mono text-[clamp(2.5rem,5vw,4.25rem)] leading-none font-medium tracking-[-0.05em] tabular"
         aria-live="off"
       >
         {time.hour}
         <span className="text-ink-3">:</span>
         {time.minute}
         <span className="text-ink-3">:</span>
-        <span className="text-accent">{time.second}</span>
+        <span className="text-signal">{time.second}</span>
       </p>
     </div>
   );
@@ -53,7 +53,7 @@ export function ZoneClock({ label, timeZone }: { label: string; timeZone: string
   return (
     <div className="flex items-baseline justify-between gap-4 border-t border-rule py-3">
       <span className="eyebrow">{label}</span>
-      <span className="font-mono tabular text-sm text-ink-2">
+      <span className="font-mono text-sm text-ink-2 tabular">
         {time ? `${time.hour}:${time.minute}:${time.second}` : "--:--:--"}
         <span className="ml-2 text-ink-3">{now === null ? "" : offsetLabel(now, timeZone)}</span>
       </span>

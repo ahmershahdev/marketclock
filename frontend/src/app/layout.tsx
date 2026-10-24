@@ -1,19 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { RevealObserver } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
-const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
+  axes: ["opsz", "wdth"],
 });
+const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"], axes: ["opsz"] });
+const jetbrainsMono = JetBrains_Mono({ variable: "--font-jetbrains-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -26,8 +25,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f1ec" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c0c0b" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f5f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#07080a" },
   ],
 };
 
@@ -37,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-theme="light"
       suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+      className={`${bricolage.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

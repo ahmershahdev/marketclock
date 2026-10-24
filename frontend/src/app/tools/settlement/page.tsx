@@ -14,7 +14,7 @@ export default function SettlementPage() {
         eyebrow="Tools / Settlement"
         title={
           <>
-            When does <em className="text-accent">it settle?</em>
+            When does <em className="text-signal">it settle?</em>
           </>
         }
         lead="T+n counted in trading days. With two markets, the settlement date has to be a trading day on both."

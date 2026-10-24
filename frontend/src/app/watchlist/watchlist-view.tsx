@@ -62,7 +62,7 @@ function WatchCard({
       <div className="flex items-start justify-between">
         <Link
           href={`/markets/${code}`}
-          className="font-mono text-5xl font-light tracking-[-0.06em] transition-colors hover:text-accent"
+          className="font-mono text-5xl font-light tracking-[-0.06em] transition-colors hover:text-signal"
         >
           {code}
         </Link>
@@ -96,12 +96,12 @@ function WatchCard({
                   key={holiday.date}
                   className="grid grid-cols-[auto_1fr_auto] items-baseline gap-3 border-b border-rule py-3"
                 >
-                  <time dateTime={holiday.date} className="font-mono tabular text-xs text-ink-2">
+                  <time dateTime={holiday.date} className="font-mono text-xs text-ink-2 tabular">
                     {WEEKDAY_SHORT[weekdayOf(holiday.date)]} {holiday.date}
                   </time>
                   <span className="truncate text-sm">{holiday.name}</span>
                   <span
-                    className={`font-mono tabular text-xs ${holiday.half_day ? "text-early" : "text-accent"}`}
+                    className={`font-mono text-xs tabular ${holiday.half_day ? "text-early" : "text-closed"}`}
                   >
                     {today && daysUntil(today, holiday.date) === 0
                       ? "today"

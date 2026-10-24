@@ -15,7 +15,7 @@ export function ApiOffline({ what }: { what: string }) {
             Start the API and this page fills in by itself.
           </p>
         </div>
-        <pre className="shrink-0 rounded-xl border border-rule bg-paper p-4 font-mono tabular text-xs leading-relaxed text-ink-2">
+        <pre className="shrink-0 rounded-xl border border-rule bg-paper p-4 font-mono text-xs leading-relaxed text-ink-2 tabular">
           <span className="text-ink-3"># frontend/.env.local</span>
           {"\n"}API_URL=http://localhost:5000
         </pre>
@@ -27,7 +27,7 @@ export function ApiOffline({ what }: { what: string }) {
 export function ApiError({ message }: { message: string }) {
   return (
     <Panel>
-      <p className="mb-3 eyebrow text-accent">Request failed</p>
+      <p className="mb-3 eyebrow text-closed">Request failed</p>
       <p className="text-ink-2">{message}</p>
     </Panel>
   );
