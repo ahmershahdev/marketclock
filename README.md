@@ -40,7 +40,9 @@ calendar pages, and it checks the library's dates against what each exchange pub
 - Closures and half days for every market and year the library covers, with names in English.
 - Is a date a trading day, the next and previous trading day, and every trading day in a range,
   each market with its own weekend (Friday and Saturday for Tadawul).
-- Session hours and early-close times with their source (NYSE, HKEX, ASX, LSE so far).
+- Session hours and early-close times with their source (NYSE, Nasdaq, JPX, HKEX, ASX, LSE).
+- A page per market and year (`/markets/XNYS/2027`) and a yearly index of every market
+  (`/holidays/2027`), each with its own title and canonical URL.
 
 **Settlement and overlap**
 - T+0 to T+10 settlement dates across up to 10 markets, counted only on days when every market
@@ -52,7 +54,7 @@ calendar pages, and it checks the library's dates against what each exchange pub
 
 **Data quality**
 - Each exchange's published calendar stored with its source and check date, compared day by day
-  with the library. NYSE (2026 to 2028) and LSE (2027 and 2028) match exactly.
+  with the library. NYSE (2026 to 2028), Nasdaq (2026) and LSE (2027 and 2028) match exactly.
 
 **Web app**
 - Markets list with flags, per-market year calendars, settlement and overlap tools, a browser-only
@@ -267,10 +269,10 @@ compose.yaml         local stack; compose.prod.yaml for the server
 | Milestone | State |
 |---|---|
 | M1 Skeleton | done |
-| M2 Core API | done; session hours on file for 4 markets |
+| M2 Core API | done; session hours on file for 6 markets |
 | M3 Settlement | done; cycles on file for 4 markets |
 | M4 Web app | done |
-| M5 Data quality | done for NYSE and LSE; no differences to report upstream yet |
+| M5 Data quality | done for NYSE, Nasdaq and LSE; no differences to report upstream yet |
 | M6 Docs and launch | production setup and README done; deploy and Lighthouse in February 2027 |
 
 ## Documentation

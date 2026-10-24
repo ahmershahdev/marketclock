@@ -68,4 +68,4 @@ def test_official_closures_cover_whole_years() -> None:
         by_market.setdefault(market, set()).add(day.year)
         assert kind in {"closed", "half_day"}
         assert source_url.startswith("https://")
-    assert by_market == {"XNYS": {2026, 2027, 2028}, "XLON": {2027, 2028}}
+    assert by_market == {"XNYS": {2026, 2027, 2028}, "XNAS": {2026}, "XLON": {2027, 2028}}

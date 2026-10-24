@@ -2,14 +2,17 @@ import Image from "next/image";
 
 export function LogoMark({ className = "" }: { className?: string }) {
   return (
-    <Image
-      src="/brand/mark.webp"
-      alt=""
-      width={96}
-      height={96}
-      priority
-      className={`object-contain ${className}`}
-    />
+    <span className={`block rounded-[28%] bg-[#f4f5f1] p-1 ring-1 ring-rule ${className}`}>
+      <Image
+        src="/brand/mark.webp"
+        alt=""
+        width={256}
+        height={256}
+        priority
+        sizes="40px"
+        className="size-full object-contain"
+      />
+    </span>
   );
 }
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ApiError, ApiOffline } from "@/components/api-offline";
+import Link from "next/link";
 import { MarketTable } from "@/components/market-table";
 import { PageHeader, Skeleton } from "@/components/ui";
 import { api } from "@/lib/api/client";
@@ -45,7 +46,14 @@ export default function MarketsPage() {
           </>
         }
         lead="Stock exchanges and financial markets supported by the holidays library, each with its own weekend, closures and early closes."
-      />
+      >
+        <Link
+          href="/holidays"
+          className="mt-8 inline-flex rounded-full border border-rule-strong px-4 py-2 text-sm hover:border-ink"
+        >
+          Every market&apos;s holidays by year
+        </Link>
+      </PageHeader>
       <section className="container-page">
         <Suspense fallback={<MarketsSkeleton />}>
           <Markets />

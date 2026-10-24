@@ -177,6 +177,18 @@ SESSIONS: dict[str, TradingSession] = {
     "XNYS": TradingSession(
         "09:30", "16:00", "13:00", "https://www.nyse.com/markets/hours-calendars"
     ),
+    "XNAS": TradingSession(
+        "09:30",
+        "16:00",
+        "13:00",
+        "https://www.nasdaq.com/market-activity/stock-market-holiday-schedule",
+    ),
+    "XJPX": TradingSession(
+        "09:00",
+        "15:30",
+        None,
+        "https://www.jpx.co.jp/english/equities/trading/domestic/01.html",
+    ),
     "XHKG": TradingSession(
         "09:30",
         "16:00",

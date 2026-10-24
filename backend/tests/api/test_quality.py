@@ -14,6 +14,8 @@ def test_data_quality_report(client: FlaskClient) -> None:
     assert by_market["XNYS"]["official_days"] == 34
     assert by_market["XNYS"]["differences"] == []
     assert by_market["XLON"]["differences"] == []
+    assert by_market["XNAS"]["years"] == [2026]
+    assert by_market["XNAS"]["differences"] == []
     assert by_market["XLON"]["sources"] == [
         "https://www.londonstockexchange.com/equities-trading/business-days"
     ]
