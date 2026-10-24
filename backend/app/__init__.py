@@ -6,6 +6,7 @@ from app.cache import Cache, MemoryCache, RedisCache
 from app.config import Config
 from app.db import make_engine
 from app.errors import register_error_handlers
+from app.headers import register_headers
 from app.ratelimit import register_rate_limit
 from app.seed import seed_official_closures, seed_settlement_cycles
 
@@ -30,5 +31,6 @@ def create_app(config: Config | None = None, cache: Cache | None = None) -> Flas
 
     register_error_handlers(app)
     register_rate_limit(app, config.rate_limit)
+    register_headers(app)
     app.register_blueprint(api)
     return app
