@@ -20,6 +20,10 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    ignore:
+      # Stay on the MySQL 8.4 LTS line; 9.x and later are short-lived innovation releases.
+      - dependency-name: mysql
+        versions: [">=9"]
 
   - package-ecosystem: npm
     directory: /frontend
@@ -28,3 +32,8 @@ updates:
     groups:
       npm:
         patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      # Types must match the Node 22 runtime used in CI and Docker.
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
