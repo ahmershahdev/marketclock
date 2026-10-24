@@ -10,7 +10,7 @@ from app.core.calendar import (
     UnknownMarketError,
     YearOutOfRangeError,
 )
-from app.core.settlement import MAX_MARKETS, InvalidMarketsError
+from app.core.settlement import MAX_MARKETS, InvalidMarketsError, NoDefaultCycleError
 
 
 def error_response(
@@ -39,6 +39,10 @@ def register_error_handlers(app: Flask) -> None:
     @app.errorhandler(InvalidMarketsError)
     def invalid_markets(error: InvalidMarketsError) -> tuple[Response, int]:
         return error_response(400, "invalid_markets", str(error), {"max_markets": MAX_MARKETS})
+
+    @app.errorhandler(NoDefaultCycleError)
+    def no_default_cycle(error: NoDefaultCycleError) -> tuple[Response, int]:
+        return error_response(400, "no_default_cycle", str(error), {"markets": error.markets})
 
     @app.errorhandler(InvalidRangeError)
     def invalid_range(error: InvalidRangeError) -> tuple[Response, int]:

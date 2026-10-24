@@ -14,6 +14,34 @@ class InvalidMarketsError(ValueError):
     pass
 
 
+class NoDefaultCycleError(ValueError):
+    def __init__(self, markets: list[str]) -> None:
+        super().__init__(f"No known settlement cycle for {', '.join(markets)}; choose a cycle")
+        self.markets = markets
+
+
+@dataclass(frozen=True)
+class Cycle:
+    days: int
+    effective_from: date
+    source_url: str
+
+
+def cycle_on(cycles: Sequence[Cycle], day: date) -> Cycle | None:
+    in_force = [cycle for cycle in cycles if cycle.effective_from <= day]
+    return max(in_force, key=lambda cycle: cycle.effective_from, default=None)
+
+
+def default_cycles(
+    codes: Sequence[str], cycles: dict[str, list[Cycle]], day: date
+) -> dict[str, Cycle]:
+    found = {code: cycle_on(cycles.get(code, []), day) for code in codes}
+    missing = [code for code, cycle in found.items() if cycle is None]
+    if missing:
+        raise NoDefaultCycleError(missing)
+    return {code: cycle for code, cycle in found.items() if cycle is not None}
+
+
 @dataclass(frozen=True)
 class Settlement:
     trade_date: date

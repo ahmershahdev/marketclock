@@ -48,7 +48,7 @@ class RangeQuery(Query):
 class SettlementQuery(Query):
     markets: MarketCodes
     trade_date: IsoDate
-    cycle: Annotated[int, Field(ge=0, le=10)]
+    cycle: Annotated[int, Field(ge=0, le=10)] | None = None
 
 
 class OverlapQuery(Query):
@@ -110,10 +110,27 @@ class TradingDaysResponse(BaseModel):
     days: list[dt.date]
 
 
+class CycleSource(BaseModel):
+    market: str
+    days: int
+    effective_from: dt.date
+    source_url: str
+
+
+class MarketCycleResponse(BaseModel):
+    model_config = ConfigDict(json_schema_serialization_defaults_required=True)
+
+    market: str
+    date: dt.date
+    cycle: CycleSource | None = None
+
+
 class SettlementResponse(BaseModel):
     markets: list[str]
     trade_date: dt.date
     cycle: int
+    cycle_from: Literal["query", "default"]
+    default_cycles: list[CycleSource]
     trade_date_is_trading_day: bool
     settlement_date: dt.date
 
