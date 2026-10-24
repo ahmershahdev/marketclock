@@ -36,6 +36,10 @@ class YearQuery(Query):
     year: int
 
 
+class OptionalYearQuery(Query):
+    year: int | None = None
+
+
 class DateQuery(Query):
     date: IsoDate
 

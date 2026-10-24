@@ -9,6 +9,11 @@ const ENDPOINTS = [
   ["GET /markets", "", "Every market: code, name, country, timezone, weekend, categories."],
   ["GET /markets/{code}", "", "One market, with the years the library has data for."],
   ["GET /markets/{code}/holidays", "year", "Closures and half days of one year, with names."],
+  [
+    "GET /markets/{code}/calendar.ics",
+    "year (optional)",
+    "iCalendar feed of closures and early closes for subscribing in Google Calendar, Apple Calendar or Outlook; without year it covers this year and next.",
+  ],
   ["GET /markets/{code}/is-trading-day", "date", "Whether the market trades on a date."],
   ["GET /markets/{code}/next-trading-day", "date", "First trading day after a date."],
   ["GET /markets/{code}/previous-trading-day", "date", "Last trading day before a date."],

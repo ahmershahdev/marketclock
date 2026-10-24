@@ -1,3 +1,4 @@
+from datetime import UTC, date, datetime
 from importlib.metadata import version
 
 from flask import Blueprint, Response, current_app, request
@@ -5,6 +6,7 @@ from pydantic import BaseModel
 
 from app.cache import cached, get_cache
 from app.core import calendar, markets
+from app.core.ics import calendar_ics
 from app.schemas import (
     AdjacentTradingDayResponse,
     DateQuery,
@@ -12,6 +14,7 @@ from app.schemas import (
     HolidaysResponse,
     Market,
     MarketList,
+    OptionalYearQuery,
     Query,
     RangeQuery,
     TradingDayResponse,
@@ -78,6 +81,23 @@ def holidays(code: str) -> Response:
     body, hit = cached(get_cache(), key, HOLIDAYS_TTL, lambda: holidays_json(code, query.year))
     response = current_app.response_class(body, mimetype="application/json")
     response.headers["X-Cache"] = "hit" if hit else "miss"
+    return response
+
+
+@bp.get("/<code>/calendar.ics")
+def calendar_feed(code: str) -> Response:
+    query = parse_query(OptionalYearQuery)
+    market = markets.get_market(code)
+    # Without a year this is a subscription feed, so it rolls over to cover this year and next.
+    this_year = date.today().year
+    years = [query.year] if query.year is not None else [this_year, this_year + 1]
+    years = [y for y in years if market.first_year <= y <= market.last_year] or years
+    found = [h for year in years for h in calendar.market_holidays(code, year)]
+    early_close = market.session.early_close if market.session else None
+    body = calendar_ics(code, market.name, found, early_close, datetime.now(UTC))
+    response = current_app.response_class(body, mimetype="text/calendar")
+    response.headers["Content-Disposition"] = f'inline; filename="{code}-holidays.ics"'
+    response.headers["Cache-Control"] = "public, max-age=3600"
     return response
 
 

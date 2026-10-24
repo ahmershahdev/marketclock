@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { ApiError, ApiOffline } from "@/components/api-offline";
+import { CalendarLinks } from "@/components/calendar-links";
 import { Flag } from "@/components/flag";
 import { ArrowIcon } from "@/components/icons";
 import { CalendarLegend, MonthGrid, type Closure } from "@/components/month-grid";
@@ -194,6 +195,7 @@ export async function MarketCalendar({
           Dates from the holidays library. Wrong date? Report it upstream with a link to the
           exchange&apos;s own calendar.
         </p>
+        <CalendarLinks code={code} year={year} />
       </section>
     </Shell>
   );

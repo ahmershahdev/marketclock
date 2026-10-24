@@ -731,6 +731,71 @@
         "summary": "One market with its weekend, timezone and years of data"
       }
     },
+    "/api/v1/markets/{code}/calendar.ics": {
+      "get": {
+        "operationId": "getCalendarFeed",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/calendar": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown market"
+          }
+        },
+        "summary": "iCalendar feed of closures and early closes: this year and next, or one year"
+      }
+    },
     "/api/v1/markets/{code}/holidays": {
       "get": {
         "operationId": "getHolidays",
