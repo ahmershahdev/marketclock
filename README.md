@@ -14,7 +14,7 @@ pages.
 
 > Status: early build. M1 is done. M2 and M3 are nearly done: markets, holidays, trading days,
 > settlement and overlap all work end to end, with holidays cached in Redis. Still open:
-> early-close times and settlement cycles for more markets, both waiting on official sources. Data quality (M5) and launch (M6) follow.
+> session hours and settlement cycles for more markets, both waiting on official sources. Data quality (M5) and launch (M6) follow.
 > See [docs/roadmap.md](docs/roadmap.md) and [docs/status.md](docs/status.md).
 
 ## What works today
@@ -31,6 +31,9 @@ pages.
 - **Settlement and overlap.** T+0 to T+10 settlement dates counted in days on which every listed
   market is open (up to 10 markets), and the days in a range when all of them trade. Trade
   dates that fall on a closed day are reported, and counting starts from the next open day.
+- **Session hours and early closes.** Each market can carry its session (open, close, early
+  close) with a source; half days then get their closing time. On file: NYSE (9:30 to 16:00,
+  early close 13:00 ET).
 - **Settlement cycles with sources.** A `settlement_cycle` table (MySQL, Alembic) holds each
   market's cycle with its effective date and regulator source: US T+2 from 2017 and T+1 from
   2024 (SEC), Canada T+1 from 2024 (CSA), UK T+1 from October 2027 (FCA). With no cycle given,
@@ -52,8 +55,6 @@ pages.
 
 ## What it will do
 
-- **Early-close times.** Half days are listed today; the closing time per market comes with the
-  market metadata.
 - **Public pages.** One page per market and year ("PSX holidays 2027"), rendered on the server
   for search engines.
 - **Data quality.** Each market's dates compared with the calendar the exchange publishes,

@@ -20,7 +20,7 @@ The API is the only thing that talks to MySQL and Redis. The web app only calls 
 | Closures and half days | `holidays.financial_holidays(code, years=...)` | not stored, cached in Redis |
 | Weekend days | the library's market class (`weekend`) | not stored |
 | Name, country, timezone | exchange websites | `app/core/markets.py` (`MARKET_INFO`), with source URL |
-| Session hours, early-close time | exchange websites | `market` table, with source URL (not built yet) |
+| Session hours, early-close time | exchange websites | `app/core/markets.py` (`SESSIONS`), with source URL; XNYS only so far |
 | Settlement cycle | exchange or regulator notices | `settlement_cycle` table, with source and effective date |
 | Official closures for comparison | exchange calendars and notices | `official_closure` table, with source and date checked |
 
