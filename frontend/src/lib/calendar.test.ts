@@ -80,4 +80,9 @@ describe("todayIn", () => {
     expect(todayIn("UTC", instant)).toBe("2026-10-24");
     expect(todayIn("Asia/Karachi", instant)).toBe("2026-10-25");
   });
+
+  it("falls back to UTC for an unknown timezone instead of throwing", () => {
+    const instant = Date.UTC(2026, 9, 24, 22, 30);
+    expect(todayIn("Mars/Olympus_Mons", instant)).toBe("2026-10-24");
+  });
 });

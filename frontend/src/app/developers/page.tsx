@@ -113,7 +113,7 @@ export default function DevelopersPage() {
           ))}
         </ul>
 
-        <div className="mt-24 grid gap-6 md:grid-cols-2">
+        <div className="mt-24 grid gap-6 md:grid-cols-2 [&>*]:min-w-0">
           <Panel>
             <p className="mb-4 eyebrow">Errors</p>
             <h3 className="mb-4 text-display text-3xl">One shape for every failure.</h3>
@@ -121,8 +121,8 @@ export default function DevelopersPage() {
               {`{
   "error": {
     "code": "unknown_market",
-    "message": "No market with code XXXX.",
-    "params": { "code": "XXXX" }
+    "message": "Unknown market 'XXXX'",
+    "params": { "market": "XXXX" }
   }
 }`}
             </pre>
@@ -134,8 +134,8 @@ export default function DevelopersPage() {
               <li>Closures and half days: the holidays library, never copied into MarketClock.</li>
               <li>Weekends: the library&apos;s own market class.</li>
               <li>
-                Session hours, early-close times and settlement cycles: exchange and regulator
-                pages, each stored with its source URL.
+                Name, country and timezone: each exchange&apos;s website, with the source URL in
+                every response. Session hours and settlement cycles will follow the same rule.
               </li>
             </ul>
           </Panel>
