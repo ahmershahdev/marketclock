@@ -2,13 +2,50 @@ import Link from "next/link";
 import { ArrowUpRightIcon } from "@/components/icons";
 import { ZoneClock } from "@/components/live-clock";
 import { LogoMark } from "@/components/logo";
+import { CONTACT } from "@/lib/contact";
 import { NAV_LINKS } from "@/lib/nav";
 
 const RESOURCES = [
-  { href: "https://github.com/ahmershahdev/marketclock", label: "Source on GitHub" },
+  { href: CONTACT.github, label: "Source on GitHub" },
   { href: "https://github.com/vacanza/holidays", label: "holidays library" },
-  { href: "https://ahmershah.dev", label: "ahmershah.dev" },
+  { href: CONTACT.website, label: "ahmershah.dev" },
 ];
+
+const CONTACT_LINKS = [
+  { href: `mailto:${CONTACT.email}`, label: CONTACT.email },
+  { href: CONTACT.linkedin, label: "LinkedIn" },
+];
+
+function ExternalLinks({
+  title,
+  links,
+}: {
+  title: string;
+  links: { href: string; label: string }[];
+}) {
+  return (
+    <div className="md:col-span-3">
+      <p className="mb-5 eyebrow">{title}</p>
+      <ul className="space-y-3">
+        {links.map((link) => (
+          <li key={link.href}>
+            <a
+              href={link.href}
+              className="group inline-flex items-center gap-1.5 break-all text-ink-2 transition-colors hover:text-ink"
+            >
+              {link.label}
+              <ArrowUpRightIcon
+                width={12}
+                height={12}
+                className="shrink-0 opacity-50 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function SiteFooter() {
   return (
@@ -17,7 +54,7 @@ export function SiteFooter() {
         <div className="pointer-events-none absolute -top-1/2 left-1/2 aspect-square w-[70%] -translate-x-1/2 glow" />
 
         <div className="relative grid gap-12 p-8 md:grid-cols-12 md:p-12">
-          <div className="flex flex-col gap-6 md:col-span-5">
+          <div className="flex flex-col gap-6 md:col-span-4">
             <Link href="/" className="flex items-center gap-2.5" aria-label="MarketClock home">
               <LogoMark className="size-8" />
               <span className="font-display text-2xl font-semibold tracking-[-0.03em]">
@@ -33,7 +70,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <nav aria-label="Footer" className="md:col-span-3 md:col-start-7">
+          <nav aria-label="Footer" className="md:col-span-2">
             <p className="mb-5 eyebrow">Product</p>
             <ul className="space-y-3">
               {NAV_LINKS.map((link) => (
@@ -46,33 +83,15 @@ export function SiteFooter() {
             </ul>
           </nav>
 
-          <div className="md:col-span-3">
-            <p className="mb-5 eyebrow">Resources</p>
-            <ul className="space-y-3">
-              {RESOURCES.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="group inline-flex items-center gap-1.5 text-ink-2 transition-colors hover:text-ink"
-                  >
-                    {link.label}
-                    <ArrowUpRightIcon
-                      width={12}
-                      height={12}
-                      className="opacity-50 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ExternalLinks title="Resources" links={RESOURCES} />
+          <ExternalLinks title="Contact" links={CONTACT_LINKS} />
         </div>
 
         <div className="relative flex flex-col gap-3 border-t border-rule px-8 py-5 text-sm text-ink-3 md:flex-row md:items-center md:justify-between md:px-12">
           <p>MIT licensed. Holiday data from the holidays library.</p>
           <p>
             Built by{" "}
-            <a href="https://ahmershah.dev" className="text-ink-2 hover:text-ink">
+            <a href={CONTACT.website} className="text-ink-2 hover:text-ink">
               Syed Ahmer Shah
             </a>
           </p>

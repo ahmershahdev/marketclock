@@ -19,14 +19,14 @@ in CI, and seed data.
 ## M2. Core API (target 2026-11-22)
 
 - [ ] `GET /api/v1/markets`: code, name, country, timezone, weekend, supported categories
-- [ ] `GET /api/v1/markets/<code>/holidays?year=`: closures and half days with names
-- [ ] `GET /api/v1/markets/<code>/is-trading-day?date=`
-- [ ] `GET /api/v1/markets/<code>/next-trading-day?date=` and `previous-trading-day`
-- [ ] `GET /api/v1/markets/<code>/trading-days?start=&end=` (both ends included, range capped)
+- [x] `GET /api/v1/markets/<code>/holidays?year=`: closures and half days with names
+- [x] `GET /api/v1/markets/<code>/is-trading-day?date=`
+- [x] `GET /api/v1/markets/<code>/next-trading-day?date=` and `previous-trading-day`
+- [x] `GET /api/v1/markets/<code>/trading-days?start=&end=` (both ends included, range capped)
 - [ ] Early closes from `HALF_DAY`, with closing times from market metadata
-- [ ] Input validation (market code, dates, range caps), one error format
+- [x] Input validation (market code, dates, range caps), one error format
 - [ ] Redis cache per (market, year, library version)
-- [ ] OpenAPI schema committed, generated from the Pydantic models
+- [x] OpenAPI schema committed, generated from the Pydantic models
 
 ## M3. Settlement (target 2026-12-06)
 

@@ -24,6 +24,7 @@ by `next.config.ts`, so the API needs no CORS setup.
 | `npm run typecheck` | route types, then `tsc --noEmit`          |
 | `npm test`          | Vitest                                    |
 | `npm run format`    | Prettier (with the Tailwind class sorter) |
+| `npm run api:types` | types from `../backend/openapi.json`      |
 
 ## Layout
 
@@ -42,5 +43,7 @@ system preference, so there is no flash. The toggle offers System, Light and Dar
 
 ## API types
 
-`src/lib/api/types.ts` is a hand-written draft of the planned contract. Replace it with types
-generated from the OpenAPI schema when the API lands (roadmap M2 and M4).
+`src/lib/api/schema.ts` is generated from the API's OpenAPI schema (`backend/openapi.json`) with
+`npm run api:types`; never edit it by hand. CI fails when it is out of date. `src/lib/api/types.ts`
+names the types the app uses; `Market`, settlement and overlap stay hand-written there until
+those endpoints are in the schema.

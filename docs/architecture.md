@@ -42,7 +42,13 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
   Timezones are used only for "is the market open right now".
 - Ranges include both ends and are capped (a year range of at most 10 years, a day range of at
   most 400 days).
-- Market codes are validated against the library's supported markets.
+- Market codes are validated against the library's supported markets: the MIC only (`XNYS`),
+  case-sensitive. Library aliases such as `NYSE` get a 404, so each market has one URL.
+- Years outside the library's data for a market (`start_year` to `end_year`) are a 400, not an
+  empty answer that would make every weekday look like a trading day.
+- Trading days come from the `public` category only; `half_day` dates are still trading days.
+- Errors: `invalid_parameter` (400, `params.fields`), `unknown_market` (404),
+  `year_out_of_range` (400), `invalid_range` (400).
 
 ## Decisions
 
@@ -59,3 +65,8 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | Config from environment variables only | `MARKETCLOCK_ENV` picks `dev`, `test` or `prod`; tests refuse a database not ending in `_test` |
 | Own in-memory cache double, not fakeredis | the cache interface is three methods; the double also simulates an outage |
 | `GET /api/v1/health` returns 503 when MySQL or Redis is down | lets Compose, CI and the deploy check readiness |
+| OpenAPI document built in `app/openapi.py` from the Pydantic models, no Flask OpenAPI plugin | the models already give the JSON Schema; a list of five operations is easier to read than a plugin's decorators |
+| `backend/openapi.json` is committed and checked by a test | the frontend generates its types from it, and a diff shows every API change in review |
+| Frontend types from `openapi-typescript` (types only, no runtime client) | the existing `fetch` wrapper stays; CI regenerates `schema.ts` and fails on a diff |
+| Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
+| Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |
