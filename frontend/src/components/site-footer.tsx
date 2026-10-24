@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRightIcon } from "@/components/icons";
 import { ZoneClock } from "@/components/live-clock";
-import { LogoMark } from "@/components/logo";
+import { Emblem } from "@/components/logo";
 import { CONTACT } from "@/lib/contact";
 import { NAV_LINKS } from "@/lib/nav";
 
@@ -55,11 +55,8 @@ export function SiteFooter() {
 
         <div className="relative grid gap-12 p-8 md:grid-cols-12 md:p-12">
           <div className="flex flex-col gap-6 md:col-span-4">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="MarketClock home">
-              <LogoMark className="size-8" />
-              <span className="font-display text-2xl font-semibold tracking-[-0.03em]">
-                MarketClock
-              </span>
+            <Link href="/" aria-label="MarketClock home" className="w-56">
+              <Emblem className="w-full transition-transform duration-700 ease-out-expo hover:scale-[1.03]" />
             </Link>
             <p className="max-w-sm text-ink-2">
               Trading days, early closes, settlement dates and market overlap for the world&apos;s

@@ -249,12 +249,12 @@ export default function Home() {
 
       <section className="px-3 md:px-5">
         <div className="relative mx-auto max-w-[1440px] overflow-hidden rounded-[2rem] bg-[#07080a] text-[#eef0ec]">
-          <div className="pointer-events-none absolute -right-1/4 -bottom-1/2 aspect-square w-[80%] bg-[radial-gradient(closest-side,rgb(212_255_58/0.16),transparent)]" />
+          <div className="pointer-events-none absolute -right-1/4 -bottom-1/2 aspect-square w-[80%] bg-[radial-gradient(closest-side,rgb(255_210_31/0.16),transparent)]" />
           <div className="relative grid gap-14 p-8 md:p-14 lg:grid-cols-12">
             <div className="lg:col-span-5" data-reveal="">
               <p className="mb-6 eyebrow !text-[#646a63]">Data quality</p>
               <h2 className="text-display text-5xl md:text-7xl">
-                Checked against <em className="text-[#d4ff3a]">the exchange.</em>
+                Checked against <em className="text-accent">the exchange.</em>
               </h2>
             </div>
             <ul className="grid gap-3 md:grid-cols-3 lg:col-span-7">

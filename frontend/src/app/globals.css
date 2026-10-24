@@ -13,14 +13,14 @@
   --ink-3: #868b82;
   --rule: rgb(10 11 13 / 0.08);
   --rule-strong: rgb(10 11 13 / 0.16);
-  --accent: #d4ff3a;
+  --accent: #ffd21f;
   --accent-ink: #0a0b0d;
-  --signal: #4c6900;
+  --signal: #8a6400;
   --open: #0f8a4a;
   --closed: #d93a2b;
   --closed-ink: #ffffff;
   --early: #b26a00;
-  --glow: rgb(76 105 0 / 0.14);
+  --glow: rgb(255 196 0 / 0.16);
   --grain-opacity: 0.035;
   --scroll-thumb: rgb(10 11 13 / 0.22);
   --scroll-thumb-hover: rgb(10 11 13 / 0.4);
@@ -36,17 +36,17 @@
   --ink-3: #646a63;
   --rule: rgb(238 240 236 / 0.08);
   --rule-strong: rgb(238 240 236 / 0.16);
-  --accent: #d4ff3a;
+  --accent: #ffd21f;
   --accent-ink: #07080a;
-  --signal: #d4ff3a;
+  --signal: #ffd21f;
   --open: #3ddc84;
   --closed: #ff5d4f;
   --closed-ink: #07080a;
   --early: #ffb02e;
-  --glow: rgb(212 255 58 / 0.12);
+  --glow: rgb(255 210 31 / 0.13);
   --grain-opacity: 0.05;
   --scroll-thumb: rgb(238 240 236 / 0.2);
-  --scroll-thumb-hover: rgb(212 255 58 / 0.6);
+  --scroll-thumb-hover: rgb(255 210 31 / 0.6);
 }
 
 @theme inline {
