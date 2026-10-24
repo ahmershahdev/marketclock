@@ -44,6 +44,7 @@ def seed_settlement_cycles(session: Session) -> int:
 
 NYSE_CALENDAR = "https://www.nyse.com/markets/hours-calendars"
 LSE_CALENDAR = "https://www.londonstockexchange.com/equities-trading/business-days"
+NASDAQ_CALENDAR = "https://www.nasdaq.com/market-activity/stock-market-holiday-schedule"
 CHECKED_ON = date(2026, 10, 24)
 
 # Whole years only, copied from the exchange page on CHECKED_ON: a year that is here is compared
@@ -83,6 +84,18 @@ OFFICIAL_CLOSURES: list[tuple[str, date, str, str, str]] = [
     ("XNYS", date(2028, 11, 23), "closed", "Thanksgiving Day", NYSE_CALENDAR),
     ("XNYS", date(2028, 11, 24), "half_day", "Day after Thanksgiving", NYSE_CALENDAR),
     ("XNYS", date(2028, 12, 25), "closed", "Christmas Day", NYSE_CALENDAR),
+    ("XNAS", date(2026, 1, 1), "closed", "New Year's Day", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 1, 19), "closed", "MLK, Jr. Day", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 2, 16), "closed", "Presidents Day", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 4, 3), "closed", "Good Friday", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 5, 25), "closed", "Memorial Day", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 6, 19), "closed", "Juneteenth", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 7, 3), "closed", "Independence Day (Observed)", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 9, 7), "closed", "Labor Day", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 11, 26), "closed", "Thanksgiving Day", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 11, 27), "half_day", "Early Close", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 12, 24), "half_day", "Early Close", NASDAQ_CALENDAR),
+    ("XNAS", date(2026, 12, 25), "closed", "Christmas Day", NASDAQ_CALENDAR),
     ("XLON", date(2027, 1, 1), "closed", "New Year's Day", LSE_CALENDAR),
     ("XLON", date(2027, 3, 26), "closed", "Good Friday", LSE_CALENDAR),
     ("XLON", date(2027, 3, 29), "closed", "Easter Monday", LSE_CALENDAR),
