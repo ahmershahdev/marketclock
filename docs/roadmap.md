@@ -9,12 +9,13 @@ in CI, and seed data.
 
 ## M1. Skeleton (target 2026-11-08)
 
-- [ ] Flask app factory, config per environment (`dev`, `test`, `prod`), health endpoint
-- [ ] SQLAlchemy 2 + Alembic against MySQL 8 in Docker Compose (MySQL in tests too, never SQLite)
-- [ ] Redis in Compose, cache wrapper with a test double
-- [ ] pytest with coverage, Ruff, mypy (strict)
+- [x] Flask app factory, config per environment (`dev`, `test`, `prod`), health endpoint
+- [x] SQLAlchemy 2 + Alembic against MySQL 8 in Docker Compose (MySQL in tests too, never SQLite)
+- [x] Redis in Compose, cache wrapper with a test double
+- [x] pytest with coverage, Ruff, mypy (strict)
 - [ ] GitHub Actions: `backend` job, CodeQL; add both as required checks in the ruleset
-- [ ] Dependabot for Actions and Python
+  (workflows and ruleset file done; live ruleset still to apply)
+- [x] Dependabot for Actions and Python
 
 ## M2. Core API (target 2026-11-22)
 

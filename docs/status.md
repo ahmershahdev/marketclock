@@ -4,19 +4,19 @@ Last updated: 2026-10-24. Update at the end of every work session.
 
 ## Where we are
 
-The web app shell from M4 was started early, on branch `feat/frontend-shell`, so the design
-system exists before the API: `frontend/` (Next.js 16, Tailwind 4) with the landing page,
-markets list, market year calendar, settlement and overlap tools, watchlist and API reference,
-light, dark and system themes. Every data view calls the planned `/api/v1` endpoints and shows
-an "API not reachable" state until the API exists; no holiday data lives in the frontend.
-Lint, type check, Vitest and `next build` pass. No backend code yet.
+- M1 skeleton: Flask app factory, env config, SQLAlchemy engine, Alembic (no tables yet), Redis
+  cache with an in-memory double, one error shape, `GET /api/v1/health`. Docker Compose runs
+  MySQL 8.4, Redis 8.2 and the API. 19 tests against MySQL, 100% branch coverage, Ruff and mypy
+  strict clean. CI: `backend`, `frontend` and `codeql` workflows; Dependabot covers Actions, pip,
+  npm and Compose images.
+- Web app (M4 started early, merged in #1): grotesque type, lime theme, 3D globe hero, markets,
+  calendars, tools, watchlist and API pages. Data views show an offline state until the M2
+  endpoints exist.
 
 ## Next session
 
-1. Review and merge `feat/frontend-shell` (no `frontend` CI job yet; add it with M4).
-2. M1: Flask app factory, Docker Compose with MySQL 8 and Redis, pytest, Ruff, mypy.
-3. Add the `backend` and `codeql` CI jobs, then make them required checks in the "Protect main"
-   ruleset (`.github/rulesets/protect-main.json` and the repository settings).
+1. M2: market list and holidays endpoints with Pydantic models and the OpenAPI schema.
+2. Replace the hand-written frontend API types with ones generated from that schema.
 
 ## Open questions
 

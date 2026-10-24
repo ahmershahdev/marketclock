@@ -8,7 +8,7 @@ financial markets in the Python [holidays](https://github.com/vacanza/holidays) 
 NASDAQ, LSE, PSX, Tadawul, SIFMA and more), through a REST API, a web dashboard and public
 calendar pages.
 
-> Status: planning. Nothing is built yet. See [docs/roadmap.md](docs/roadmap.md) for the
+> Status: early build. The API skeleton (M1) and the web app shell exist. See [docs/roadmap.md](docs/roadmap.md) for the
 > milestones and [docs/status.md](docs/status.md) for where the work is.
 
 ## What it will do
@@ -37,6 +37,23 @@ calendar pages.
 | Web | Next.js (App Router), TypeScript (strict), Tailwind CSS |
 | Quality | pytest, Vitest, Ruff, mypy, ESLint, Prettier, GitHub Actions, CodeQL |
 | Run | Docker Compose |
+
+## Run locally
+
+Needs Docker, Python 3.12 and Node 22.
+
+```bash
+cp .env.example .env              # then set your own passwords
+docker compose up -d              # MySQL, Redis and the API on http://localhost:5000
+curl http://localhost:5000/api/v1/health
+
+cd backend                        # tests and linters on the host
+py -3.12 -m venv .venv && .venv/Scripts/pip install -r requirements-dev.txt
+.venv/Scripts/pytest && .venv/Scripts/ruff check . && .venv/Scripts/mypy
+```
+
+On macOS or Linux use `python3.12` and `.venv/bin/`. Migrations: `docker compose exec api
+alembic upgrade head`.
 
 ## Why it exists
 
