@@ -58,10 +58,16 @@ comprehensive). If a name or a small function can say it, rename instead of comm
 
 ## Workflow
 
-- Branches `feat/…`, `fix/…`, `docs/…`, `chore/…`. `main` takes PRs only, squash-merged.
+- Branches `feat/…`, `fix/…`, `docs/…`, `chore/…`. `main` takes PRs only, squash-merged, and
+  the branch is deleted after the merge. Keep at most one open branch and PR at a time.
+- Required checks before merging: `backend`, `frontend`, and `codeql` for each language.
 - Each PR belongs to a milestone and closes its issue when there is one.
 - Commits are mid-sized: one coherent step that builds and passes checks on its own (a component
   with its styles, an endpoint with its tests, a config change). Not one giant commit per feature,
   not one commit per file.
 - Commit messages: short, imperative, no prefixes.
+- Never credit an AI assistant: no `Co-Authored-By` trailers, no AI names in commits, PRs,
+  README, contributors lists or code headers. The maintainer is the only author.
+- Keep `README.md` current in the same PR as the change: status line, features that exist, setup
+  steps, scripts and stack versions.
 - Update `docs/status.md` at the end of every session.

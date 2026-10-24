@@ -1,6 +1,6 @@
-# Architecture (planned)
+# Architecture
 
-This is the design before any code. Change it in the same pull request that changes the code.
+The design, partly built. Change it in the same pull request that changes the code.
 
 ## Parts
 
@@ -55,3 +55,7 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | Settlement cycles with effective dates | cycles change over time, so old trades must use the old cycle |
 | Web app calls the API through a Next.js rewrite | `/api/v1/*` is proxied to `API_URL`, so the API needs no CORS setup |
 | Theme set by an inline head script | `data-theme` is applied before first paint, so no flash; choice kept in `localStorage` |
+| Plain SQLAlchemy 2, not Flask-SQLAlchemy | one fewer dependency; the engine lives in `app.extensions["engine"]` |
+| Config from environment variables only | `MARKETCLOCK_ENV` picks `dev`, `test` or `prod`; tests refuse a database not ending in `_test` |
+| Own in-memory cache double, not fakeredis | the cache interface is three methods; the double also simulates an outage |
+| `GET /api/v1/health` returns 503 when MySQL or Redis is down | lets Compose, CI and the deploy check readiness |
