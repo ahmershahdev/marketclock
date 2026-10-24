@@ -38,6 +38,9 @@ pages.
   market's cycle with its effective date and regulator source: US T+2 from 2017 and T+1 from
   2024 (SEC), Canada T+1 from 2024 (CSA), UK T+1 from October 2027 (FCA). With no cycle given,
   the calculator uses the cycle in force on the trade date and links its source.
+- **Data quality.** Each market's closures and half days compared day by day with the calendar
+  the exchange publishes, on `/data-quality` and `GET /api/v1/data-quality`. NYSE (2026 to
+  2028) and LSE (2027 and 2028) match the library exactly.
 - **OpenAPI schema.** Generated from the Pydantic models, committed as `backend/openapi.json`,
   served at `/api/v1/openapi.json`, and turned into the web app's TypeScript types.
 - **Web app.** Landing page with a 3D globe (three.js), live clocks and a weekend demo; markets
@@ -57,9 +60,6 @@ pages.
 
 - **Public pages.** One page per market and year ("PSX holidays 2027"), rendered on the server
   for search engines.
-- **Data quality.** Each market's dates compared with the calendar the exchange publishes,
-  with every difference listed and linked to its source. Real differences go back to the
-  `holidays` library as pull requests.
 
 ## Stack
 

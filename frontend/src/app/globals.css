@@ -220,19 +220,25 @@
   background: radial-gradient(closest-side, var(--glow), transparent);
 }
 
-.js [data-reveal] {
-  opacity: 0;
-  transform: perspective(1200px) translateY(32px) rotateX(-12deg);
-  transform-origin: 50% 0;
-  transition:
-    opacity 1s var(--ease-out-expo),
-    transform 1.2s var(--ease-out-expo);
-  transition-delay: var(--reveal-delay, 0ms);
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: perspective(1200px) translateY(32px) rotateX(-12deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.js [data-reveal="shown"] {
-  opacity: 1;
-  transform: none;
+/* Scroll-driven, so no script edits the DOM before React hydrates it; elsewhere content just shows. */
+@supports (animation-timeline: view()) {
+  [data-reveal] {
+    transform-origin: 50% 0;
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
 }
 
 ::view-transition-old(root),
@@ -250,9 +256,8 @@
     transition-duration: 0.01ms !important;
   }
 
-  .js [data-reveal] {
-    opacity: 1;
-    transform: none;
+  [data-reveal] {
+    animation: none;
   }
 }
 

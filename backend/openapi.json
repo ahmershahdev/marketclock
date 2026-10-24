@@ -55,6 +55,22 @@
         "title": "CycleSource",
         "type": "object"
       },
+      "DataQualityReport": {
+        "properties": {
+          "markets": {
+            "items": {
+              "$ref": "#/components/schemas/MarketQuality"
+            },
+            "title": "Markets",
+            "type": "array"
+          }
+        },
+        "required": [
+          "markets"
+        ],
+        "title": "DataQualityReport",
+        "type": "object"
+      },
       "ErrorDetail": {
         "properties": {
           "code": {
@@ -276,6 +292,54 @@
         "title": "MarketList",
         "type": "array"
       },
+      "MarketQuality": {
+        "properties": {
+          "checked_on": {
+            "format": "date",
+            "title": "Checked On",
+            "type": "string"
+          },
+          "differences": {
+            "items": {
+              "$ref": "#/components/schemas/QualityDifference"
+            },
+            "title": "Differences",
+            "type": "array"
+          },
+          "market": {
+            "title": "Market",
+            "type": "string"
+          },
+          "official_days": {
+            "title": "Official Days",
+            "type": "integer"
+          },
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "years": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Years",
+            "type": "array"
+          }
+        },
+        "required": [
+          "market",
+          "years",
+          "official_days",
+          "checked_on",
+          "sources",
+          "differences"
+        ],
+        "title": "MarketQuality",
+        "type": "object"
+      },
       "OverlapResponse": {
         "properties": {
           "count": {
@@ -316,6 +380,74 @@
           "days"
         ],
         "title": "OverlapResponse",
+        "type": "object"
+      },
+      "QualityDifference": {
+        "properties": {
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "missing_in_library",
+              "extra_in_library",
+              "category_differs"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "library": {
+            "anyOf": [
+              {
+                "enum": [
+                  "public",
+                  "half_day"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Library"
+          },
+          "official": {
+            "anyOf": [
+              {
+                "enum": [
+                  "public",
+                  "half_day"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Official"
+          },
+          "official_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Official Name"
+          }
+        },
+        "required": [
+          "date",
+          "kind",
+          "library",
+          "official",
+          "official_name"
+        ],
+        "title": "QualityDifference",
         "type": "object"
       },
       "SettlementResponse": {
@@ -493,6 +625,35 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/data-quality": {
+      "get": {
+        "operationId": "getDataQuality",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataQualityReport"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          }
+        },
+        "summary": "Library dates compared with each exchange's published calendar, with every difference"
+      }
+    },
     "/api/v1/markets": {
       "get": {
         "operationId": "listMarkets",

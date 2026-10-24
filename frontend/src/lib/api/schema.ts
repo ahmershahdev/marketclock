@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+  "/api/v1/data-quality": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Library dates compared with each exchange's published calendar, with every difference */
+    get: operations["getDataQuality"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/markets": {
     parameters: {
       query?: never;
@@ -207,6 +224,11 @@ export interface components {
       /** Source Url */
       source_url: string;
     };
+    /** DataQualityReport */
+    DataQualityReport: {
+      /** Markets */
+      markets: components["schemas"]["MarketQuality"][];
+    };
     /** ErrorDetail */
     ErrorDetail: {
       /** Code */
@@ -291,6 +313,24 @@ export interface components {
     };
     /** MarketList */
     MarketList: components["schemas"]["Market"][];
+    /** MarketQuality */
+    MarketQuality: {
+      /**
+       * Checked On
+       * Format: date
+       */
+      checked_on: string;
+      /** Differences */
+      differences: components["schemas"]["QualityDifference"][];
+      /** Market */
+      market: string;
+      /** Official Days */
+      official_days: number;
+      /** Sources */
+      sources: string[];
+      /** Years */
+      years: number[];
+    };
     /** OverlapResponse */
     OverlapResponse: {
       /** Count */
@@ -309,6 +349,25 @@ export interface components {
        * Format: date
        */
       start: string;
+    };
+    /** QualityDifference */
+    QualityDifference: {
+      /**
+       * Date
+       * Format: date
+       */
+      date: string;
+      /**
+       * Kind
+       * @enum {string}
+       */
+      kind: "missing_in_library" | "extra_in_library" | "category_differs";
+      /** Library */
+      library: ("public" | "half_day") | null;
+      /** Official */
+      official: ("public" | "half_day") | null;
+      /** Official Name */
+      official_name: string | null;
     };
     /** SettlementResponse */
     SettlementResponse: {
@@ -387,6 +446,35 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  getDataQuality: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DataQualityReport"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   listMarkets: {
     parameters: {
       query?: never;

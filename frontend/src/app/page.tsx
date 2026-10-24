@@ -161,11 +161,7 @@ export default function Home() {
         </div>
         <ol className="grid gap-4 md:grid-cols-2">
           {QUESTIONS.map((question, index) => (
-            <li
-              key={question.title}
-              data-reveal=""
-              style={{ ["--reveal-delay" as string]: `${index * 90}ms` }}
-            >
+            <li key={question.title} data-reveal="">
               <Tilt className="h-full rounded-3xl border border-rule bg-surface">
                 <div className="flex h-full [transform:translateZ(30px)] flex-col justify-between gap-16 p-7 md:p-9">
                   <div className="flex items-center justify-between">
@@ -262,11 +258,7 @@ export default function Home() {
             </div>
             <ul className="grid gap-3 md:grid-cols-3 lg:col-span-7">
               {QUALITY.map(([title, body], index) => (
-                <li
-                  key={title}
-                  data-reveal=""
-                  style={{ ["--reveal-delay" as string]: `${index * 100}ms` }}
-                >
+                <li key={title} data-reveal="">
                   <Tilt className="h-full rounded-2xl border border-white/10 bg-white/[0.03]">
                     <div className="flex h-full flex-col gap-12 p-6">
                       <span className="font-mono text-xs text-[#646a63]">0{index + 1}</span>

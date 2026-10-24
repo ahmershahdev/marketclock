@@ -27,6 +27,7 @@ Last updated: 2026-10-24. Update at the end of every work session.
 - M2 cache: holidays cached per (library version, market, year); outage-safe. 101 backend tests.
 - Console and layout audit: every page checked at 390, 768 and 1536 px with no console errors and no horizontal overflow (fixed `/developers`). Widgets fail alone through `Boundary`.
 - M3 cycles: `settlement_cycle` table, first Alembic migration, `flask seed`, `/markets/<code>/settlement-cycle`, Auto cycle in the calculator. 117 backend tests.
+- M5: `official_closure` table and migration, comparison in `app/core/quality.py`, `/data-quality` page and endpoint. NYSE and LSE match the library. Scroll reveals moved to CSS (fixed a hydration mismatch). 126 backend tests.
 - Web app (M4 started early, merged in #1): grotesque type, lime theme, 3D globe hero, markets,
   calendars, tools, watchlist and API pages. Data views show an offline state until the M2
   endpoints exist.
@@ -38,7 +39,8 @@ Last updated: 2026-10-24. Update at the end of every work session.
 2. M3: settlement cycles for more markets. Candidates found but not verifiable from here:
    PSX T+1 from 2026-02-09 (PSX/SECP pages were down or blocked), BSE/NSE T+1 from 2023-01-27
    (BSE blocks automated access), LSE T+2 from 2014-10-06 (AFME note now 404).
-3. M5: official closures table and comparison job, starting with PSX, Tadawul and SIFMA.
+3. M5: more official calendars (PSX, Tadawul pages could not be read from here; SIFMA is not in
+   the library). File upstream issues when a real difference appears.
 4. M6: production image and deploy to `marketclock.ahmershah.dev`, screenshots, Lighthouse.
 
 ## Open questions

@@ -6,7 +6,7 @@ from app.cache import Cache, MemoryCache, RedisCache
 from app.config import Config
 from app.db import make_engine
 from app.errors import register_error_handlers
-from app.seed import seed_settlement_cycles
+from app.seed import seed_official_closures, seed_settlement_cycles
 
 
 def create_app(config: Config | None = None, cache: Cache | None = None) -> Flask:
@@ -23,8 +23,9 @@ def create_app(config: Config | None = None, cache: Cache | None = None) -> Flas
     @app.cli.command("seed")
     def seed() -> None:
         with Session(app.extensions["engine"]) as session:
-            count = seed_settlement_cycles(session)
-        print(f"Seeded {count} settlement cycles")
+            cycles = seed_settlement_cycles(session)
+            closures = seed_official_closures(session)
+        print(f"Seeded {cycles} settlement cycles and {closures} official closures")
 
     register_error_handlers(app)
     app.register_blueprint(api)

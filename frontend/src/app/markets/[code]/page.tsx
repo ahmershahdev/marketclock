@@ -142,11 +142,7 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
 
       <div className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 12 }, (_, index) => (
-          <div
-            key={index}
-            data-reveal=""
-            style={{ ["--reveal-delay" as string]: `${(index % 4) * 60}ms` }}
-          >
+          <div key={index} data-reveal="">
             <MonthGrid
               year={year}
               month={index + 1}

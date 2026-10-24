@@ -11,7 +11,7 @@ from app import create_app
 from app.cache import MemoryCache
 from app.config import Config
 from app.db import Base, make_engine
-from app.seed import seed_settlement_cycles
+from app.seed import seed_official_closures, seed_settlement_cycles
 
 load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 
@@ -28,6 +28,7 @@ def tables() -> Iterator[None]:
     Base.metadata.create_all(engine)
     with Session(engine) as session:
         seed_settlement_cycles(session)
+        seed_official_closures(session)
     yield
     Base.metadata.drop_all(engine)
     engine.dispose()

@@ -101,7 +101,6 @@ export default function DevelopersPage() {
             <li
               key={endpoint.path}
               data-reveal=""
-              style={{ ["--reveal-delay" as string]: `${index * 40}ms` }}
               className="grid gap-3 border-b border-rule py-6 md:grid-cols-12 md:items-baseline"
             >
               <code className="font-mono text-sm md:col-span-6">
