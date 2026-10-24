@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { connection } from "next/server";
-import { api } from "@/lib/api/client";
+import { getMarkets } from "@/lib/api/server";
 import { absoluteUrl, PAGES } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -13,7 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: page.path === "/" ? 1 : 0.7,
   }));
 
-  const markets = await api.markets();
+  const markets = await getMarkets();
   const years = [year, year + 1];
   const yearIndexes: MetadataRoute.Sitemap = years.map((y) => ({
     url: absoluteUrl(`/holidays/${y}`),

@@ -4,16 +4,19 @@ import { ApiError, ApiOffline } from "@/components/api-offline";
 import Link from "next/link";
 import { MarketTable } from "@/components/market-table";
 import { PageHeader, Skeleton } from "@/components/ui";
-import { api } from "@/lib/api/client";
+import { JsonLd } from "@/components/json-ld";
+import { getMarkets } from "@/lib/api/server";
+import { breadcrumbs, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Markets",
+export const metadata: Metadata = pageMetadata({
+  title: "Stock Exchange Holidays and Trading Hours",
   description:
-    "Every exchange and financial market covered by MarketClock and the holidays library.",
-};
+    "All 30 exchanges in the holidays library: country, timezone, weekend, live status and every closure and early close by year.",
+  path: "/markets",
+});
 
 async function Markets() {
-  const result = await api.markets();
+  const result = await getMarkets();
   if (!result.ok) {
     return result.kind === "offline" ? (
       <ApiOffline what="The list of markets" />
@@ -38,6 +41,7 @@ function MarketsSkeleton() {
 export default function MarketsPage() {
   return (
     <>
+      <JsonLd data={breadcrumbs([["Markets", "/markets"]])} />
       <PageHeader
         eyebrow="Markets"
         title={

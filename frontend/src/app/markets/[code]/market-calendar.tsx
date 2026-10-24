@@ -9,7 +9,7 @@ import { ArrowIcon } from "@/components/icons";
 import { CalendarLegend, MonthGrid, type Closure } from "@/components/month-grid";
 import { Skeleton } from "@/components/ui";
 import { WatchButton } from "@/components/watch-button";
-import { api } from "@/lib/api/client";
+import { getMarkets, getHolidays } from "@/lib/api/server";
 import { WEEKDAY_SHORT, todayIn, weekdayOf, weekendLabel } from "@/lib/calendar";
 
 const CODE_PATTERN = /^[A-Z0-9]{2,10}$/;
@@ -42,7 +42,7 @@ export async function MarketCalendar({
   const now = Date.now();
   const year = chosen ?? new Date(now).getUTCFullYear();
 
-  const [markets, holidays] = await Promise.all([api.markets(), api.holidays(code, year)]);
+  const [markets, holidays] = await Promise.all([getMarkets(), getHolidays(code, year)]);
 
   if (!markets.ok) {
     return (

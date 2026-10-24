@@ -6,12 +6,16 @@ import { Flag } from "@/components/flag";
 import { PageHeader, Skeleton } from "@/components/ui";
 import { api } from "@/lib/api/client";
 import type { Market, MarketQuality } from "@/lib/api/types";
+import { JsonLd } from "@/components/json-ld";
+import { getMarkets } from "@/lib/api/server";
+import { breadcrumbs, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Data quality",
+export const metadata: Metadata = pageMetadata({
+  title: "Holiday Data Checked Against Exchanges",
   description:
-    "Holiday dates from the holidays library checked against each exchange's published calendar, with every difference and its source.",
-};
+    "Library holiday dates compared day by day with the calendars NYSE, Nasdaq and the LSE publish, with every source linked.",
+  path: "/data-quality",
+});
 
 const DIFFERENCE_LABEL = {
   missing_in_library: "Missing in the library",
@@ -94,7 +98,7 @@ function QualityCard({ report, market }: { report: MarketQuality; market?: Marke
 }
 
 async function Report() {
-  const [report, markets] = await Promise.all([api.dataQuality(), api.markets()]);
+  const [report, markets] = await Promise.all([api.dataQuality(), getMarkets()]);
   if (!report.ok) {
     return report.kind === "offline" ? (
       <ApiOffline what="The data-quality report" />
@@ -115,6 +119,7 @@ async function Report() {
 export default function DataQualityPage() {
   return (
     <>
+      <JsonLd data={breadcrumbs([["Data quality", "/data-quality"]])} />
       <PageHeader
         eyebrow="Data quality"
         title={
