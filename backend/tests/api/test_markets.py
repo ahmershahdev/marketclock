@@ -96,3 +96,40 @@ def test_range_is_capped(client: FlaskClient) -> None:
 
     assert error["code"] == "invalid_range"
     assert error["params"] == {"max_days": 400}
+
+
+def test_list_markets(client: FlaskClient) -> None:
+    body = get_json(client, "/api/v1/markets")
+
+    assert len(body) == 30
+    xnys = next(market for market in body if market["code"] == "XNYS")
+    assert xnys == {
+        "code": "XNYS",
+        "name": "New York Stock Exchange",
+        "country": "United States",
+        "timezone": "America/New_York",
+        "weekend": [5, 6],
+        "categories": ["half_day", "public"],
+        "first_year": 1863,
+        "last_year": 2100,
+        "source_url": "https://www.nyse.com",
+    }
+
+
+def test_get_market(client: FlaskClient) -> None:
+    body = get_json(client, "/api/v1/markets/XKAR")
+
+    assert body["name"] == "Pakistan Stock Exchange"
+    assert body["timezone"] == "Asia/Karachi"
+
+
+def test_get_unknown_market(client: FlaskClient) -> None:
+    error = get_json(client, "/api/v1/markets/PSX", 404)["error"]
+
+    assert error["code"] == "unknown_market"
+
+
+def test_market_list_takes_no_parameters(client: FlaskClient) -> None:
+    error = get_json(client, "/api/v1/markets?country=PK", 400)["error"]
+
+    assert error["code"] == "invalid_parameter"

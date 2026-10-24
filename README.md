@@ -12,8 +12,9 @@ financial markets in the Python [holidays](https://github.com/vacanza/holidays) 
 NASDAQ, LSE, PSX, Tadawul, SIFMA and more), through a REST API, a web app and public calendar
 pages.
 
-> Status: early build. M1 (API skeleton) is done, M2 is under way: holidays and trading-day
-> endpoints work, the markets list and caching come next. The web app shell from M4 is in place.
+> Status: early build. M1 (API skeleton) is done. M2 is under way: the markets, holidays and
+> trading-day endpoints work and the web app shows live data; caching and early-close times come
+> next. Settlement and overlap tools wait for M3.
 > See [docs/roadmap.md](docs/roadmap.md) and [docs/status.md](docs/status.md).
 
 ## What works today
@@ -21,6 +22,8 @@ pages.
 - **API skeleton.** Flask app factory, config per environment, MySQL through SQLAlchemy 2 and
   Alembic, Redis cache, one JSON error shape, and `GET /api/v1/health` (503 when MySQL or Redis
   is down).
+- **Markets.** All 30 markets in the library with name, country, timezone, weekend and years of
+  data; name, country and timezone carry the exchange's website as their source.
 - **Holidays and trading days.** For each of the 30 markets in the library: closures and half
   days of a year, whether a date is a trading day, the next and previous trading day, and the
   trading days in a range (both ends included, at most 400 days). Each market uses its own
@@ -29,13 +32,15 @@ pages.
   served at `/api/v1/openapi.json`, and turned into the web app's TypeScript types.
 - **Web app.** Landing page with a 3D globe (three.js), live clocks and a weekend demo; markets
   list, per-market year calendar, settlement and overlap tools, a browser-only watchlist and an
-  API reference. Light, dark and system themes.
+  API reference. Light, dark and system themes, including the market picker dropdown and the
+  scrollbars.
+- **Search and AI crawlers.** `robots.txt`, `sitemap.xml` (every page plus each market for this
+  year and next), `llms.txt` and `llms-full.txt`, built from the live market list.
 - **Quality.** Backend tests run against real MySQL with 100% branch coverage; frontend has
   Vitest, ESLint, Prettier and a strict type check. CI runs all of it plus CodeQL on every PR.
 
 ## What it will do
 
-- **Markets list.** Code, name, country, timezone and weekend for every market.
 - **Early-close times.** Half days are listed today; the closing time per market comes with the
   market metadata.
 - **Settlement dates.** `T+n` for a trade on one market, or across two markets, where the

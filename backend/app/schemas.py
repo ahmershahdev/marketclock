@@ -2,7 +2,7 @@ import datetime as dt
 import re
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict
+from pydantic import BaseModel, BeforeValidator, ConfigDict, RootModel
 
 ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 
@@ -32,6 +32,22 @@ class DateQuery(Query):
 class RangeQuery(Query):
     start: IsoDate
     end: IsoDate
+
+
+class Market(BaseModel):
+    code: str
+    name: str
+    country: str
+    timezone: str
+    weekend: list[int]
+    categories: list[str]
+    first_year: int
+    last_year: int
+    source_url: str
+
+
+class MarketList(RootModel[list[Market]]):
+    pass
 
 
 class Holiday(BaseModel):

@@ -134,6 +134,72 @@
         "title": "HolidaysResponse",
         "type": "object"
       },
+      "Market": {
+        "properties": {
+          "categories": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Categories",
+            "type": "array"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "country": {
+            "title": "Country",
+            "type": "string"
+          },
+          "first_year": {
+            "title": "First Year",
+            "type": "integer"
+          },
+          "last_year": {
+            "title": "Last Year",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "source_url": {
+            "title": "Source Url",
+            "type": "string"
+          },
+          "timezone": {
+            "title": "Timezone",
+            "type": "string"
+          },
+          "weekend": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Weekend",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "country",
+          "timezone",
+          "weekend",
+          "categories",
+          "first_year",
+          "last_year",
+          "source_url"
+        ],
+        "title": "Market",
+        "type": "object"
+      },
+      "MarketList": {
+        "items": {
+          "$ref": "#/components/schemas/Market"
+        },
+        "title": "MarketList",
+        "type": "array"
+      },
       "TradingDayResponse": {
         "properties": {
           "date": {
@@ -205,6 +271,83 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/markets": {
+      "get": {
+        "operationId": "listMarkets",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketList"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          }
+        },
+        "summary": "Every market in the library with its weekend and timezone"
+      }
+    },
+    "/api/v1/markets/{code}": {
+      "get": {
+        "operationId": "getMarket",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Market"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown market"
+          }
+        },
+        "summary": "One market with its weekend, timezone and years of data"
+      }
+    },
     "/api/v1/markets/{code}/holidays": {
       "get": {
         "operationId": "getHolidays",

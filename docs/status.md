@@ -14,17 +14,21 @@ Last updated: 2026-10-24. Update at the end of every work session.
   `/api/v1/markets/<code>/`; Pydantic query and response models; OpenAPI schema in
   `backend/openapi.json`, served at `/api/v1/openapi.json`; frontend types generated from it
   with `openapi-typescript`, checked in CI. 61 backend tests, 100% branch coverage.
+- M2 part two: `GET /api/v1/markets` and `/markets/<code>` with name, country and timezone from
+  `MARKET_INFO` (source URL per market); the web app shows live data. `next dev` fixed: the
+  market page read the clock during prerender. Market picker is now a themed combobox instead
+  of a native datalist; scrollbars follow the theme. `robots.txt`, `sitemap.xml`, `llms.txt`,
+  `llms-full.txt` added. 71 backend tests, 21 frontend tests.
 - Web app (M4 started early, merged in #1): grotesque type, lime theme, 3D globe hero, markets,
   calendars, tools, watchlist and API pages. Data views show an offline state until the M2
   endpoints exist.
 
 ## Next session
 
-1. M2: `GET /api/v1/markets`. Needs a `market` table (timezone, country, session hours,
-   early-close time, source URL) with an Alembic migration and seed data; the web app needs
-   `country` and `timezone`. Then fill `close_time` on half days from it.
-2. M2: Redis cache per (market, year, library version).
-3. Move `Market` into the schema so `types.ts` has no hand-written API types left for M2.
+1. M2: Redis cache per (market, year, library version).
+2. M2: session hours and early-close times (`market` table with source URLs, Alembic migration),
+   then fill `close_time` on half days.
+3. M3: settlement and overlap endpoints; the web app tools show an error until then.
 
 ## Open questions
 

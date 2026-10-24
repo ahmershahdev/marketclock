@@ -4,6 +4,7 @@ type Schemas = components["schemas"];
 
 export type IsoDate = string;
 
+export type Market = Schemas["Market"];
 export type MarketHoliday = Schemas["Holiday"];
 export type HolidaysResponse = Schemas["HolidaysResponse"];
 export type TradingDayResponse = Schemas["TradingDayResponse"];
@@ -11,17 +12,7 @@ export type AdjacentTradingDayResponse = Schemas["AdjacentTradingDayResponse"];
 export type TradingDaysResponse = Schemas["TradingDaysResponse"];
 export type ApiErrorBody = Schemas["ErrorResponse"];
 
-// Hand-written until the markets, settlement and overlap endpoints are in the OpenAPI schema.
-
-export interface Market {
-  code: string;
-  name: string;
-  country: string;
-  timezone: string;
-  // Python weekday numbers: Monday is 0, not Sunday.
-  weekend: number[];
-  categories: string[];
-}
+// Hand-written until the settlement and overlap endpoints are in the OpenAPI schema.
 
 export interface SettlementResponse {
   markets: string[];

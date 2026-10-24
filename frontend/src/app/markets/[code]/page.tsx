@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { ApiError, ApiOffline } from "@/components/api-offline";
 import { ArrowIcon } from "@/components/icons";
@@ -34,8 +35,9 @@ async function MarketCalendar({ params, searchParams }: PageProps<"/markets/[cod
   const code = (await params).code.toUpperCase();
   if (!CODE_PATTERN.test(code)) notFound();
 
-  // Cache Components rejects the clock until a request API (searchParams) has been awaited.
   const yearParam = (await searchParams).year;
+  // Cache Components rejects the clock during prerender unless the render is deferred to request time.
+  await connection();
   // eslint-disable-next-line react-hooks/purity
   const now = Date.now();
   const year = parseYear(yearParam, new Date(now).getUTCFullYear());

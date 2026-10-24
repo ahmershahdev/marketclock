@@ -19,7 +19,8 @@ The API is the only thing that talks to MySQL and Redis. The web app only calls 
 |---|---|---|
 | Closures and half days | `holidays.financial_holidays(code, years=...)` | not stored, cached in Redis |
 | Weekend days | the library's market class (`weekend`) | not stored |
-| Timezone, session hours, early-close time | exchange websites | `market` table, with source URL |
+| Name, country, timezone | exchange websites | `app/core/markets.py` (`MARKET_INFO`), with source URL |
+| Session hours, early-close time | exchange websites | `market` table, with source URL (not built yet) |
 | Settlement cycle | exchange or regulator notices | `settlement_cycle` table, with source and effective date |
 | Official closures for comparison | exchange calendars and notices | `official_closure` table, with source and date checked |
 
@@ -68,5 +69,8 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | OpenAPI document built in `app/openapi.py` from the Pydantic models, no Flask OpenAPI plugin | the models already give the JSON Schema; a list of five operations is easier to read than a plugin's decorators |
 | `backend/openapi.json` is committed and checked by a test | the frontend generates its types from it, and a diff shows every API change in review |
 | Frontend types from `openapi-typescript` (types only, no runtime client) | the existing `fetch` wrapper stays; CI regenerates `schema.ts` and fails on a diff |
+| Market name, country and timezone in code, not MySQL | 30 rows that change only with the library; reviewed in pull requests; a test fails when the library adds a market without them |
+| `sitemap.xml`, `llms.txt` and `llms-full.txt` render per request | at build time the API is usually down, so a prerendered file would have no markets |
+| Site address from `SITE_URL` (default `https://marketclock.ahmershah.dev`) | one value for the sitemap, robots.txt, llms files and `metadataBase` |
 | Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
 | Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |
