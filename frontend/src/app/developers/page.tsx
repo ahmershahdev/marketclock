@@ -97,7 +97,7 @@ export default function DevelopersPage() {
 
         <h2 className="mt-24 mb-8 text-display text-5xl md:text-6xl">Endpoints</h2>
         <ul className="border-t border-rule">
-          {ENDPOINTS.map((endpoint, index) => (
+          {ENDPOINTS.map((endpoint) => (
             <li
               key={endpoint.path}
               data-reveal=""

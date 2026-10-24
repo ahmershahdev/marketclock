@@ -87,7 +87,7 @@ export default function Home() {
   return (
     <>
       <section className="relative -mt-[4.25rem] overflow-hidden pt-[4.25rem]">
-        <div className="relative container-page grid min-h-[calc(100dvh-4.25rem)] items-center gap-8 py-12 lg:grid-cols-12">
+        <div className="relative container-page grid min-h-[calc(100dvh-4.25rem)] items-center gap-8 py-12 lg:grid-cols-12 lg:items-start lg:pt-[12vh]">
           <div className="relative z-10 flex flex-col gap-10 lg:col-span-7">
             <p className="inline-flex w-fit rise items-center gap-2.5 rounded-full border border-rule bg-surface/70 py-1.5 pr-4 pl-2 text-[13px] text-ink-2 backdrop-blur">
               <span className="rounded-full bg-accent px-2 py-0.5 font-mono text-[10px] font-semibold tracking-wider text-accent-ink uppercase">
@@ -251,7 +251,7 @@ export default function Home() {
           <div className="pointer-events-none absolute -right-1/4 -bottom-1/2 aspect-square w-[80%] bg-[radial-gradient(closest-side,rgb(255_210_31/0.16),transparent)]" />
           <div className="relative grid gap-14 p-8 md:p-14 lg:grid-cols-12">
             <div className="lg:col-span-5" data-reveal="">
-              <p className="mb-6 eyebrow !text-[#646a63]">Data quality</p>
+              <p className="mb-6 eyebrow !text-[#80867e]">Data quality</p>
               <h2 className="text-display text-5xl md:text-7xl">
                 Checked against <em className="text-accent">the exchange.</em>
               </h2>
@@ -261,7 +261,7 @@ export default function Home() {
                 <li key={title} data-reveal="">
                   <Tilt className="h-full rounded-2xl border border-white/10 bg-white/[0.03]">
                     <div className="flex h-full flex-col gap-12 p-6">
-                      <span className="font-mono text-xs text-[#646a63]">0{index + 1}</span>
+                      <span className="font-mono text-xs text-[#80867e]">0{index + 1}</span>
                       <div>
                         <h3 className="text-display text-3xl">{title}</h3>
                         <p className="mt-3 text-sm text-[#a3a8a0]">{body}</p>
