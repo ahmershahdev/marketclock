@@ -14,7 +14,7 @@ pages.
 
 > Status: early build. M1 is done. M2 and M3 are nearly done: markets, holidays, trading days,
 > settlement and overlap all work end to end, with holidays cached in Redis. Still open:
-> early-close times and per-market settlement cycles, both waiting on official sources. Data quality (M5) and launch (M6) follow.
+> early-close times and settlement cycles for more markets, both waiting on official sources. Data quality (M5) and launch (M6) follow.
 > See [docs/roadmap.md](docs/roadmap.md) and [docs/status.md](docs/status.md).
 
 ## What works today
@@ -31,6 +31,10 @@ pages.
 - **Settlement and overlap.** T+0 to T+10 settlement dates counted in days on which every listed
   market is open (up to 10 markets), and the days in a range when all of them trade. Trade
   dates that fall on a closed day are reported, and counting starts from the next open day.
+- **Settlement cycles with sources.** A `settlement_cycle` table (MySQL, Alembic) holds each
+  market's cycle with its effective date and regulator source: US T+2 from 2017 and T+1 from
+  2024 (SEC), Canada T+1 from 2024 (CSA), UK T+1 from October 2027 (FCA). With no cycle given,
+  the calculator uses the cycle in force on the trade date and links its source.
 - **OpenAPI schema.** Generated from the Pydantic models, committed as `backend/openapi.json`,
   served at `/api/v1/openapi.json`, and turned into the web app's TypeScript types.
 - **Web app.** Landing page with a 3D globe (three.js), live clocks and a weekend demo; markets
@@ -50,8 +54,6 @@ pages.
 
 - **Early-close times.** Half days are listed today; the closing time per market comes with the
   market metadata.
-- **Default settlement cycles.** Each market's own cycle (T+1, T+2) with its regulator source and
-  effective date, so the calculator can suggest it.
 - **Public pages.** One page per market and year ("PSX holidays 2027"), rendered on the server
   for search engines.
 - **Data quality.** Each market's dates compared with the calendar the exchange publishes,
@@ -99,7 +101,12 @@ cd ../frontend
 npm run lint && npm run typecheck && npm test && npm run build
 ```
 
-Migrations: `docker compose exec api alembic upgrade head`.
+Database: create the tables and load the sourced settlement cycles once (both are safe to rerun):
+
+```bash
+docker compose exec api alembic upgrade head
+docker compose exec api flask --app wsgi seed
+```
 
 After changing an API model, regenerate the schema and the web app types in the same PR (CI
 checks both):

@@ -73,6 +73,13 @@ OPERATIONS = (
         schemas.TradingDaysResponse,
     ),
     Operation(
+        f"{MARKET}/settlement-cycle",
+        "getSettlementCycle",
+        "Settlement cycle in force on a date, with its source; null when none is known",
+        schemas.DateQuery,
+        schemas.MarketCycleResponse,
+    ),
+    Operation(
         "/api/v1/settlement",
         "getSettlementDate",
         "Settlement date T+n: the n-th day after the trade date on which every market is open",

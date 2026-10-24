@@ -26,6 +26,35 @@
         "title": "AdjacentTradingDayResponse",
         "type": "object"
       },
+      "CycleSource": {
+        "properties": {
+          "days": {
+            "title": "Days",
+            "type": "integer"
+          },
+          "effective_from": {
+            "format": "date",
+            "title": "Effective From",
+            "type": "string"
+          },
+          "market": {
+            "title": "Market",
+            "type": "string"
+          },
+          "source_url": {
+            "title": "Source Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "market",
+          "days",
+          "effective_from",
+          "source_url"
+        ],
+        "title": "CycleSource",
+        "type": "object"
+      },
       "ErrorDetail": {
         "properties": {
           "code": {
@@ -198,6 +227,37 @@
         "title": "Market",
         "type": "object"
       },
+      "MarketCycleResponse": {
+        "properties": {
+          "cycle": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CycleSource"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "market": {
+            "title": "Market",
+            "type": "string"
+          }
+        },
+        "required": [
+          "market",
+          "date",
+          "cycle"
+        ],
+        "title": "MarketCycleResponse",
+        "type": "object"
+      },
       "MarketList": {
         "items": {
           "$ref": "#/components/schemas/Market"
@@ -253,6 +313,21 @@
             "title": "Cycle",
             "type": "integer"
           },
+          "cycle_from": {
+            "enum": [
+              "query",
+              "default"
+            ],
+            "title": "Cycle From",
+            "type": "string"
+          },
+          "default_cycles": {
+            "items": {
+              "$ref": "#/components/schemas/CycleSource"
+            },
+            "title": "Default Cycles",
+            "type": "array"
+          },
           "markets": {
             "items": {
               "type": "string"
@@ -279,6 +354,8 @@
           "markets",
           "trade_date",
           "cycle",
+          "cycle_from",
+          "default_cycles",
           "trade_date_is_trading_day",
           "settlement_date"
         ],
@@ -664,6 +741,64 @@
         "summary": "Last trading day before a date"
       }
     },
+    "/api/v1/markets/{code}/settlement-cycle": {
+      "get": {
+        "operationId": "getSettlementCycle",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "title": "Date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketCycleResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown market"
+          }
+        },
+        "summary": "Settlement cycle in force on a date, with its source; null when none is known"
+      }
+    },
     "/api/v1/markets/{code}/trading-days": {
       "get": {
         "operationId": "getTradingDays",
@@ -829,12 +964,20 @@
           {
             "in": "query",
             "name": "cycle",
-            "required": true,
+            "required": false,
             "schema": {
-              "maximum": 10,
-              "minimum": 0,
-              "title": "Cycle",
-              "type": "integer"
+              "anyOf": [
+                {
+                  "maximum": 10,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Cycle"
             }
           }
         ],

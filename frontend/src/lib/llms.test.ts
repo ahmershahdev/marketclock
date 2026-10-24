@@ -41,6 +41,7 @@ describe("llms.txt", () => {
       "year_out_of_range",
       "invalid_range",
       "invalid_markets",
+      "no_default_cycle",
     ]) {
       expect(full).toContain(`\`${code}\``);
     }

@@ -30,8 +30,9 @@ in CI, and seed data.
 
 ## M3. Settlement (target 2026-12-06)
 
-- [ ] Settlement cycle per market, stored with its source and effective date (cycles change,
-  for example the US moved from T+2 to T+1)
+- [x] Settlement cycle per market, stored with its source and effective date (cycles change,
+  for example the US moved from T+2 to T+1). On file: XNYS, XNAS, XTSE, XLON (from 2027).
+  More markets as their regulator pages are confirmed.
 - [x] `GET /api/v1/settlement?markets=&trade_date=&cycle=`
 - [x] Two-market settlement: the date must be a trading day on both markets
 - [x] `GET /api/v1/overlap?markets=&start=&end=`

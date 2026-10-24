@@ -3,7 +3,15 @@ from datetime import date
 import pytest
 
 from app.core.calendar import InvalidRangeError, UnknownMarketError, YearOutOfRangeError
-from app.core.settlement import InvalidMarketsError, overlap, settlement_date
+from app.core.settlement import (
+    Cycle,
+    InvalidMarketsError,
+    NoDefaultCycleError,
+    cycle_on,
+    default_cycles,
+    overlap,
+    settlement_date,
+)
 
 
 def test_t_plus_one_skips_a_closure() -> None:
@@ -77,3 +85,33 @@ def test_overlap_keeps_days_open_everywhere() -> None:
 def test_overlap_rejects_bad_ranges(start: date, end: date) -> None:
     with pytest.raises(InvalidRangeError):
         overlap(["XNYS"], start, end)
+
+
+T2 = Cycle(2, date(2017, 9, 5), "https://example.com/t2")
+T1 = Cycle(1, date(2024, 5, 28), "https://example.com/t1")
+
+
+@pytest.mark.parametrize(
+    ("day", "expected"),
+    [
+        (date(2017, 9, 4), None),
+        (date(2017, 9, 5), T2),
+        (date(2024, 5, 27), T2),
+        (date(2024, 5, 28), T1),
+    ],
+)
+def test_cycle_in_force_on_a_date(day: date, expected: Cycle | None) -> None:
+    assert cycle_on([T1, T2], day) == expected
+
+
+def test_default_cycles_for_every_market() -> None:
+    found = default_cycles(["XNYS", "XNAS"], {"XNYS": [T1], "XNAS": [T2]}, date(2026, 1, 2))
+
+    assert found == {"XNYS": T1, "XNAS": T2}
+
+
+def test_default_cycles_name_the_markets_without_one() -> None:
+    with pytest.raises(NoDefaultCycleError) as error:
+        default_cycles(["XNYS", "XKAR", "XSAU"], {"XNYS": [T1]}, date(2026, 1, 2))
+
+    assert error.value.markets == ["XKAR", "XSAU"]
