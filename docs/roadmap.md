@@ -45,8 +45,8 @@ in CI, and seed data.
 - [x] Month view per market, with closures and early closes
 - [x] Settlement calculator and overlap tool
 - [x] Watchlist of upcoming closures (stored in the browser, no accounts)
-- [ ] Server-rendered public pages per market and year, sitemap, titles and descriptions
-  (sitemap, robots.txt, llms.txt and llms-full.txt done)
+- [x] Server-rendered public pages per market and year, sitemap, titles and descriptions
+  (plus robots.txt, llms.txt and llms-full.txt)
 - [x] `frontend` CI job (lint, type check, Vitest, build), added as a required check
 
 ## M5. Data quality (target 2027-01-17)
@@ -60,7 +60,8 @@ in CI, and seed data.
 
 ## M6. Docs and launch (target 2027-02-07)
 
-- [ ] README with screenshots, setup, API examples
-- [ ] Seed data and a demo script
-- [ ] Production Docker image, deploy next to HolidayOps (`marketclock.ahmershah.dev`)
+- [x] README with screenshots, setup, API examples, architecture and data-model diagrams
+- [x] Seed data (`flask --app wsgi seed`: sourced settlement cycles and official calendars)
+- [x] Production Docker images (gunicorn API, Next.js standalone web) and `compose.prod.yaml`
+- [ ] Deploy next to HolidayOps (`marketclock.ahmershah.dev`), planned for February 2027
 - [ ] Lighthouse 90 or more on public pages
