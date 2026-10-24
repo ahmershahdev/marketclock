@@ -1,6 +1,6 @@
 import datetime as dt
 import re
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, BeforeValidator, ConfigDict
 
@@ -35,6 +35,8 @@ class RangeQuery(Query):
 
 
 class Holiday(BaseModel):
+    model_config = ConfigDict(json_schema_serialization_defaults_required=True)
+
     date: dt.date
     name: str
     category: Literal["public", "half_day"]
@@ -66,3 +68,13 @@ class TradingDaysResponse(BaseModel):
     end: dt.date
     count: int
     days: list[dt.date]
+
+
+class ErrorDetail(BaseModel):
+    code: str
+    message: str
+    params: dict[str, Any]
+
+
+class ErrorResponse(BaseModel):
+    error: ErrorDetail
