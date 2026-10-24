@@ -13,8 +13,7 @@ in CI, and seed data.
 - [x] SQLAlchemy 2 + Alembic against MySQL 8 in Docker Compose (MySQL in tests too, never SQLite)
 - [x] Redis in Compose, cache wrapper with a test double
 - [x] pytest with coverage, Ruff, mypy (strict)
-- [ ] GitHub Actions: `backend` job, CodeQL; add both as required checks in the ruleset
-  (workflows and ruleset file done; live ruleset still to apply)
+- [x] GitHub Actions: `backend` job, CodeQL; add both as required checks in the ruleset
 - [x] Dependabot for Actions and Python
 
 ## M2. Core API (target 2026-11-22)
@@ -45,7 +44,7 @@ in CI, and seed data.
 - [ ] Settlement calculator and overlap tool
 - [ ] Watchlist of upcoming closures (stored in the browser, no accounts)
 - [ ] Server-rendered public pages per market and year, sitemap, titles and descriptions
-- [ ] `frontend` CI job (lint, type check, Vitest, build), added as a required check
+- [x] `frontend` CI job (lint, type check, Vitest, build), added as a required check
 
 ## M5. Data quality (target 2027-01-17)
 
