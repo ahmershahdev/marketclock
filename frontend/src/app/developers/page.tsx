@@ -44,8 +44,8 @@ const ENDPOINTS = [
   },
   {
     path: "/settlement",
-    params: "market, trade_date, cycle",
-    summary: "Settlement date in trading days; with two markets it must be open on both.",
+    params: "markets, trade_date, cycle",
+    summary: "T+n settlement date: the n-th day after the trade on which every market is open.",
   },
   {
     path: "/overlap",

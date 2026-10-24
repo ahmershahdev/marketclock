@@ -40,6 +40,7 @@ describe("llms.txt", () => {
       "unknown_market",
       "year_out_of_range",
       "invalid_range",
+      "invalid_markets",
     ]) {
       expect(full).toContain(`\`${code}\``);
     }

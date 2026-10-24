@@ -17,6 +17,12 @@ const ENDPOINTS = [
     "start, end",
     "Trading days in a range, both ends included.",
   ],
+  [
+    "GET /settlement",
+    "markets, trade_date, cycle",
+    "T+n settlement date: the n-th day after the trade date on which every listed market is open (cycle 0 to 10, up to 10 markets).",
+  ],
+  ["GET /overlap", "markets, start, end", "Days in a range on which every listed market trades."],
 ] as const;
 
 const ERRORS = [
@@ -28,6 +34,7 @@ const ERRORS = [
   ],
   ["year_out_of_range", 400, "The library has no data for that market in that year."],
   ["invalid_range", 400, "start is after end, or the range is longer than 400 days."],
+  ["invalid_markets", 400, "The markets list is empty, repeats a code, or has more than 10 codes."],
 ] as const;
 
 function marketLines(markets: Market[]): string[] {
@@ -75,7 +82,8 @@ export function llmsFull(markets: Market[] | null): string {
     "- Is an exchange open on a date, and what are the next and previous trading days?",
     "- Which days in a range are trading days, using each market's own weekend (Friday and Saturday for the Saudi Exchange, Saturday and Sunday for most others)?",
     "- Which days are closures and which are half days (early closes)?",
-    "- Planned: settlement dates (T+n on one or two markets) and days when several markets are all open.",
+    "- When does a trade settle (T+n), counted in days on which every listed market is open?",
+    "- On which days are several markets all open?",
     "",
     "## Data",
     "",
@@ -102,6 +110,9 @@ export function llmsFull(markets: Market[] | null): string {
     "### Examples",
     "",
     "```",
+    `GET ${API}/settlement?markets=XNYS,XLON&trade_date=2026-12-23&cycle=2`,
+    '{"markets": ["XNYS", "XLON"], "trade_date": "2026-12-23", "cycle": 2, "trade_date_is_trading_day": true, "settlement_date": "2026-12-29"}',
+    "",
     `GET ${API}/markets/XNYS/is-trading-day?date=2026-07-03`,
     '{"market": "XNYS", "date": "2026-07-03", "is_trading_day": false}',
     "",

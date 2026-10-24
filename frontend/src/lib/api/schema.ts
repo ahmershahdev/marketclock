@@ -123,6 +123,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/overlap": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Days from start to end on which every market trades, at most 400 days */
+    get: operations["getOverlap"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/settlement": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Settlement date T+n: the n-th day after the trade date on which every market is open */
+    get: operations["getSettlementDate"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -213,6 +247,44 @@ export interface components {
     };
     /** MarketList */
     MarketList: components["schemas"]["Market"][];
+    /** OverlapResponse */
+    OverlapResponse: {
+      /** Count */
+      count: number;
+      /** Days */
+      days: string[];
+      /**
+       * End
+       * Format: date
+       */
+      end: string;
+      /** Markets */
+      markets: string[];
+      /**
+       * Start
+       * Format: date
+       */
+      start: string;
+    };
+    /** SettlementResponse */
+    SettlementResponse: {
+      /** Cycle */
+      cycle: number;
+      /** Markets */
+      markets: string[];
+      /**
+       * Settlement Date
+       * Format: date
+       */
+      settlement_date: string;
+      /**
+       * Trade Date
+       * Format: date
+       */
+      trade_date: string;
+      /** Trade Date Is Trading Day */
+      trade_date_is_trading_day: boolean;
+    };
     /** TradingDayResponse */
     TradingDayResponse: {
       /**
@@ -511,6 +583,90 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["TradingDaysResponse"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unknown market */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  getOverlap: {
+    parameters: {
+      query: {
+        markets: string;
+        start: string;
+        end: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["OverlapResponse"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unknown market */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  getSettlementDate: {
+    parameters: {
+      query: {
+        markets: string;
+        trade_date: string;
+        cycle: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SettlementResponse"];
         };
       };
       /** @description Invalid parameter */
