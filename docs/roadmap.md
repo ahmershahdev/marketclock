@@ -18,7 +18,7 @@ in CI, and seed data.
 
 ## M2. Core API (target 2026-11-22)
 
-- [ ] `GET /api/v1/markets`: code, name, country, timezone, weekend, supported categories
+- [x] `GET /api/v1/markets`: code, name, country, timezone, weekend, supported categories
 - [x] `GET /api/v1/markets/<code>/holidays?year=`: closures and half days with names
 - [x] `GET /api/v1/markets/<code>/is-trading-day?date=`
 - [x] `GET /api/v1/markets/<code>/next-trading-day?date=` and `previous-trading-day`
@@ -44,6 +44,7 @@ in CI, and seed data.
 - [ ] Settlement calculator and overlap tool
 - [ ] Watchlist of upcoming closures (stored in the browser, no accounts)
 - [ ] Server-rendered public pages per market and year, sitemap, titles and descriptions
+  (sitemap, robots.txt, llms.txt and llms-full.txt done)
 - [x] `frontend` CI job (lint, type check, Vitest, build), added as a required check
 
 ## M5. Data quality (target 2027-01-17)

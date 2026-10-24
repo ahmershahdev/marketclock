@@ -13,9 +13,14 @@ const ENDPOINTS = [
     summary: "Every supported market: code, name, country, timezone, weekend and categories.",
   },
   {
+    path: "/markets/{code}",
+    params: "",
+    summary: "One market, with the years the library has data for and the source of its details.",
+  },
+  {
     path: "/markets/{code}/holidays",
     params: "year",
-    summary: "Closures and half days for one year, with names and early-close times.",
+    summary: "Closures and half days for one year, with names.",
   },
   {
     path: "/markets/{code}/is-trading-day",
