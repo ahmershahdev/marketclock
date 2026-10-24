@@ -38,6 +38,7 @@ class Market(BaseModel):
     code: str
     name: str
     country: str
+    country_code: str
     timezone: str
     weekend: list[int]
     categories: list[str]

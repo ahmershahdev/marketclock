@@ -6,6 +6,7 @@ const XSAU: Market = {
   code: "XSAU",
   name: "Saudi Exchange (Tadawul)",
   country: "Saudi Arabia",
+  country_code: "SA",
   timezone: "Asia/Riyadh",
   weekend: [4, 5],
   categories: ["public"],

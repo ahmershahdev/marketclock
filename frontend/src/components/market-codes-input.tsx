@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type KeyboardEvent } from "react";
+import { Flag } from "@/components/flag";
 import { inputClass } from "@/components/ui";
 import { api } from "@/lib/api/client";
 import type { Market } from "@/lib/api/types";
@@ -134,6 +135,7 @@ export function MarketCodesInput({
               index === current ? "bg-sunken text-ink" : "text-ink-2"
             }`}
           >
+            <Flag code={market.country_code} className="w-5 self-center" />
             <span className="w-12 font-mono text-sm text-ink">{market.code}</span>
             <span className="flex-1 truncate">{market.name}</span>
             <span className="eyebrow">{market.country}</span>
