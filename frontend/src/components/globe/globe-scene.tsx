@@ -3,6 +3,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import { usePrefersReducedMotion, useThemeColors } from "@/lib/use-theme-colors";
 
 const CITIES = [
   { name: "New York", lat: 40.71, lon: -74.01 },
@@ -42,22 +43,6 @@ function toVector(lat: number, lon: number, radius = 1) {
     radius * Math.cos(phi),
     radius * Math.sin(phi) * Math.sin(theta),
   );
-}
-
-function readColors() {
-  const style = getComputedStyle(document.documentElement);
-  const get = (name: string) => style.getPropertyValue(name).trim() || "#888888";
-  return { dot: get("--ink-3"), base: get("--paper"), accent: get("--signal"), ink: get("--ink") };
-}
-
-function useThemeColors() {
-  const [colors, setColors] = useState(readColors);
-  useEffect(() => {
-    const observer = new MutationObserver(() => setColors(readColors()));
-    observer.observe(document.documentElement, { attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
-  }, []);
-  return colors;
 }
 
 function fibonacciSphere(count: number) {
@@ -274,7 +259,7 @@ export default function GlobeScene() {
   const wrapper = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
   const [ready, setReady] = useState(false);
-  const [reducedMotion] = useState(() => matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));

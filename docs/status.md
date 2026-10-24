@@ -19,6 +19,9 @@ Last updated: 2026-10-24. Update at the end of every work session.
   market page read the clock during prerender. Market picker is now a themed combobox instead
   of a native datalist; scrollbars follow the theme. `robots.txt`, `sitemap.xml`, `llms.txt`,
   `llms-full.txt` added. 71 backend tests, 21 frontend tests.
+- Custom scroll rail, 3D 404 and error pages (instanced three.js tiles), `global-error.tsx`,
+  CSS 3D offline page with a service worker (checked: with the server stopped, navigation shows
+  the styled offline page from cache).
 - Web app (M4 started early, merged in #1): grotesque type, lime theme, 3D globe hero, markets,
   calendars, tools, watchlist and API pages. Data views show an offline state until the M2
   endpoints exist.
