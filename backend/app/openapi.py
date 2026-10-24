@@ -24,6 +24,20 @@ class Operation:
 MARKET = "/api/v1/markets/{code}"
 OPERATIONS = (
     Operation(
+        "/api/v1/markets",
+        "listMarkets",
+        "Every market in the library with its weekend and timezone",
+        schemas.Query,
+        schemas.MarketList,
+    ),
+    Operation(
+        MARKET,
+        "getMarket",
+        "One market with its weekend, timezone and years of data",
+        schemas.Query,
+        schemas.Market,
+    ),
+    Operation(
         f"{MARKET}/holidays",
         "getHolidays",
         "Closures and half days of a market in one year",
@@ -61,18 +75,32 @@ OPERATIONS = (
 )
 
 
-def _parameters(query: type[schemas.Query]) -> list[dict[str, Any]]:
-    code = {"name": "code", "in": "path", "required": True, "schema": {"type": "string"}}
-    model = query.model_json_schema()
-    return [code] + [
+def _parameters(op: Operation) -> list[dict[str, Any]]:
+    model = op.query.model_json_schema()
+    query = [
         {"name": name, "in": "query", "required": name in model["required"], "schema": schema}
-        for name, schema in model["properties"].items()
+        for name, schema in model.get("properties", {}).items()
     ]
+    if "{code}" not in op.path:
+        return query
+    code = {"name": "code", "in": "path", "required": True, "schema": {"type": "string"}}
+    return [code, *query]
 
 
 def _content(model: type[BaseModel]) -> dict[str, Any]:
     ref = REF.format(model=model.__name__)
     return {"content": {"application/json": {"schema": {"$ref": ref}}}}
+
+
+def _responses(op: Operation) -> dict[str, Any]:
+    error = _content(schemas.ErrorResponse)
+    responses = {
+        "200": {"description": "OK", **_content(op.response)},
+        "400": {"description": "Invalid parameter", **error},
+    }
+    if "{code}" in op.path:
+        responses["404"] = {"description": "Unknown market", **error}
+    return responses
 
 
 def build() -> dict[str, Any]:
@@ -86,12 +114,8 @@ def build() -> dict[str, Any]:
             "get": {
                 "operationId": op.operation_id,
                 "summary": op.summary,
-                "parameters": _parameters(op.query),
-                "responses": {
-                    "200": {"description": "OK", **_content(op.response)},
-                    "400": {"description": "Invalid parameter", **_content(schemas.ErrorResponse)},
-                    "404": {"description": "Unknown market", **_content(schemas.ErrorResponse)},
-                },
+                "parameters": _parameters(op),
+                "responses": _responses(op),
             }
         }
         for op in OPERATIONS

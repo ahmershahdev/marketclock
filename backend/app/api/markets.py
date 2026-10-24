@@ -1,12 +1,15 @@
 from flask import Blueprint, Response, current_app, request
 from pydantic import BaseModel
 
-from app.core import calendar
+from app.core import calendar, markets
 from app.schemas import (
     AdjacentTradingDayResponse,
     DateQuery,
     Holiday,
     HolidaysResponse,
+    Market,
+    MarketList,
+    Query,
     RangeQuery,
     TradingDayResponse,
     TradingDaysResponse,
@@ -22,6 +25,22 @@ def parse_query[Q: BaseModel](model: type[Q]) -> Q:
 
 def json_response(body: BaseModel) -> Response:
     return current_app.response_class(body.model_dump_json(), mimetype="application/json")
+
+
+def market_model(market: markets.Market) -> Market:
+    return Market.model_validate(market, from_attributes=True)
+
+
+@bp.get("")
+def list_markets() -> Response:
+    parse_query(Query)
+    return json_response(MarketList([market_model(m) for m in markets.list_markets()]))
+
+
+@bp.get("/<code>")
+def get_market(code: str) -> Response:
+    parse_query(Query)
+    return json_response(market_model(markets.get_market(code)))
 
 
 @bp.get("/<code>/holidays")

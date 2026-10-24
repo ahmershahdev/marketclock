@@ -4,6 +4,40 @@
  */
 
 export interface paths {
+  "/api/v1/markets": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Every market in the library with its weekend and timezone */
+    get: operations["listMarkets"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/markets/{code}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** One market with its weekend, timezone and years of data */
+    get: operations["getMarket"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/markets/{code}/holidays": {
     parameters: {
       query?: never;
@@ -154,6 +188,29 @@ export interface components {
       /** Year */
       year: number;
     };
+    /** Market */
+    Market: {
+      /** Categories */
+      categories: string[];
+      /** Code */
+      code: string;
+      /** Country */
+      country: string;
+      /** First Year */
+      first_year: number;
+      /** Last Year */
+      last_year: number;
+      /** Name */
+      name: string;
+      /** Source Url */
+      source_url: string;
+      /** Timezone */
+      timezone: string;
+      /** Weekend */
+      weekend: number[];
+    };
+    /** MarketList */
+    MarketList: components["schemas"]["Market"][];
     /** TradingDayResponse */
     TradingDayResponse: {
       /**
@@ -194,6 +251,75 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  listMarkets: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["MarketList"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  getMarket: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Market"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unknown market */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   getHolidays: {
     parameters: {
       query: {
