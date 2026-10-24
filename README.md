@@ -70,6 +70,7 @@ calendar pages, and it checks the library's dates against what each exchange pub
   3D 404 and error pages, CSS 3D offline page served by a service worker.
 - One broken widget never takes a page down: 3D scenes and demos fail on their own, page errors
   keep the header and footer.
+- An embeddable status card for other sites (`/embed/XNYS`, light or dark) that links back.
 - `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt`, Open Graph image, titles and
   descriptions on every page.
 
