@@ -157,6 +157,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/markets/{code}/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Open or closed now (or at a given time), with the next close or open */
+    get: operations["getMarketStatus"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/markets/{code}/trading-days": {
     parameters: {
       query?: never;
@@ -200,6 +217,23 @@ export interface paths {
     };
     /** Settlement date T+n: the n-th day after the trade date on which every market is open */
     get: operations["getSettlementDate"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Open or closed now (or at a given time) for every market */
+    get: operations["listMarketStatus"];
     put?: never;
     post?: never;
     delete?: never;
@@ -347,6 +381,38 @@ export interface components {
       sources: string[];
       /** Years */
       years: number[];
+    };
+    /** MarketStatusList */
+    MarketStatusList: components["schemas"]["MarketStatusResponse"][];
+    /** MarketStatusResponse */
+    MarketStatusResponse: {
+      /**
+       * Closes At
+       * @default null
+       */
+      closes_at: string | null;
+      /**
+       * Detail
+       * @enum {string}
+       */
+      detail: "regular" | "early_close" | "before_open" | "after_close" | "weekend" | "holiday";
+      /**
+       * Local Time
+       * Format: date-time
+       */
+      local_time: string;
+      /** Market */
+      market: string;
+      /**
+       * Opens At
+       * @default null
+       */
+      opens_at: string | null;
+      /**
+       * State
+       * @enum {string}
+       */
+      state: "open" | "closed" | "hours_unknown";
     };
     /** OverlapResponse */
     OverlapResponse: {
@@ -813,6 +879,48 @@ export interface operations {
       };
     };
   };
+  getMarketStatus: {
+    parameters: {
+      query?: {
+        at?: string | null;
+      };
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["MarketStatusResponse"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unknown market */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   getTradingDays: {
     parameters: {
       query: {
@@ -931,6 +1039,37 @@ export interface operations {
       };
       /** @description Unknown market */
       404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  listMarketStatus: {
+    parameters: {
+      query?: {
+        at?: string | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["MarketStatusList"];
+        };
+      };
+      /** @description Invalid parameter */
+      400: {
         headers: {
           [name: string]: unknown;
         };

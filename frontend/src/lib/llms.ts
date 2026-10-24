@@ -10,6 +10,11 @@ const ENDPOINTS = [
   ["GET /markets/{code}", "", "One market, with the years the library has data for."],
   ["GET /markets/{code}/holidays", "year", "Closures and half days of one year, with names."],
   [
+    "GET /markets/{code}/status",
+    "at (optional, ISO time with offset)",
+    "open, closed or hours_unknown now or at the given time, with closes_at or opens_at in exchange time; GET /status returns every market.",
+  ],
+  [
     "GET /markets/{code}/calendar.ics",
     "year (optional)",
     "iCalendar feed of closures and early closes for subscribing in Google Calendar, Apple Calendar or Outlook; without year it covers this year and next.",

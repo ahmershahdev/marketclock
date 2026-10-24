@@ -4,6 +4,7 @@ import type {
   Market,
   OverlapResponse,
   DataQualityReport,
+  MarketStatus,
   SettlementResponse,
 } from "./types";
 
@@ -65,6 +66,8 @@ export const api = {
       ...(cycle === null ? {} : { cycle }),
     }),
   dataQuality: () => get<DataQualityReport>("/data-quality"),
+  status: (code: string) => get<MarketStatus>(`/markets/${encodeURIComponent(code)}/status`),
+  allStatus: () => get<MarketStatus[]>("/status"),
   overlap: (markets: string[], start: string, end: string) =>
     get<OverlapResponse>("/overlap", { markets: markets.join(","), start, end }),
 };

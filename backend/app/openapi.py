@@ -46,6 +46,20 @@ OPERATIONS = (
         schemas.HolidaysResponse,
     ),
     Operation(
+        f"{MARKET}/status",
+        "getMarketStatus",
+        "Open or closed now (or at a given time), with the next close or open",
+        schemas.StatusQuery,
+        schemas.MarketStatusResponse,
+    ),
+    Operation(
+        "/api/v1/status",
+        "listMarketStatus",
+        "Open or closed now (or at a given time) for every market",
+        schemas.StatusQuery,
+        schemas.MarketStatusList,
+    ),
+    Operation(
         f"{MARKET}/calendar.ics",
         "getCalendarFeed",
         "iCalendar feed of closures and early closes: this year and next, or one year",
@@ -145,7 +159,7 @@ def _responses(op: Operation) -> dict[str, Any]:
         "200": {"description": "OK", **ok},
         "400": {"description": "Invalid parameter", **error},
     }
-    if op.path not in {"/api/v1/markets", "/api/v1/data-quality"}:
+    if op.path not in {"/api/v1/markets", "/api/v1/data-quality", "/api/v1/status"}:
         responses["404"] = {"description": "Unknown market", **error}
     return responses
 

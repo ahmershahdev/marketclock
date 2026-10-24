@@ -2,7 +2,15 @@ import datetime as dt
 import re
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, RootModel, WithJsonSchema
+from pydantic import (
+    AwareDatetime,
+    BaseModel,
+    BeforeValidator,
+    ConfigDict,
+    Field,
+    RootModel,
+    WithJsonSchema,
+)
 
 ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 
@@ -38,6 +46,10 @@ class YearQuery(Query):
 
 class OptionalYearQuery(Query):
     year: int | None = None
+
+
+class StatusQuery(Query):
+    at: AwareDatetime | None = None
 
 
 class DateQuery(Query):
@@ -174,6 +186,21 @@ class MarketQuality(BaseModel):
 
 class DataQualityReport(BaseModel):
     markets: list[MarketQuality]
+
+
+class MarketStatusResponse(BaseModel):
+    model_config = ConfigDict(json_schema_serialization_defaults_required=True)
+
+    market: str
+    state: Literal["open", "closed", "hours_unknown"]
+    detail: Literal["regular", "early_close", "before_open", "after_close", "weekend", "holiday"]
+    local_time: dt.datetime
+    closes_at: dt.datetime | None = None
+    opens_at: dt.datetime | None = None
+
+
+class MarketStatusList(RootModel[list[MarketStatusResponse]]):
+    pass
 
 
 class ErrorDetail(BaseModel):
