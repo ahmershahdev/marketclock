@@ -42,6 +42,11 @@ const ENDPOINTS = [
     "",
     "Library dates compared with each exchange's published calendar (whole years), with every difference and its source.",
   ],
+  [
+    "GET /add-trading-days",
+    "markets, date, days",
+    "The date moved by n trading days (negative goes back, at most 400) on every listed market.",
+  ],
   ["GET /overlap", "markets, start, end", "Days in a range on which every listed market trades."],
 ] as const;
 

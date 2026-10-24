@@ -5,6 +5,11 @@ import { Emblem } from "@/components/logo";
 import { CONTACT } from "@/lib/contact";
 import { NAV_LINKS } from "@/lib/nav";
 
+const FOOTER_LINKS = [
+  { href: "/tools/business-days", label: "Business days" },
+  { href: "/holidays", label: "Holidays by year" },
+];
+
 const RESOURCES = [
   { href: CONTACT.github, label: "Source on GitHub" },
   { href: "https://github.com/vacanza/holidays", label: "holidays library" },
@@ -70,7 +75,7 @@ export function SiteFooter() {
           <nav aria-label="Footer" className="md:col-span-2">
             <p className="mb-5 eyebrow">Product</p>
             <ul className="space-y-3">
-              {NAV_LINKS.map((link) => (
+              {[...NAV_LINKS, ...FOOTER_LINKS].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-ink-2 transition-colors hover:text-ink">
                     {link.label}

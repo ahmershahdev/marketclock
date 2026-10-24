@@ -30,6 +30,11 @@ export const PAGES = [
     description: "Days on which every chosen market trades.",
   },
   {
+    path: "/tools/business-days",
+    title: "Business-day calculator",
+    description: "Add or subtract trading days, or count trading days between two dates.",
+  },
+  {
     path: "/watchlist",
     title: "Watchlist",
     description: "Upcoming closures for the markets you follow, stored in your browser.",

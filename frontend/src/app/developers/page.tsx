@@ -70,6 +70,11 @@ const ENDPOINTS = [
       "T+n settlement date: the n-th day after the trade on which every market is open. Without cycle, the cycle in force is used.",
   },
   {
+    path: "/add-trading-days",
+    params: "markets, date, days",
+    summary: "A date moved by n trading days (negative goes back) on every listed market.",
+  },
+  {
     path: "/overlap",
     params: "markets, start, end",
     summary: "Days on which every listed market trades.",

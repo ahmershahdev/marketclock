@@ -107,3 +107,15 @@ def test_settlement_cycle_is_null_when_unknown(client: FlaskClient) -> None:
 
 def test_settlement_cycle_of_an_unknown_market(client: FlaskClient) -> None:
     get_json(client, "/api/v1/markets/NYSE/settlement-cycle?date=2026-10-24", 404)
+
+
+def test_add_trading_days(client: FlaskClient) -> None:
+    body = get_json(client, "/api/v1/add-trading-days?markets=XNYS&date=2026-07-06&days=-1")
+
+    assert body == {"markets": ["XNYS"], "date": "2026-07-06", "days": -1, "result": "2026-07-02"}
+
+
+def test_add_trading_days_rejects_zero(client: FlaskClient) -> None:
+    error = get_json(client, "/api/v1/add-trading-days?markets=XNYS&date=2026-07-06&days=0", 400)
+
+    assert error["error"]["code"] == "invalid_range"

@@ -55,6 +55,8 @@ calendar pages, and it checks the library's dates against what each exchange pub
   T+1 from 2024, Canada T+1 from 2024, UK T+1 from October 2027). Leave the cycle out and the
   one in force on the trade date is used and linked.
 - Days in a range when several markets all trade.
+- Business-day calculator: add or subtract up to 400 trading days, or count the trading days
+  between two dates, on one or more markets.
 
 **Data quality**
 - Each exchange's published calendar stored with its source and check date, compared day by day
@@ -95,6 +97,7 @@ Base URL `/api/v1`, JSON only, read-only. Full schema at
 | `GET /markets/{code}/trading-days` | `start`, `end` | trading days in the range (at most 400 days) |
 | `GET /markets/{code}/settlement-cycle` | `date` | cycle in force with its source, or null |
 | `GET /settlement` | `markets`, `trade_date`, `cycle`? | settlement date on every listed market |
+| `GET /add-trading-days` | `markets`, `date`, `days` | the date moved by n trading days on every market |
 | `GET /overlap` | `markets`, `start`, `end` | days on which every market trades |
 | `GET /data-quality` | | library compared with official calendars |
 | `GET /health` | | MySQL and Redis status (503 when either is down) |
