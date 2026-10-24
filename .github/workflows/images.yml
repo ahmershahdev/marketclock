@@ -1,0 +1,17 @@
+name: images
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  images:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build --tag marketclock-api backend
+      - run: docker build --tag marketclock-web --build-arg API_URL=http://api:5000 frontend
