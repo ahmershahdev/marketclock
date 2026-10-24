@@ -38,6 +38,8 @@ calendar pages, and it checks the library's dates against what each exchange pub
 
 **Calendars**
 - Closures and half days for every market and year the library covers, with names in English.
+- Calendar subscriptions: an iCalendar feed per market for Google Calendar, Apple Calendar and
+  Outlook, rolling over to cover this year and next.
 - Is a date a trading day, the next and previous trading day, and every trading day in a range,
   each market with its own weekend (Friday and Saturday for Tadawul).
 - Session hours and early-close times with their source (NYSE, Nasdaq, JPX, HKEX, ASX, LSE).
@@ -82,6 +84,7 @@ Base URL `/api/v1`, JSON only, read-only. Full schema at
 | `GET /markets` | | every market with country, flag code, timezone, weekend, session |
 | `GET /markets/{code}` | | one market |
 | `GET /markets/{code}/holidays` | `year` | closures and half days with names and close times |
+| `GET /markets/{code}/calendar.ics` | `year`? | iCalendar feed: this year and next, or one year |
 | `GET /markets/{code}/is-trading-day` | `date` | true or false |
 | `GET /markets/{code}/next-trading-day` | `date` | first trading day after the date |
 | `GET /markets/{code}/previous-trading-day` | `date` | last trading day before the date |

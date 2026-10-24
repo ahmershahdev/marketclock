@@ -23,6 +23,11 @@ const ENDPOINTS = [
     summary: "Closures and half days for one year, with names.",
   },
   {
+    path: "/markets/{code}/calendar.ics",
+    params: "year (optional)",
+    summary: "iCalendar feed of closures and early closes: this year and next, or one year.",
+  },
+  {
     path: "/markets/{code}/is-trading-day",
     params: "date",
     summary: "Whether the market trades on a date.",

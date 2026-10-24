@@ -18,7 +18,8 @@ class Operation:
     operation_id: str
     summary: str
     query: type[schemas.Query]
-    response: type[BaseModel]
+    response: type[BaseModel] | None
+    media_type: str = "application/json"
 
 
 MARKET = "/api/v1/markets/{code}"
@@ -43,6 +44,14 @@ OPERATIONS = (
         "Closures and half days of a market in one year",
         schemas.YearQuery,
         schemas.HolidaysResponse,
+    ),
+    Operation(
+        f"{MARKET}/calendar.ics",
+        "getCalendarFeed",
+        "iCalendar feed of closures and early closes: this year and next, or one year",
+        schemas.OptionalYearQuery,
+        None,
+        "text/calendar",
     ),
     Operation(
         f"{MARKET}/is-trading-day",
@@ -106,7 +115,12 @@ OPERATIONS = (
 def _parameters(op: Operation) -> list[dict[str, Any]]:
     model = op.query.model_json_schema()
     query = [
-        {"name": name, "in": "query", "required": name in model["required"], "schema": schema}
+        {
+            "name": name,
+            "in": "query",
+            "required": name in model.get("required", []),
+            "schema": schema,
+        }
         for name, schema in model.get("properties", {}).items()
     ]
     if "{code}" not in op.path:
@@ -122,8 +136,13 @@ def _content(model: type[BaseModel]) -> dict[str, Any]:
 
 def _responses(op: Operation) -> dict[str, Any]:
     error = _content(schemas.ErrorResponse)
+    ok = (
+        _content(op.response)
+        if op.response
+        else {"content": {op.media_type: {"schema": {"type": "string"}}}}
+    )
     responses = {
-        "200": {"description": "OK", **_content(op.response)},
+        "200": {"description": "OK", **ok},
         "400": {"description": "Invalid parameter", **error},
     }
     if op.path not in {"/api/v1/markets", "/api/v1/data-quality"}:
@@ -132,7 +151,7 @@ def _responses(op: Operation) -> dict[str, Any]:
 
 
 def build() -> dict[str, Any]:
-    models = {op.response for op in OPERATIONS} | {schemas.ErrorResponse}
+    models = {op.response for op in OPERATIONS if op.response} | {schemas.ErrorResponse}
     _, definitions = models_json_schema(
         [(model, "serialization") for model in sorted(models, key=lambda m: m.__name__)],
         ref_template=REF,

@@ -192,3 +192,32 @@ def test_early_close_without_regular_hours(client: FlaskClient) -> None:
     assert session["early_close"] == "12:30"
     holidays = get_json(client, "/api/v1/markets/XLON/holidays?year=2026")["holidays"]
     assert {h["close_time"] for h in holidays if h["half_day"]} == {"12:30"}
+
+
+def test_calendar_feed_for_one_year(client: FlaskClient) -> None:
+    response = client.get("/api/v1/markets/XNYS/calendar.ics?year=2026")
+
+    assert response.status_code == 200
+    assert response.mimetype == "text/calendar"
+    assert 'filename="XNYS-holidays.ics"' in response.headers["Content-Disposition"]
+    body = response.get_data(as_text=True)
+    assert body.count("BEGIN:VEVENT") == 12
+    assert "SUMMARY:XNYS early close 13:00: Christmas Eve" in body
+
+
+def test_calendar_feed_rolls_over_two_years(client: FlaskClient) -> None:
+    body = client.get("/api/v1/markets/XNYS/calendar.ics").get_data(as_text=True)
+
+    years = {line[19:23] for line in body.split("\r\n") if line.startswith("DTSTART;VALUE=DATE:")}
+    assert len(years) == 2
+
+
+def test_calendar_feed_near_the_end_of_the_data(client: FlaskClient) -> None:
+    response = client.get("/api/v1/markets/XNYS/calendar.ics?year=2100")
+
+    assert response.status_code == 200
+
+
+def test_calendar_feed_errors(client: FlaskClient) -> None:
+    assert client.get("/api/v1/markets/NYSE/calendar.ics").status_code == 404
+    assert client.get("/api/v1/markets/XLON/calendar.ics?year=1990").status_code == 400
