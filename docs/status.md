@@ -25,6 +25,7 @@ Last updated: 2026-10-24. Update at the end of every work session.
 - M3: `GET /api/v1/settlement` and `/overlap` (`app/core/settlement.py`); the web app tools work
   end to end. Brand emblem, gold accent and country flags merged in #8. 94 backend tests.
 - M2 cache: holidays cached per (library version, market, year); outage-safe. 101 backend tests.
+- Console and layout audit: every page checked at 390, 768 and 1536 px with no console errors and no horizontal overflow (fixed `/developers`). Widgets fail alone through `Boundary`.
 - Web app (M4 started early, merged in #1): grotesque type, lime theme, 3D globe hero, markets,
   calendars, tools, watchlist and API pages. Data views show an offline state until the M2
   endpoints exist.

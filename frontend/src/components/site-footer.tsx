@@ -55,7 +55,7 @@ export function SiteFooter() {
 
         <div className="relative grid gap-12 p-8 md:grid-cols-12 md:p-12">
           <div className="flex flex-col gap-6 md:col-span-4">
-            <Link href="/" aria-label="MarketClock home" className="w-56">
+            <Link href="/" aria-label="MarketClock home" className="w-48 md:w-56">
               <Emblem className="w-full transition-transform duration-700 ease-out-expo hover:scale-[1.03]" />
             </Link>
             <p className="max-w-sm text-ink-2">

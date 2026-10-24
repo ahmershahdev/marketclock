@@ -59,7 +59,11 @@ export function weekendLabel(weekend: readonly number[]): string {
 }
 
 export function todayIn(timeZone: string, epoch: number): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone }).format(epoch);
+  try {
+    return new Intl.DateTimeFormat("en-CA", { timeZone }).format(epoch);
+  } catch {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "UTC" }).format(epoch);
+  }
 }
 
 export type DayKind = "open" | "weekend" | "closed" | "early";

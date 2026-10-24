@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Globe } from "@/components/globe/globe";
+import { Boundary } from "@/components/boundary";
 import { WeekendDemo } from "@/components/home/weekend-demo";
 import { ArrowUpRightIcon } from "@/components/icons";
 import { BigClock, ZoneClock } from "@/components/live-clock";
@@ -195,7 +196,9 @@ export default function Home() {
             </p>
           </div>
           <div className="md:col-span-8" data-reveal="">
-            <WeekendDemo />
+            <Boundary name="Weekend demo">
+              <WeekendDemo />
+            </Boundary>
           </div>
         </div>
       </section>
