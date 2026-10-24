@@ -48,13 +48,20 @@ docs/               roadmap, architecture, status
 
 ## Comments
 
-Default is no comment. Write one only for what the code can't say: why it's done this way, a data or
-library quirk, a source, or a trap for the next person. Not: restating the code, section banners,
-history, owner-less TODOs, or filler (simply, robust, seamless, ensure, leverage, comprehensive).
+Almost none. The default is no comment, and most files should have zero. Write one only when the
+next reader would otherwise get it wrong: a library or framework trap, a data quirk, or a source
+URL. One line, rarely two.
+
+Never: docstrings that repeat the function name, comments that restate the code, section banners,
+history ("changed from"), owner-less TODOs, or filler (simply, robust, seamless, ensure, leverage,
+comprehensive). If a name or a small function can say it, rename instead of commenting.
 
 ## Workflow
 
 - Branches `feat/…`, `fix/…`, `docs/…`, `chore/…`. `main` takes PRs only, squash-merged.
 - Each PR belongs to a milestone and closes its issue when there is one.
+- Commits are mid-sized: one coherent step that builds and passes checks on its own (a component
+  with its styles, an endpoint with its tests, a config change). Not one giant commit per feature,
+  not one commit per file.
 - Commit messages: short, imperative, no prefixes.
 - Update `docs/status.md` at the end of every session.

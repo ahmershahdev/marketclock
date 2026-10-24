@@ -53,3 +53,5 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | No user accounts | the watchlist lives in the browser; nothing personal is stored |
 | MySQL in tests | the same database as production, as in HolidayOps |
 | Settlement cycles with effective dates | cycles change over time, so old trades must use the old cycle |
+| Web app calls the API through a Next.js rewrite | `/api/v1/*` is proxied to `API_URL`, so the API needs no CORS setup |
+| Theme set by an inline head script | `data-theme` is applied before first paint, so no flash; choice kept in `localStorage` |
