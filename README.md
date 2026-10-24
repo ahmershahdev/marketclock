@@ -32,8 +32,8 @@ pages.
   market is open (up to 10 markets), and the days in a range when all of them trade. Trade
   dates that fall on a closed day are reported, and counting starts from the next open day.
 - **Session hours and early closes.** Each market can carry its session (open, close, early
-  close) with a source; half days then get their closing time. On file: NYSE (9:30 to 16:00,
-  early close 13:00 ET).
+  close) with a source; half days then get their closing time. On file: NYSE, HKEX, ASX and
+  LSE (early close only).
 - **Settlement cycles with sources.** A `settlement_cycle` table (MySQL, Alembic) holds each
   market's cycle with its effective date and regulator source: US T+2 from 2017 and T+1 from
   2024 (SEC), Canada T+1 from 2024 (CSA), UK T+1 from October 2027 (FCA). With no cycle given,
