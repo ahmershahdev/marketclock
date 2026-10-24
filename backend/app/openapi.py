@@ -72,6 +72,20 @@ OPERATIONS = (
         schemas.RangeQuery,
         schemas.TradingDaysResponse,
     ),
+    Operation(
+        "/api/v1/settlement",
+        "getSettlementDate",
+        "Settlement date T+n: the n-th day after the trade date on which every market is open",
+        schemas.SettlementQuery,
+        schemas.SettlementResponse,
+    ),
+    Operation(
+        "/api/v1/overlap",
+        "getOverlap",
+        "Days from start to end on which every market trades, at most 400 days",
+        schemas.OverlapQuery,
+        schemas.OverlapResponse,
+    ),
 )
 
 
@@ -98,7 +112,7 @@ def _responses(op: Operation) -> dict[str, Any]:
         "200": {"description": "OK", **_content(op.response)},
         "400": {"description": "Invalid parameter", **error},
     }
-    if "{code}" in op.path:
+    if op.path != "/api/v1/markets":
         responses["404"] = {"description": "Unknown market", **error}
     return responses
 

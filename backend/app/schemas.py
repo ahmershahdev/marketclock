@@ -2,7 +2,7 @@ import datetime as dt
 import re
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, RootModel
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, RootModel, WithJsonSchema
 
 ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 
@@ -15,6 +15,17 @@ def parse_iso_date(value: str) -> dt.date:
 
 
 IsoDate = Annotated[dt.date, BeforeValidator(parse_iso_date)]
+
+
+def split_codes(value: str) -> list[str]:
+    return [code.strip() for code in value.split(",") if code.strip()]
+
+
+MarketCodes = Annotated[
+    list[str],
+    BeforeValidator(split_codes),
+    WithJsonSchema({"type": "string", "description": "Comma-separated MICs, such as XNYS,XLON"}),
+]
 
 
 class Query(BaseModel):
@@ -30,6 +41,18 @@ class DateQuery(Query):
 
 
 class RangeQuery(Query):
+    start: IsoDate
+    end: IsoDate
+
+
+class SettlementQuery(Query):
+    markets: MarketCodes
+    trade_date: IsoDate
+    cycle: Annotated[int, Field(ge=0, le=10)]
+
+
+class OverlapQuery(Query):
+    markets: MarketCodes
     start: IsoDate
     end: IsoDate
 
@@ -81,6 +104,22 @@ class AdjacentTradingDayResponse(BaseModel):
 
 class TradingDaysResponse(BaseModel):
     market: str
+    start: dt.date
+    end: dt.date
+    count: int
+    days: list[dt.date]
+
+
+class SettlementResponse(BaseModel):
+    markets: list[str]
+    trade_date: dt.date
+    cycle: int
+    trade_date_is_trading_day: bool
+    settlement_date: dt.date
+
+
+class OverlapResponse(BaseModel):
+    markets: list[str]
     start: dt.date
     end: dt.date
     count: int

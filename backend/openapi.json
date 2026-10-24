@@ -205,6 +205,86 @@
         "title": "MarketList",
         "type": "array"
       },
+      "OverlapResponse": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "days": {
+            "items": {
+              "format": "date",
+              "type": "string"
+            },
+            "title": "Days",
+            "type": "array"
+          },
+          "end": {
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "markets": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Markets",
+            "type": "array"
+          },
+          "start": {
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "markets",
+          "start",
+          "end",
+          "count",
+          "days"
+        ],
+        "title": "OverlapResponse",
+        "type": "object"
+      },
+      "SettlementResponse": {
+        "properties": {
+          "cycle": {
+            "title": "Cycle",
+            "type": "integer"
+          },
+          "markets": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Markets",
+            "type": "array"
+          },
+          "settlement_date": {
+            "format": "date",
+            "title": "Settlement Date",
+            "type": "string"
+          },
+          "trade_date": {
+            "format": "date",
+            "title": "Trade Date",
+            "type": "string"
+          },
+          "trade_date_is_trading_day": {
+            "title": "Trade Date Is Trading Day",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "markets",
+          "trade_date",
+          "cycle",
+          "trade_date_is_trading_day",
+          "settlement_date"
+        ],
+        "title": "SettlementResponse",
+        "type": "object"
+      },
       "TradingDayResponse": {
         "properties": {
           "date": {
@@ -650,6 +730,147 @@
           }
         },
         "summary": "Trading days from start to end, both included, at most 400 days"
+      }
+    },
+    "/api/v1/overlap": {
+      "get": {
+        "operationId": "getOverlap",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "markets",
+            "required": true,
+            "schema": {
+              "description": "Comma-separated MICs, such as XNYS,XLON",
+              "title": "Markets",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "title": "End",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OverlapResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown market"
+          }
+        },
+        "summary": "Days from start to end on which every market trades, at most 400 days"
+      }
+    },
+    "/api/v1/settlement": {
+      "get": {
+        "operationId": "getSettlementDate",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "markets",
+            "required": true,
+            "schema": {
+              "description": "Comma-separated MICs, such as XNYS,XLON",
+              "title": "Markets",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "trade_date",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "title": "Trade Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cycle",
+            "required": true,
+            "schema": {
+              "maximum": 10,
+              "minimum": 0,
+              "title": "Cycle",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettlementResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unknown market"
+          }
+        },
+        "summary": "Settlement date T+n: the n-th day after the trade date on which every market is open"
       }
     }
   }
