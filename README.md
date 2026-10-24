@@ -12,15 +12,21 @@ financial markets in the Python [holidays](https://github.com/vacanza/holidays) 
 NASDAQ, LSE, PSX, Tadawul, SIFMA and more), through a REST API, a web app and public calendar
 pages.
 
-> Status: early build. M1 (API skeleton) is done and the web app shell from M4 is in place. The
-> market endpoints arrive in M2; until then the web app shows an "API not reachable" state where
-> data would be. See [docs/roadmap.md](docs/roadmap.md) and [docs/status.md](docs/status.md).
+> Status: early build. M1 (API skeleton) is done, M2 is under way: holidays and trading-day
+> endpoints work, the markets list and caching come next. The web app shell from M4 is in place.
+> See [docs/roadmap.md](docs/roadmap.md) and [docs/status.md](docs/status.md).
 
 ## What works today
 
 - **API skeleton.** Flask app factory, config per environment, MySQL through SQLAlchemy 2 and
   Alembic, Redis cache, one JSON error shape, and `GET /api/v1/health` (503 when MySQL or Redis
   is down).
+- **Holidays and trading days.** For each of the 30 markets in the library: closures and half
+  days of a year, whether a date is a trading day, the next and previous trading day, and the
+  trading days in a range (both ends included, at most 400 days). Each market uses its own
+  weekend. Inputs are checked: MIC codes only, ISO dates, years the library has data for.
+- **OpenAPI schema.** Generated from the Pydantic models, committed as `backend/openapi.json`,
+  served at `/api/v1/openapi.json`, and turned into the web app's TypeScript types.
 - **Web app.** Landing page with a 3D globe (three.js), live clocks and a weekend demo; markets
   list, per-market year calendar, settlement and overlap tools, a browser-only watchlist and an
   API reference. Light, dark and system themes.
@@ -29,11 +35,9 @@ pages.
 
 ## What it will do
 
-- **Trading days.** Is a market open on a date, the next and previous trading day, and trading
-  days in a range, with each market's own weekend (Friday and Saturday for Tadawul, Saturday
-  and Sunday for most others).
-- **Early closes.** Half-day sessions from the library's `HALF_DAY` category, with the closing
-  time.
+- **Markets list.** Code, name, country, timezone and weekend for every market.
+- **Early-close times.** Half days are listed today; the closing time per market comes with the
+  market metadata.
 - **Settlement dates.** `T+n` for a trade on one market, or across two markets, where the
   settlement day must be open on both.
 - **Market overlap.** Days when two or more markets are all open.
@@ -47,7 +51,7 @@ pages.
 
 | Part | Tools |
 |---|---|
-| API | Python 3.12, Flask 3.1, SQLAlchemy 2.1, Alembic 1.20, PyMySQL |
+| API | Python 3.12, Flask 3.1, Pydantic 2.14, SQLAlchemy 2.1, Alembic 1.20, PyMySQL |
 | Data | MySQL 8.4, Redis 8.2, `holidays` 0.107 (exact pin) |
 | Web | Next.js 16.4, React 19.3, TypeScript 5.9 (strict), Tailwind CSS 4.3, three.js with React Three Fiber |
 | Quality | pytest, Vitest, Ruff, mypy (strict), ESLint, Prettier, GitHub Actions, CodeQL |
@@ -61,6 +65,7 @@ Needs Docker, Python 3.12 and Node 22.
 cp .env.example .env              # then set your own passwords
 docker compose up -d              # MySQL, Redis and the API on http://localhost:5000
 curl http://localhost:5000/api/v1/health
+curl "http://localhost:5000/api/v1/markets/XNYS/holidays?year=2026"
 
 cd frontend
 npm install
@@ -85,11 +90,19 @@ npm run lint && npm run typecheck && npm test && npm run build
 
 Migrations: `docker compose exec api alembic upgrade head`.
 
+After changing an API model, regenerate the schema and the web app types in the same PR (CI
+checks both):
+
+```bash
+cd backend && .venv/Scripts/python write_openapi.py
+cd ../frontend && npm run api:types
+```
+
 ## Layout
 
 ```
 backend/app/        Flask app factory, config, database, cache, errors, API blueprints
-backend/app/core/   pure date logic (from M2), 100% branch coverage
+backend/app/core/   pure date logic on top of the holidays library, 100% branch coverage
 backend/tests/      pytest, against MySQL
 backend/migrations/ Alembic
 frontend/           Next.js web app
