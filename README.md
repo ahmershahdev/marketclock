@@ -33,7 +33,10 @@ pages.
 - **Web app.** Landing page with a 3D globe (three.js), live clocks and a weekend demo; markets
   list, per-market year calendar, settlement and overlap tools, a browser-only watchlist and an
   API reference. Light, dark and system themes, including the market picker dropdown and the
-  scrollbars.
+  scrollbars. A custom scroll rail (drag, click to jump, scroll progress) on mouse devices.
+- **404, error and offline pages.** The 404 and error pages spell their code in 3D calendar
+  tiles (three.js) that follow the pointer. A service worker serves a CSS 3D offline page when
+  there is no connection, and the page reloads itself once the connection is back.
 - **Search and AI crawlers.** `robots.txt`, `sitemap.xml` (every page plus each market for this
   year and next), `llms.txt` and `llms-full.txt`, built from the live market list.
 - **Quality.** Backend tests run against real MySQL with 100% branch coverage; frontend has

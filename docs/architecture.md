@@ -72,5 +72,9 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | Market name, country and timezone in code, not MySQL | 30 rows that change only with the library; reviewed in pull requests; a test fails when the library adds a market without them |
 | `sitemap.xml`, `llms.txt` and `llms-full.txt` render per request | at build time the API is usually down, so a prerendered file would have no markets |
 | Site address from `SITE_URL` (default `https://marketclock.ahmershah.dev`) | one value for the sitemap, robots.txt, llms files and `metadataBase` |
+| Hand-written service worker (`public/sw.js`), no PWA plugin | it does two things: serve `/offline` when a navigation fails, and cache hashed `/_next/static` files; registered in production only |
+| Offline page in CSS 3D, not WebGL | it must render from the cached HTML and stylesheet alone, without the app's JavaScript |
+| Custom scroll rail only on `(hover: hover) and (pointer: fine)` | touch devices and visitors without JavaScript keep the native scrollbar; the page still scrolls natively, so keyboard and assistive tech are unaffected |
+| No email features | no accounts and nothing personal is stored; contact is a `mailto:` link. Closure alerts by email would need consent, unsubscribe and a provider, so they wait until someone asks |
 | Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
 | Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |
