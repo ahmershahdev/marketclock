@@ -137,6 +137,15 @@
     background: transparent;
   }
 
+  /* The custom rail replaces the page scrollbar; inner scroll areas keep the themed native one. */
+  html[data-scroll-rail] {
+    scrollbar-width: none;
+  }
+
+  html[data-scroll-rail]::-webkit-scrollbar {
+    display: none;
+  }
+
   body {
     background: var(--paper);
     color: var(--ink);
@@ -244,5 +253,44 @@
   .js [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+}
+
+.offline-stage {
+  perspective: 1100px;
+  display: grid;
+  place-items: center;
+}
+
+.offline-ring {
+  --radius: clamp(11rem, 26vw, 17rem);
+  position: relative;
+  width: 9rem;
+  height: 11rem;
+  transform-style: preserve-3d;
+  animation: offline-spin 36s linear infinite;
+}
+
+.offline-tile {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  transform: rotateY(calc(var(--i) * 30deg)) translateZ(var(--radius));
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.45);
+}
+
+@keyframes offline-spin {
+  from {
+    transform: rotateX(-14deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-14deg) rotateY(-360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .offline-ring {
+    animation: none;
+    transform: rotateX(-14deg) rotateY(-15deg);
   }
 }
