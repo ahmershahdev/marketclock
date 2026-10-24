@@ -1,22 +1,36 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { JsonLd } from "@/components/json-ld";
+import { breadcrumbs, marketTitle, pageMetadata } from "@/lib/seo";
 import { CalendarSkeleton, MarketCalendar, marketCode } from "./market-calendar";
 
 export async function generateMetadata({
   params,
 }: PageProps<"/markets/[code]">): Promise<Metadata> {
-  const code = (await params).code.toUpperCase();
-  return {
-    title: `${code} holidays and trading days`,
-    description: `Is ${code} open today? Trading days, closures, early closes and hours for ${code}, with a calendar per year.`,
-  };
+  const code = marketCode((await params).code);
+  if (!code) return { title: "Page not found", robots: { index: false } };
+  return pageMetadata({
+    title: marketTitle(code),
+    description: `Is ${code} open today? Live status, trading hours, closures and early closes, with a full calendar for every year.`,
+    path: `/markets/${code}`,
+  });
 }
 
 async function CurrentYear({ params }: PageProps<"/markets/[code]">) {
   const code = marketCode((await params).code);
   if (!code) notFound();
-  return <MarketCalendar code={code} year={null} />;
+  return (
+    <>
+      <JsonLd
+        data={breadcrumbs([
+          ["Markets", "/markets"],
+          [code, `/markets/${code}`],
+        ])}
+      />
+      <MarketCalendar code={code} year={null} />
+    </>
+  );
 }
 
 export default function MarketPage(props: PageProps<"/markets/[code]">) {

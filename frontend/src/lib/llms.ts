@@ -84,6 +84,16 @@ function marketLines(markets: Market[]): string[] {
   );
 }
 
+function urlPatterns(): string[] {
+  return [
+    `- ${absoluteUrl("/markets/XNYS")}: one market, live status, hours and the current year`,
+    `- ${absoluteUrl("/markets/XNYS/2027")}: one market's closures and early closes in a given year`,
+    `- ${absoluteUrl("/holidays/2027")}: every exchange's closures and early closes in a given year`,
+    `- ${API}/markets/XNYS/calendar.ics: calendar subscription for this year and next`,
+    `- ${absoluteUrl("/embed/XNYS")}: small status card for other sites (add ?theme=dark)`,
+  ];
+}
+
 function header(): string[] {
   return [`# ${SITE_NAME}`, "", `> ${SITE_SUMMARY}`, ""];
 }
@@ -96,6 +106,10 @@ export function llmsIndex(markets: Market[] | null): string {
     "## Pages",
     "",
     ...PAGES.map((page) => `- [${page.title}](${absoluteUrl(page.path)}): ${page.description}`),
+    "",
+    "## URL patterns",
+    "",
+    ...urlPatterns(),
     "",
     "## API",
     "",
@@ -124,12 +138,16 @@ export function llmsFull(markets: Market[] | null): string {
     "- Which days are closures and which are half days (early closes)?",
     "- When does a trade settle (T+n), counted in days on which every listed market is open?",
     "- On which days are several markets all open?",
+    "- Is a market open right now, and when does it close or open next, in its own time zone?",
+    "- Which settlement cycle (T+1, T+2) was in force on a given trade date, and where is that rule published?",
     "",
     "## Data",
     "",
     "- Closures and half days come from the Python holidays library (https://github.com/vacanza/holidays). MarketClock never stores its own copy of holiday dates.",
     "- Name, country and timezone of each market come from the exchange's website, with the source URL in the API response (source_url).",
     "- Trading days use closures only: a half day is still a trading day.",
+    "- Session hours, early-close times and settlement cycles are stored with the exchange or regulator page they were read from. Markets without a confirmed source say so instead of guessing.",
+    "- Official exchange calendars (NYSE 2026 to 2028, Nasdaq 2026, LSE 2027 and 2028) are compared day by day with the library; every date matched.",
     "",
     "## API",
     "",
@@ -153,7 +171,10 @@ export function llmsFull(markets: Market[] | null): string {
     "",
     "```",
     `GET ${API}/settlement?markets=XNYS,XLON&trade_date=2026-12-23&cycle=2`,
-    '{"markets": ["XNYS", "XLON"], "trade_date": "2026-12-23", "cycle": 2, "trade_date_is_trading_day": true, "settlement_date": "2026-12-29"}',
+    '{"markets": ["XNYS", "XLON"], "trade_date": "2026-12-23", "cycle": 2, "cycle_from": "query", "default_cycles": [], "trade_date_is_trading_day": true, "settlement_date": "2026-12-29"}',
+    "",
+    `GET ${API}/markets/XNYS/status?at=2026-12-24T16:00:00Z`,
+    '{"market": "XNYS", "state": "open", "detail": "early_close", "local_time": "2026-12-24T11:00:00-05:00", "closes_at": "2026-12-24T13:00:00-05:00", "opens_at": null}',
     "",
     `GET ${API}/markets/XNYS/is-trading-day?date=2026-07-03`,
     '{"market": "XNYS", "date": "2026-07-03", "is_trading_day": false}',
@@ -180,6 +201,10 @@ export function llmsFull(markets: Market[] | null): string {
     "## Pages",
     "",
     ...PAGES.map((page) => `- [${page.title}](${absoluteUrl(page.path)}): ${page.description}`),
+    "",
+    "## URL patterns",
+    "",
+    ...urlPatterns(),
     "",
     "## Contact",
     "",

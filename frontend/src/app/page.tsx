@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Globe } from "@/components/globe/globe";
 import { Boundary } from "@/components/boundary";
@@ -6,6 +7,11 @@ import { ArrowUpRightIcon } from "@/components/icons";
 import { BigClock, ZoneClock } from "@/components/live-clock";
 import { Tilt } from "@/components/tilt";
 import { ButtonLink } from "@/components/ui";
+import { JsonLd } from "@/components/json-ld";
+import { SITE_DESCRIPTION } from "@/lib/site";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+import { siteGraph } from "@/lib/seo";
 
 const ENDPOINTS = [
   "markets",
@@ -86,6 +92,7 @@ function Words({
 export default function Home() {
   return (
     <>
+      <JsonLd data={siteGraph(SITE_DESCRIPTION)} />
       <section className="relative -mt-[4.25rem] overflow-hidden pt-[4.25rem]">
         <div className="relative container-page grid min-h-[calc(100dvh-4.25rem)] items-center gap-8 py-12 lg:grid-cols-12 lg:items-start lg:pt-[12vh]">
           <div className="relative z-10 flex flex-col gap-10 lg:col-span-7">

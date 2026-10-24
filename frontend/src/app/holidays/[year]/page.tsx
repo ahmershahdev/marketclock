@@ -6,7 +6,9 @@ import { ApiError, ApiOffline } from "@/components/api-offline";
 import { Flag } from "@/components/flag";
 import { ArrowIcon } from "@/components/icons";
 import { PageHeader, Skeleton } from "@/components/ui";
-import { api } from "@/lib/api/client";
+import { getHolidays, getMarkets } from "@/lib/api/server";
+import { JsonLd } from "@/components/json-ld";
+import { breadcrumbs, holidaysYearTitle, pageMetadata } from "@/lib/seo";
 import { parseYear } from "../../markets/[code]/market-calendar";
 
 export async function generateMetadata({
@@ -14,15 +16,15 @@ export async function generateMetadata({
 }: PageProps<"/holidays/[year]">): Promise<Metadata> {
   const year = parseYear((await params).year);
   if (!year) return { title: "Page not found", robots: { index: false } };
-  return {
-    title: `Stock market holidays ${year}`,
-    description: `Closures and early closes in ${year} for every exchange MarketClock covers, from NYSE and LSE to PSX and Tadawul.`,
-    alternates: { canonical: `/holidays/${year}` },
-  };
+  return pageMetadata({
+    title: holidaysYearTitle(year),
+    description: `Closures and early closes in ${year} for every exchange MarketClock covers, from NYSE and Nasdaq to London and Tokyo.`,
+    path: `/holidays/${year}`,
+  });
 }
 
 async function YearTable({ year }: { year: number }) {
-  const markets = await api.markets();
+  const markets = await getMarkets();
   if (!markets.ok) {
     return markets.kind === "offline" ? (
       <ApiOffline what={`The ${year} holiday list`} />
@@ -31,7 +33,7 @@ async function YearTable({ year }: { year: number }) {
     );
   }
   const covered = markets.data.filter((m) => m.first_year <= year && year <= m.last_year);
-  const results = await Promise.all(covered.map((m) => api.holidays(m.code, year)));
+  const results = await Promise.all(covered.map((m) => getHolidays(m.code, year)));
 
   return (
     <div className="overflow-x-auto">
@@ -94,6 +96,12 @@ async function Content({ params }: PageProps<"/holidays/[year]">) {
   if (!year) notFound();
   return (
     <>
+      <JsonLd
+        data={breadcrumbs([
+          ["Holidays", `/holidays/${year}`],
+          [String(year), `/holidays/${year}`],
+        ])}
+      />
       <PageHeader
         eyebrow={`Holidays / ${year}`}
         title={

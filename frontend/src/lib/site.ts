@@ -5,6 +5,9 @@ export const SITE_URL = (process.env.SITE_URL ?? "https://marketclock.ahmershah.
 
 export const SITE_NAME = "MarketClock";
 
+export const SITE_DESCRIPTION =
+  "Is the exchange open, does it close early, and when does a trade settle? Trading days and settlement dates for 30 exchanges.";
+
 export const SITE_SUMMARY =
   "Trading days, early closes, settlement dates and market overlap for the stock exchanges and financial markets in the Python holidays library, as a REST API, a web app and public calendar pages.";
 

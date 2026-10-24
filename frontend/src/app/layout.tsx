@@ -5,7 +5,7 @@ import { ServiceWorker } from "@/components/service-worker";
 import { WatchlistAlerts } from "@/components/watchlist-alerts";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -21,11 +21,27 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
   title: {
-    default: "MarketClock: trading days and settlement dates",
+    default: "MarketClock: Trading Days and Settlement Dates",
     template: "%s | MarketClock",
   },
-  description:
-    "Is the exchange open today, does it close early, and when does a trade settle? Trading days, early closes, settlement dates and market overlap for the world's exchanges.",
+  description: SITE_DESCRIPTION,
+  authors: [{ name: "Syed Ahmer Shah", url: "https://ahmershah.dev" }],
+  creator: "Syed Ahmer Shah",
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: "/",
+    title: "MarketClock: Trading Days and Settlement Dates",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MarketClock: Trading Days and Settlement Dates",
+    description: SITE_DESCRIPTION,
+  },
+  robots: { index: true, follow: true },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
