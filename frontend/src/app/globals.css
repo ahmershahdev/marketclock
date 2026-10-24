@@ -22,6 +22,8 @@
   --early: #b26a00;
   --glow: rgb(76 105 0 / 0.14);
   --grain-opacity: 0.035;
+  --scroll-thumb: rgb(10 11 13 / 0.22);
+  --scroll-thumb-hover: rgb(10 11 13 / 0.4);
 }
 
 [data-theme="dark"] {
@@ -43,6 +45,8 @@
   --early: #ffb02e;
   --glow: rgb(212 255 58 / 0.12);
   --grain-opacity: 0.05;
+  --scroll-thumb: rgb(238 240 236 / 0.2);
+  --scroll-thumb-hover: rgb(212 255 58 / 0.6);
 }
 
 @theme inline {
@@ -102,6 +106,35 @@
   html {
     background: var(--paper);
     -webkit-text-size-adjust: 100%;
+    accent-color: var(--signal);
+  }
+
+  html {
+    scrollbar-color: var(--scroll-thumb) transparent;
+  }
+
+  /* For browsers without scrollbar-color, such as Safari. */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: var(--scroll-thumb) padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover) padding-box;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 
   body {
