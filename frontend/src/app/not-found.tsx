@@ -1,18 +1,28 @@
+import type { Metadata } from "next";
+import { ClosedPage } from "@/components/closed-page";
 import { ButtonLink } from "@/components/ui";
+
+export const metadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false },
+};
 
 export default function NotFound() {
   return (
-    <section className="container-page flex min-h-[70dvh] flex-col justify-center py-24">
-      <p className="mb-6 eyebrow">404</p>
-      <h1 className="text-display text-[clamp(4rem,14vw,12rem)]">
-        Market <em className="text-signal">closed.</em>
-      </h1>
-      <p className="mt-8 max-w-md text-lg text-ink-2">
-        There is nothing at this address. The market code may be wrong, or the page has moved.
-      </p>
-      <div className="mt-10">
-        <ButtonLink href="/markets">See all markets</ButtonLink>
-      </div>
-    </section>
+    <ClosedPage
+      code="404"
+      eyebrow="404 / Not found"
+      title={
+        <>
+          Market <em className="text-closed">closed.</em>
+        </>
+      }
+      lead="There is nothing trading at this address. The market code may be wrong, or the page has moved."
+    >
+      <ButtonLink href="/markets">See all markets</ButtonLink>
+      <ButtonLink href="/" variant="ghost">
+        Back home
+      </ButtonLink>
+    </ClosedPage>
   );
 }
