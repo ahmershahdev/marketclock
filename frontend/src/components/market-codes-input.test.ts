@@ -14,6 +14,7 @@ function market(code: string, name: string, country: string): Market {
     first_year: 2000,
     last_year: 2100,
     source_url: "https://example.com",
+    session: null,
   };
 }
 

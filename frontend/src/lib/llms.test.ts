@@ -13,6 +13,7 @@ const XSAU: Market = {
   first_year: 2020,
   last_year: 2100,
   source_url: "https://www.saudiexchange.sa",
+  session: null,
 };
 
 describe("llms.txt", () => {

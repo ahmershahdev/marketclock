@@ -22,6 +22,8 @@ from app.schemas import (
 bp = Blueprint("markets", __name__, url_prefix="/markets")
 
 HOLIDAYS_TTL = 7 * 24 * 3600
+# Bump when cached holiday JSON changes for reasons other than a library upgrade.
+HOLIDAYS_CACHE_VERSION = 2
 
 
 def parse_query[Q: BaseModel](model: type[Q]) -> Q:
@@ -50,12 +52,18 @@ def get_market(code: str) -> Response:
 
 def holidays_json(code: str, year: int) -> str:
     found = calendar.market_holidays(code, year)
+    session = markets.SESSIONS.get(code)
+    early_close = session.early_close if session else None
     body = HolidaysResponse(
         market=code,
         year=year,
         holidays=[
             Holiday(
-                date=h.date, name=h.name, category=h.category, half_day=h.category == "half_day"
+                date=h.date,
+                name=h.name,
+                category=h.category,
+                half_day=h.category == "half_day",
+                close_time=early_close if h.category == "half_day" else None,
             )
             for h in found
         ],
@@ -66,7 +74,7 @@ def holidays_json(code: str, year: int) -> str:
 @bp.get("/<code>/holidays")
 def holidays(code: str) -> Response:
     query = parse_query(YearQuery)
-    key = f"holidays:{version('holidays')}:{code}:{query.year}"
+    key = f"holidays:v{HOLIDAYS_CACHE_VERSION}:{version('holidays')}:{code}:{query.year}"
     body, hit = cached(get_cache(), key, HOLIDAYS_TTL, lambda: holidays_json(code, query.year))
     response = current_app.response_class(body, mimetype="application/json")
     response.headers["X-Cache"] = "hit" if hit else "miss"

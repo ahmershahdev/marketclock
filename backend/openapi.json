@@ -196,6 +196,16 @@
             "title": "Name",
             "type": "string"
           },
+          "session": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TradingSession"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "source_url": {
             "title": "Source Url",
             "type": "string"
@@ -222,7 +232,8 @@
           "categories",
           "first_year",
           "last_year",
-          "source_url"
+          "source_url",
+          "session"
         ],
         "title": "Market",
         "type": "object"
@@ -423,6 +434,41 @@
           "days"
         ],
         "title": "TradingDaysResponse",
+        "type": "object"
+      },
+      "TradingSession": {
+        "properties": {
+          "close": {
+            "title": "Close",
+            "type": "string"
+          },
+          "early_close": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Early Close"
+          },
+          "open": {
+            "title": "Open",
+            "type": "string"
+          },
+          "source_url": {
+            "title": "Source Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "open",
+          "close",
+          "early_close",
+          "source_url"
+        ],
+        "title": "TradingSession",
         "type": "object"
       }
     }

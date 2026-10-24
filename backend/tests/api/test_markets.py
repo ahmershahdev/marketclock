@@ -26,6 +26,7 @@ def test_holidays_list_closures_and_half_days(client: FlaskClient) -> None:
         "close_time": None,
     }
     assert by_date["2026-12-24"]["half_day"] is True
+    assert by_date["2026-12-24"]["close_time"] == "13:00"
 
 
 def test_is_trading_day(client: FlaskClient) -> None:
@@ -116,6 +117,12 @@ def test_list_markets(client: FlaskClient) -> None:
         "first_year": 1863,
         "last_year": 2100,
         "source_url": "https://www.nyse.com",
+        "session": {
+            "open": "09:30",
+            "close": "16:00",
+            "early_close": "13:00",
+            "source_url": "https://www.nyse.com/markets/hours-calendars",
+        },
     }
 
 
@@ -162,3 +169,11 @@ def test_errors_are_not_cached(client: FlaskClient) -> None:
     client.get("/api/v1/markets/XLON/holidays?year=1990")
 
     assert client.get("/api/v1/markets/XLON/holidays?year=1990").status_code == 400
+
+
+def test_markets_without_session_data(client: FlaskClient) -> None:
+    body = get_json(client, "/api/v1/markets/XLON")
+
+    assert body["session"] is None
+    half_days = get_json(client, "/api/v1/markets/XLON/holidays?year=2026")["holidays"]
+    assert all(h["close_time"] is None for h in half_days)
