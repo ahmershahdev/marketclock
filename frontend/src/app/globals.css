@@ -10,7 +10,7 @@
   --sunken: #e9ebe5;
   --ink: #0a0b0d;
   --ink-2: #4a4f48;
-  --ink-3: #868b82;
+  --ink-3: #666b63;
   --rule: rgb(10 11 13 / 0.08);
   --rule-strong: rgb(10 11 13 / 0.16);
   --accent: #ffd21f;
@@ -33,7 +33,7 @@
   --sunken: #16191d;
   --ink: #eef0ec;
   --ink-2: #a3a8a0;
-  --ink-3: #646a63;
+  --ink-3: #80867e;
   --rule: rgb(238 240 236 / 0.08);
   --rule-strong: rgb(238 240 236 / 0.16);
   --accent: #ffd21f;
@@ -91,13 +91,12 @@
   }
 }
 
+/* No opacity here: Chrome skips invisible text as the LCP, which would hold LCP until hydration. */
 @keyframes rise {
   from {
-    opacity: 0;
     transform: perspective(900px) translateY(0.5em) rotateX(-55deg);
   }
   to {
-    opacity: 1;
     transform: perspective(900px) translateY(0) rotateX(0);
   }
 }
@@ -220,13 +219,23 @@
   background: radial-gradient(closest-side, var(--glow), transparent);
 }
 
+.globe-poster {
+  background:
+    radial-gradient(circle, var(--ink-3) 0.9px, transparent 1.3px) 0 0 / 11px 11px,
+    radial-gradient(circle at 35% 30%, var(--surface), var(--paper) 72%);
+  box-shadow:
+    inset 0 0 0 1px var(--rule-strong),
+    0 0 60px -10px var(--glow);
+  mask-image: radial-gradient(circle, #000 66%, transparent 71%);
+  opacity: 0.55;
+}
+
+/* Transform only: faded text fails contrast checks and is skipped as the LCP. */
 @keyframes reveal {
   from {
-    opacity: 0;
     transform: perspective(1200px) translateY(32px) rotateX(-12deg);
   }
   to {
-    opacity: 1;
     transform: none;
   }
 }

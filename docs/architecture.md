@@ -90,6 +90,10 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | Scroll reveals with CSS `animation-timeline: view()`, no observer script | a script that marks elements before hydration causes React mismatches; browsers without support show content at once |
 | `Boundary` around 3D scenes and demos, root `error.tsx` around pages | a missing WebGL context or a failed chunk download hides one widget instead of the page; a page error keeps the header and footer |
 | `THREE.Clock` deprecation warning left in place | it comes from `@react-three/fiber` 9.8.2 (latest stable); the fix is only in the v10 alpha |
+| gunicorn for the API, Next.js `output: "standalone"` for the web app | small non-root images; the web image needs no `node_modules` at run time |
+| Migrations and seed run on every API start in production | both are idempotent, so a deploy is one `docker compose up -d --build` |
+| 3D scenes only on wide screens with a mouse and hardware WebGL, mounted when idle; CSS poster otherwise | three.js is about 900 KB, and software WebGL blocked the main thread for over a minute in audits |
+| Entrance animations use transforms only, no opacity | faded text is skipped as the LCP and fails contrast checks |
 | No email features | no accounts and nothing personal is stored; contact is a `mailto:` link. Closure alerts by email would need consent, unsubscribe and a provider, so they wait until someone asks |
 | Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
 | Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |

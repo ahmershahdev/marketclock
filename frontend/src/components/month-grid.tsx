@@ -48,13 +48,11 @@ export function MonthGrid({
       <table className="w-full table-fixed border-collapse text-center">
         <thead>
           <tr>
-            {WEEKDAY_SHORT.map((day, index) => (
+            {WEEKDAY_SHORT.map((day) => (
               <th
                 key={day}
                 scope="col"
-                className={`pb-2 font-mono text-[10px] font-normal tracking-widest uppercase ${
-                  weekend.includes(index) ? "text-ink-3/70" : "text-ink-3"
-                }`}
+                className="pb-2 font-mono text-[10px] font-normal tracking-widest text-ink-3 uppercase"
               >
                 <abbr title={day} className="no-underline">
                   {day.slice(0, compact ? 1 : 2)}

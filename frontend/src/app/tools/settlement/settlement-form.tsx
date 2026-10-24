@@ -94,7 +94,7 @@ function ResultView({ result }: { result: ApiResult<SettlementResponse> | null }
     return (
       <>
         <p className="eyebrow">Settles on</p>
-        <p className="text-display text-[clamp(3rem,9vw,7rem)] text-ink-3/50">YYYY-MM-DD</p>
+        <p className="text-display text-[clamp(3rem,9vw,7rem)] text-ink-3/70">YYYY-MM-DD</p>
         <p className="text-sm text-ink-3">Pick a market and a trade date.</p>
       </>
     );

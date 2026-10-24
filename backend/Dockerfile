@@ -11,4 +11,4 @@ COPY --chown=app:app . .
 USER app
 
 EXPOSE 5000
-CMD ["flask", "--app", "wsgi", "run", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "--access-logfile", "-", "wsgi:app"]

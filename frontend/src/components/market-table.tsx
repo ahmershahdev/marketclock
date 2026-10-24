@@ -39,11 +39,14 @@ export function MarketTable({ markets }: { markets: Market[] }) {
         <table className="w-full min-w-[640px] border-collapse text-left">
           <thead>
             <tr className="border-b border-rule-strong">
-              {["Code", "Market", "Country", "Timezone", "Weekend", ""].map((heading) => (
+              {["Code", "Market", "Country", "Timezone", "Weekend"].map((heading) => (
                 <th key={heading} scope="col" className="py-3 pr-4 eyebrow font-normal">
                   {heading}
                 </th>
               ))}
+              <th scope="col">
+                <span className="sr-only">Open calendar</span>
+              </th>
             </tr>
           </thead>
           <tbody>

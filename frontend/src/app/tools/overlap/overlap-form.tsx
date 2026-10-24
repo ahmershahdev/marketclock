@@ -94,7 +94,7 @@ function ResultView({ result }: { result: ApiResult<OverlapResponse> | null }) {
     return (
       <div className="flex h-full flex-col justify-between gap-8">
         <p className="eyebrow">Shared trading days</p>
-        <p className="text-display text-[clamp(4rem,12vw,9rem)] text-ink-3/50">00</p>
+        <p className="text-display text-[clamp(4rem,12vw,9rem)] text-ink-3/70">00</p>
         <p className="text-sm text-ink-3">Choose markets and a date range.</p>
       </div>
     );
