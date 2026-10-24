@@ -43,7 +43,13 @@
             "context": "backend"
           },
           {
+            "context": "frontend"
+          },
+          {
             "context": "codeql (python)"
+          },
+          {
+            "context": "codeql (javascript-typescript)"
           },
           {
             "context": "codeql (actions)"
