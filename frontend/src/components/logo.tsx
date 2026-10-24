@@ -13,14 +13,18 @@ export function LogoMark({ className = "" }: { className?: string }) {
   );
 }
 
+// The emblem's wordmark is black, so it sits on a light plate in both themes.
 export function Emblem({ className = "" }: { className?: string }) {
   return (
-    <Image
-      src="/brand/emblem.webp"
-      alt="MarketClock"
-      width={960}
-      height={720}
-      className={`h-auto object-contain ${className}`}
-    />
+    <span className={`block rounded-3xl bg-[#f4f5f1] p-3 ring-1 ring-rule ${className}`}>
+      <Image
+        src="/brand/emblem.webp"
+        alt="MarketClock"
+        width={1254}
+        height={1254}
+        sizes="(min-width: 768px) 224px, 192px"
+        className="h-auto w-full object-contain"
+      />
+    </span>
   );
 }
