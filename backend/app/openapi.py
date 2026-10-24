@@ -60,6 +60,14 @@ OPERATIONS = (
         schemas.MarketStatusList,
     ),
     Operation(
+        f"{MARKET}/holidays.csv",
+        "getHolidaysCsv",
+        "Closures and half days of one year as CSV",
+        schemas.YearQuery,
+        None,
+        "text/csv",
+    ),
+    Operation(
         f"{MARKET}/calendar.ics",
         "getCalendarFeed",
         "iCalendar feed of closures and early closes: this year and next, or one year",

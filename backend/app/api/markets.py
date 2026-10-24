@@ -1,3 +1,5 @@
+import csv
+import io
 from datetime import UTC, date, datetime
 from importlib.metadata import version
 
@@ -81,6 +83,27 @@ def holidays(code: str) -> Response:
     body, hit = cached(get_cache(), key, HOLIDAYS_TTL, lambda: holidays_json(code, query.year))
     response = current_app.response_class(body, mimetype="application/json")
     response.headers["X-Cache"] = "hit" if hit else "miss"
+    return response
+
+
+@bp.get("/<code>/holidays.csv")
+def holidays_csv(code: str) -> Response:
+    query = parse_query(YearQuery)
+    found = calendar.market_holidays(code, query.year)
+    session = markets.SESSIONS.get(code)
+    early_close = session.early_close if session else ""
+    out = io.StringIO()
+    writer = csv.writer(out, lineterminator="\n")
+    writer.writerow(["date", "name", "category", "half_day", "close_time"])
+    for h in found:
+        half = h.category == "half_day"
+        writer.writerow(
+            [h.date.isoformat(), h.name, h.category, str(half).lower(), early_close if half else ""]
+        )
+    response = current_app.response_class(out.getvalue(), mimetype="text/csv")
+    response.headers["Content-Disposition"] = (
+        f'attachment; filename="{code}-holidays-{query.year}.csv"'
+    )
     return response
 
 

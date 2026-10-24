@@ -102,3 +102,37 @@ class WriteFails(MemoryCache):
 
 def test_cached_survives_a_failed_write() -> None:
     assert cached(WriteFails(), "k", 60, lambda: "value") == ("value", False)
+
+
+def test_memory_cache_counts_within_the_window() -> None:
+    clock = Clock()
+    cache = MemoryCache(clock)
+
+    assert cache.incr("k", 60) == 1
+    assert cache.incr("k", 60) == 2
+    clock.now = 61
+    assert cache.incr("k", 60) == 1
+
+
+def test_redis_cache_counts_with_an_expiry() -> None:
+    class Pipeline:
+        def __init__(self) -> None:
+            self.calls: list[str] = []
+
+        def incr(self, key: str) -> None:
+            self.calls.append(f"incr {key}")
+
+        def expire(self, key: str, seconds: int, nx: bool) -> None:
+            self.calls.append(f"expire {key} {seconds} {nx}")
+
+        def execute(self) -> list[int]:
+            return [3, True]
+
+    pipeline = Pipeline()
+
+    class Client(StubRedis):
+        def pipeline(self) -> Pipeline:
+            return pipeline
+
+    assert RedisCache(Client()).incr("k", 60) == 3  # type: ignore[arg-type]
+    assert pipeline.calls == ["incr k", "expire k 60 True"]

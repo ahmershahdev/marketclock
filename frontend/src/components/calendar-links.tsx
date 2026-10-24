@@ -7,6 +7,7 @@ export function feedUrls(code: string, year: number) {
     webcal,
     google: `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcal)}`,
     download: `${path}?year=${year}`,
+    csv: `/api/v1/markets/${code}/holidays.csv?year=${year}`,
   };
 }
 
@@ -31,6 +32,9 @@ export function CalendarLinks({ code, year }: { code: string; year: number }) {
         </a>
         <a href={urls.download} download className={linkClass}>
           Download {year} (.ics)
+        </a>
+        <a href={urls.csv} download className={linkClass}>
+          Download {year} (.csv)
         </a>
       </div>
     </div>

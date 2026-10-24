@@ -12,6 +12,8 @@ class Cache(Protocol):
 
     def set(self, key: str, value: str, ttl_seconds: int) -> None: ...
 
+    def incr(self, key: str, ttl_seconds: int) -> int: ...
+
     def ping(self) -> bool: ...
 
 
@@ -30,6 +32,13 @@ class RedisCache:
 
     def set(self, key: str, value: str, ttl_seconds: int) -> None:
         self._client.set(key, value, ex=ttl_seconds)
+
+    def incr(self, key: str, ttl_seconds: int) -> int:
+        pipeline = self._client.pipeline()
+        pipeline.incr(key)
+        pipeline.expire(key, ttl_seconds, nx=True)
+        count, _ = pipeline.execute()
+        return int(count)
 
     def ping(self) -> bool:
         try:
@@ -60,6 +69,13 @@ class MemoryCache:
         if not self.available:
             raise RedisError("cache is down")
         self._items[key] = (value, self._clock() + ttl_seconds)
+
+    def incr(self, key: str, ttl_seconds: int) -> int:
+        current = self.get(key)
+        count = int(current or 0) + 1
+        expires_at = self._items[key][1] if current is not None else self._clock() + ttl_seconds
+        self._items[key] = (str(count), expires_at)
+        return count
 
     def ping(self) -> bool:
         return self.available

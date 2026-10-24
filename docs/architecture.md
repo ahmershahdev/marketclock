@@ -98,6 +98,8 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | iCalendar feed built in `app/core/ics.py`, no calendar library | all-day events with stable UIDs, escaping and 75-octet folding are a few lines; the feed rolls over to this year and next so a subscription never goes stale |
 | Open-now status computed by the API (`app/core/status.py`, `zoneinfo` with pinned `tzdata`) | one tested place for timezone maths; `tzdata` gives Windows a timezone database and every host the same rules |
 | A trading day without session hours is `hours_unknown`, not open | no guessing hours; weekends and holidays still come from the library |
+| Rate limit in Flask on Redis (`INCR` per client per minute), no Flask-Limiter | a fixed window is a few lines; it keys on the last `X-Forwarded-For` entry set by our reverse proxy, skips internal callers (the web app's server-side calls), and lets requests through if Redis is down |
+| No hand-made Postman collection | clients import `openapi.json` directly, so there is nothing to drift |
 | No email features | no accounts and nothing personal is stored; contact is a `mailto:` link. Closure alerts by email would need consent, unsubscribe and a provider, so they wait until someone asks |
 | Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
 | Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |

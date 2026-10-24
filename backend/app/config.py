@@ -13,6 +13,7 @@ class Config:
     env: Env
     database_url: str
     redis_url: str | None
+    rate_limit: int = 0
 
     @property
     def testing(self) -> bool:
@@ -36,4 +37,7 @@ class Config:
         if not redis_url and name != "test":
             raise RuntimeError("REDIS_URL is not set")
 
-        return cls(env=name, database_url=database_url, redis_url=redis_url)
+        # Tests load .env too, so the limit stays off there whatever it says.
+        rate_limit = 0 if name == "test" else int(os.environ.get("RATE_LIMIT_PER_MINUTE", "120"))
+
+        return cls(env=name, database_url=database_url, redis_url=redis_url, rate_limit=rate_limit)
