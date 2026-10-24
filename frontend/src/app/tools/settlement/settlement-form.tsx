@@ -127,7 +127,11 @@ function ResultView({ result }: { result: ApiResult<SettlementResponse> | null }
           {WEEKDAY_SHORT[weekdayOf(data.settlement_date)]}, open on {data.markets.join(" and ")}
         </p>
       </div>
-      <p className="text-sm text-ink-3">Counted in trading days on every market listed.</p>
+      <p className="text-sm text-ink-3">
+        {data.trade_date_is_trading_day
+          ? "Counted in trading days on every market listed."
+          : `${data.trade_date} is not a trading day on every market, so counting starts from the next one.`}
+      </p>
     </>
   );
 }

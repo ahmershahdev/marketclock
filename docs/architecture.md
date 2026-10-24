@@ -49,7 +49,10 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
   empty answer that would make every weekday look like a trading day.
 - Trading days come from the `public` category only; `half_day` dates are still trading days.
 - Errors: `invalid_parameter` (400, `params.fields`), `unknown_market` (404),
-  `year_out_of_range` (400), `invalid_range` (400).
+  `year_out_of_range` (400), `invalid_range` (400), `invalid_markets` (400).
+- Settlement: T+n is the n-th day after the trade date on which every listed market is open.
+  T+0 is the trade date when all markets are open, otherwise the next such day. The cycle is
+  a query parameter (0 to 10); stored per-market cycles come later.
 
 ## Decisions
 

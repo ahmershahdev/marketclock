@@ -59,7 +59,7 @@ export const api = {
     get<HolidaysResponse>(`/markets/${encodeURIComponent(code)}/holidays`, { year }),
   settlement: (markets: string[], tradeDate: string, cycle: number) =>
     get<SettlementResponse>("/settlement", {
-      market: markets.join(","),
+      markets: markets.join(","),
       trade_date: tradeDate,
       cycle,
     }),
