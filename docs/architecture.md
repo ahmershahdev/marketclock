@@ -34,9 +34,11 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 - `settlement_cycle` (built): market, days (`n` in T+n), effective from, source URL; unique on
   (market, effective from). Loaded by `flask --app wsgi seed` from `app/seed.py`, which only
   holds rows whose source page was read and confirmed.
-- `official_closure`: market, date, kind (closed, half day), name, source URL, checked on
-- `finding`: market, date, kind (missing in library, extra in library, name differs), status
-  (open, reported, fixed upstream, not a bug), upstream link
+- `official_closure` (built): market, date, kind (closed, half day), name, source URL, checked on;
+  unique on (market, date). Only whole years are stored, so a year present is compared in full.
+- Differences are computed on request by `app/core/quality.py` (missing in library, extra in
+  library, closed or half day differs). A stored `finding` table with upstream status waits
+  until there is a real difference to track.
 
 ## API rules
 
@@ -85,6 +87,7 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | Country flags as 25 vendored SVGs from flag-icons (MIT), not emoji or a package | Windows shows emoji flags as letters; a package would ship every country; exchange logos are trademarks, so markets get flags only |
 | Accent is the emblem's gold (`#ffd21f`), darker gold (`#8a6400`) for text on light backgrounds | one brand colour; the dark gold keeps AA contrast on the light theme |
 | Holidays cached under `holidays:<library version>:<market>:<year>` for 7 days | a library upgrade changes the key, so stale dates are never served; a Redis outage falls back to computing, and `X-Cache` says hit or miss |
+| Scroll reveals with CSS `animation-timeline: view()`, no observer script | a script that marks elements before hydration causes React mismatches; browsers without support show content at once |
 | `Boundary` around 3D scenes and demos, root `error.tsx` around pages | a missing WebGL context or a failed chunk download hides one widget instead of the page; a page error keeps the header and footer |
 | `THREE.Clock` deprecation warning left in place | it comes from `@react-three/fiber` 9.8.2 (latest stable); the fix is only in the v10 alpha |
 | No email features | no accounts and nothing personal is stored; contact is a `mailto:` link. Closure alerts by email would need consent, unsubscribe and a provider, so they wait until someone asks |

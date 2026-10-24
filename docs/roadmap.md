@@ -51,11 +51,12 @@ in CI, and seed data.
 
 ## M5. Data quality (target 2027-01-17)
 
-- [ ] Official closures table: market, date, kind, source URL, date checked
-- [ ] Comparison job: library dates against official dates, per market and year
-- [ ] Data-quality page listing every difference with its source
-- [ ] First markets: PSX (XKAR), Tadawul (XSAU), SIFMA (XSIF), then others as sources are found
-- [ ] Each real difference becomes an issue or pull request on `vacanza/holidays`
+- [x] Official closures table: market, date, kind, source URL, date checked
+- [x] Comparison: library dates against official dates, per market and whole year
+- [x] Data-quality page listing every difference with its source
+- [x] First markets: NYSE (2026 to 2028) and LSE (2027 and 2028), both matching the library.
+  SIFMA is not in `holidays` 0.107; PSX and Tadawul pages could not be read from here.
+- [ ] Each real difference becomes an issue or pull request on `vacanza/holidays` (none found yet)
 
 ## M6. Docs and launch (target 2027-02-07)
 
