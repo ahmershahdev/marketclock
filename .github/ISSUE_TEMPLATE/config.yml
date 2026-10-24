@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Wrong or missing market holiday
+    url: https://github.com/vacanza/holidays/issues
+    about: Market closures come from the holidays library. Please report wrong dates there.
+  - name: Security vulnerability
+    url: https://github.com/ahmershahdev/marketclock/security/advisories/new
+    about: Report security problems privately.
