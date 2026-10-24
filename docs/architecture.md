@@ -102,6 +102,11 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | No hand-made Postman collection | clients import `openapi.json` directly, so there is nothing to drift |
 | Watchlist alerts as browser notifications while a tab is open, no Web Push | push needs a server that stores a subscription per visitor; checking on load and every 30 minutes keeps everything in the browser |
 | Embed widget as a route handler returning one self-contained HTML card | no app JavaScript inside other people's pages; it refreshes with a meta tag and is `noindex` so it does not compete with market pages |
+| Script CSP with 'unsafe-inline', no nonce | tested: prerendered shells carry no nonce (0 of 36 scripts on /developers), so a nonce policy blocks the page; nonces would need every route rendered per request, dropping partial prerendering |
+| All other CSP directives strict; `frame-ancestors *` only on `/embed/` | no plugins, foreign scripts, base-URI changes or cross-site form posts; the status card stays embeddable |
+| Titles and descriptions through `pageMetadata` (`lib/seo.ts`), JSON-LD through `JsonLd` | one place enforces 60/140 characters, canonical, Open Graph and Twitter tags; JSON-LD escapes `<` |
+| Next.js `"use cache"` for the market list and holidays, failures thrown so they are not cached | a page listing 30 markets made 30 API calls per visit; an outage must never be served for hours |
+| API `Cache-Control` set in `app/headers.py` | reference data cacheable for 5 minutes, live status and errors `no-store` |
 | No email features | no accounts and nothing personal is stored; contact is a `mailto:` link. Closure alerts by email would need consent, unsubscribe and a provider, so they wait until someone asks |
 | Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
 | Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |

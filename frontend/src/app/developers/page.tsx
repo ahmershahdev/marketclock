@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { PageHeader, Panel } from "@/components/ui";
 import { embedSnippet } from "@/lib/embed";
+import { JsonLd } from "@/components/json-ld";
+import { breadcrumbs, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "API",
-  description: "The MarketClock REST API: trading days, closures, settlement dates and overlap.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Trading Days and Market Holidays API",
+  description:
+    "Free REST API for trading days, closures, early closes, settlement dates, live status and calendar feeds for 30 exchanges.",
+  path: "/developers",
+});
 
 const ENDPOINTS = [
   {
@@ -102,6 +106,7 @@ const RULES = [
 export default function DevelopersPage() {
   return (
     <>
+      <JsonLd data={breadcrumbs([["API", "/developers"]])} />
       <PageHeader
         eyebrow="Developers / REST API"
         title={

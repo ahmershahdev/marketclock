@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Offline",
-  robots: { index: false },
-};
+  description: "You are offline. MarketClock reloads by itself when the connection is back.",
+  path: "/offline",
+  index: false,
+});
 
 const CODES = [
   "XNYS",
