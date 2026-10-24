@@ -30,6 +30,7 @@ Last updated: 2026-10-24. Update at the end of every work session.
 - M5: `official_closure` table and migration, comparison in `app/core/quality.py`, `/data-quality` page and endpoint. NYSE and LSE match the library. Scroll reveals moved to CSS (fixed a hydration mismatch). 126 backend tests.
 - Lighthouse on the production images: accessibility and best practices 100 on every page; desktop performance 95 to 97 except home (76); mobile 50 to 73 and noisy locally. Fixed: layout shift 4.8 to 0 (globe), 77 s blocking time (software WebGL), muted-text contrast, table header, LCP held by faded headlines.
 - New mark, favicon and app icons cut from the square emblem. Nasdaq and JPX hours and the Nasdaq 2026 calendar, read in Chrome (Tadawul and NSE still deny access, TSX and PSX sites down). Year URLs and `/holidays/<year>` indexes.
+- Then: CSV downloads and a per-client rate limit (#26), watchlist notifications (#27), embeddable status widget.
 - Since the M6 PR: icons cut from the square emblem (#21), Nasdaq and JPX hours and the Nasdaq 2026 calendar (#21), year URLs and `/holidays/<year>` (#21), iCalendar feeds (#22), open-now status with `tzdata` (#23), business-day calculator (#24).
 - M6 prep: gunicorn, production Dockerfiles, `compose.prod.yaml` (checked locally), `images` CI workflow, `docs/deploy.md`, README rewritten with screenshots and Mermaid diagrams.
 - Web app (M4 started early, merged in #1): grotesque type, lime theme, 3D globe hero, markets,
@@ -38,14 +39,12 @@ Last updated: 2026-10-24. Update at the end of every work session.
 
 ## Next session
 
-1. Features left from the agreed list, in order: API extras (CSV download of holidays, a
-   published rate limit, an API collection file), browser alerts for watched markets the day
-   before a closure, and an embeddable "is it open" widget.
-2. Data that needs a readable source: session hours for TSX (site down), Tadawul and NSE
+1. Data that needs a readable source: session hours for TSX (site down), Tadawul and NSE
    (Access Denied even in a real browser, probably by region), SGX; settlement cycles for PSX
    (site in maintenance), BSE/NSE, LSE T+2; official calendars for PSX and Tadawul.
-3. February 2027: deploy with `docs/deploy.md`, then Lighthouse on the live site (mobile was 50
-   to 73 locally) and Search Console.
+2. February 2027: deploy with `docs/deploy.md` (the reverse proxy must set `X-Forwarded-For`
+   for the rate limit), then Lighthouse on the live site (mobile was 50 to 73 locally) and
+   Search Console.
 
 ## Open questions
 

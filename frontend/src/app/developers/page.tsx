@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader, Panel } from "@/components/ui";
+import { embedSnippet } from "@/lib/embed";
 
 export const metadata: Metadata = {
   title: "API",
@@ -170,10 +171,22 @@ export default function DevelopersPage() {
               <li>Closures and half days: the holidays library, never copied into MarketClock.</li>
               <li>Weekends: the library&apos;s own market class.</li>
               <li>
-                Name, country and timezone: each exchange&apos;s website, with the source URL in
-                every response. Session hours and settlement cycles will follow the same rule.
+                Name, country, timezone, session hours and settlement cycles: exchange and regulator
+                pages, with the source URL in every response.
               </li>
             </ul>
+          </Panel>
+          <Panel className="md:col-span-2">
+            <p className="mb-4 eyebrow">Embed</p>
+            <h3 className="mb-4 text-display text-3xl">Is it open? On your site.</h3>
+            <p className="mb-4 max-w-2xl text-sm text-ink-2">
+              A small card with a market&apos;s live status that links back here. Swap the code for
+              any market; add <code className="font-mono">?theme=dark</code> for dark pages. It
+              refreshes every five minutes.
+            </p>
+            <pre className="overflow-x-auto rounded-xl border border-rule bg-paper p-4 font-mono text-xs leading-6 text-ink-2">
+              {embedSnippet("XNYS")}
+            </pre>
           </Panel>
         </div>
       </section>
