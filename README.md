@@ -116,6 +116,13 @@ the library.
 - [HolidayOps](https://github.com/ahmershahdev/holidayops): business-day calendars for countries
   and companies, built on the same library.
 
+## Contact
+
+- Email: [support@ahmershah.dev](mailto:support@ahmershah.dev) (security reports: see
+  [SECURITY.md](SECURITY.md))
+- LinkedIn: [syedahmershah](https://www.linkedin.com/in/syedahmershah)
+- Website: [ahmershah.dev](https://ahmershah.dev)
+
 ## License
 
 [MIT](LICENSE). Holiday data comes from the `holidays` library (MIT).
