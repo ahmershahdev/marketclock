@@ -3,6 +3,8 @@ from typing import Any
 import pytest
 from flask.testing import FlaskClient
 
+from app.cache import MemoryCache
+
 
 def get_json(client: FlaskClient, url: str, status: int = 200) -> Any:
     response = client.get(url)
@@ -134,3 +136,29 @@ def test_market_list_takes_no_parameters(client: FlaskClient) -> None:
     error = get_json(client, "/api/v1/markets?country=PK", 400)["error"]
 
     assert error["code"] == "invalid_parameter"
+
+
+def test_holidays_are_cached_per_market_and_year(client: FlaskClient) -> None:
+    first = client.get("/api/v1/markets/XNYS/holidays?year=2026")
+    second = client.get("/api/v1/markets/XNYS/holidays?year=2026")
+    other = client.get("/api/v1/markets/XNYS/holidays?year=2027")
+
+    assert first.headers["X-Cache"] == "miss"
+    assert second.headers["X-Cache"] == "hit"
+    assert other.headers["X-Cache"] == "miss"
+    assert first.get_json() == second.get_json()
+
+
+def test_holidays_work_without_the_cache(client: FlaskClient, cache: MemoryCache) -> None:
+    cache.available = False
+
+    response = client.get("/api/v1/markets/XNYS/holidays?year=2026")
+
+    assert response.status_code == 200
+    assert response.headers["X-Cache"] == "miss"
+
+
+def test_errors_are_not_cached(client: FlaskClient) -> None:
+    client.get("/api/v1/markets/XLON/holidays?year=1990")
+
+    assert client.get("/api/v1/markets/XLON/holidays?year=1990").status_code == 400

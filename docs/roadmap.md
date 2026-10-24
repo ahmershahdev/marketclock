@@ -25,7 +25,7 @@ in CI, and seed data.
 - [x] `GET /api/v1/markets/<code>/trading-days?start=&end=` (both ends included, range capped)
 - [ ] Early closes from `HALF_DAY`, with closing times from market metadata
 - [x] Input validation (market code, dates, range caps), one error format
-- [ ] Redis cache per (market, year, library version)
+- [x] Redis cache per (market, year, library version)
 - [x] OpenAPI schema committed, generated from the Pydantic models
 
 ## M3. Settlement (target 2026-12-06)

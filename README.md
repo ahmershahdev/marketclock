@@ -13,8 +13,8 @@ NASDAQ, LSE, PSX, Tadawul, SIFMA and more), through a REST API, a web app and pu
 pages.
 
 > Status: early build. M1 is done. M2 and M3 are nearly done: markets, holidays, trading days,
-> settlement and overlap all work end to end. Still open: the Redis cache, early-close times,
-> and per-market settlement cycles with their sources. Data quality (M5) and launch (M6) follow.
+> settlement and overlap all work end to end, with holidays cached in Redis. Still open:
+> early-close times and per-market settlement cycles, both waiting on official sources. Data quality (M5) and launch (M6) follow.
 > See [docs/roadmap.md](docs/roadmap.md) and [docs/status.md](docs/status.md).
 
 ## What works today

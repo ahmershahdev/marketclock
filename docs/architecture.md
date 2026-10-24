@@ -80,6 +80,7 @@ Rule: holiday dates are never copied into MarketClock. The library is the single
 | Custom scroll rail only on `(hover: hover) and (pointer: fine)` | touch devices and visitors without JavaScript keep the native scrollbar; the page still scrolls natively, so keyboard and assistive tech are unaffected |
 | Country flags as 25 vendored SVGs from flag-icons (MIT), not emoji or a package | Windows shows emoji flags as letters; a package would ship every country; exchange logos are trademarks, so markets get flags only |
 | Accent is the emblem's gold (`#ffd21f`), darker gold (`#8a6400`) for text on light backgrounds | one brand colour; the dark gold keeps AA contrast on the light theme |
+| Holidays cached under `holidays:<library version>:<market>:<year>` for 7 days | a library upgrade changes the key, so stale dates are never served; a Redis outage falls back to computing, and `X-Cache` says hit or miss |
 | No email features | no accounts and nothing personal is stored; contact is a `mailto:` link. Closure alerts by email would need consent, unsubscribe and a provider, so they wait until someone asks |
 | Query dates must be `YYYY-MM-DD` | Pydantic alone accepts some Unix timestamps as dates |
 | Holiday names in English (`en_US`) when the library has them | otherwise Tadawul names come back in Arabic |
