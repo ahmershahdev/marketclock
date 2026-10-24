@@ -269,6 +269,7 @@ export interface components {
       last_year: number;
       /** Name */
       name: string;
+      session: components["schemas"]["TradingSession"] | null;
       /** Source Url */
       source_url: string;
       /** Timezone */
@@ -365,6 +366,17 @@ export interface components {
        * Format: date
        */
       start: string;
+    };
+    /** TradingSession */
+    TradingSession: {
+      /** Close */
+      close: string;
+      /** Early Close */
+      early_close: string | null;
+      /** Open */
+      open: string;
+      /** Source Url */
+      source_url: string;
     };
   };
   responses: never;

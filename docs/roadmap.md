@@ -23,7 +23,8 @@ in CI, and seed data.
 - [x] `GET /api/v1/markets/<code>/is-trading-day?date=`
 - [x] `GET /api/v1/markets/<code>/next-trading-day?date=` and `previous-trading-day`
 - [x] `GET /api/v1/markets/<code>/trading-days?start=&end=` (both ends included, range capped)
-- [ ] Early closes from `HALF_DAY`, with closing times from market metadata
+- [x] Early closes from `HALF_DAY`, with closing times from market metadata (XNYS on file;
+  other markets as their hours pages are confirmed)
 - [x] Input validation (market code, dates, range caps), one error format
 - [x] Redis cache per (market, year, library version)
 - [x] OpenAPI schema committed, generated from the Pydantic models

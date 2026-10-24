@@ -15,6 +15,14 @@ class MarketInfo:
 
 
 @dataclass(frozen=True)
+class TradingSession:
+    open: str
+    close: str
+    early_close: str | None
+    source_url: str
+
+
+@dataclass(frozen=True)
 class Market:
     code: str
     name: str
@@ -26,6 +34,7 @@ class Market:
     first_year: int
     last_year: int
     source_url: str
+    session: TradingSession | None
 
 
 # Name, country and timezone of each exchange, from the exchange's own website.
@@ -162,6 +171,14 @@ MARKET_INFO: dict[str, MarketInfo] = {
 }
 
 
+# Local exchange time. Only sessions whose source page was read and confirmed.
+SESSIONS: dict[str, TradingSession] = {
+    "XNYS": TradingSession(
+        "09:30", "16:00", "13:00", "https://www.nyse.com/markets/hours-calendars"
+    ),
+}
+
+
 def get_market(code: str) -> Market:
     if code not in market_codes():
         raise UnknownMarketError(code)
@@ -178,6 +195,7 @@ def get_market(code: str) -> Market:
         first_year=calendar.start_year,
         last_year=calendar.end_year,
         source_url=info.source_url,
+        session=SESSIONS.get(code),
     )
 
 

@@ -57,6 +57,13 @@ class OverlapQuery(Query):
     end: IsoDate
 
 
+class TradingSession(BaseModel):
+    open: str
+    close: str
+    early_close: str | None
+    source_url: str
+
+
 class Market(BaseModel):
     code: str
     name: str
@@ -68,6 +75,7 @@ class Market(BaseModel):
     first_year: int
     last_year: int
     source_url: str
+    session: TradingSession | None
 
 
 class MarketList(RootModel[list[Market]]):
