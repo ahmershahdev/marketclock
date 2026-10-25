@@ -325,7 +325,9 @@ compose.yaml         local stack; compose.prod.yaml for the server
 
 - [docs/roadmap.md](docs/roadmap.md): milestones and what "done" means
 - [docs/architecture.md](docs/architecture.md): API rules, data sources and every decision
-- [docs/deploy.md](docs/deploy.md): server setup, reverse proxy and updates
+- [docs/deploy.md](docs/deploy.md): server setup, reverse proxy, updates and releases
+- [Wiki](https://github.com/ahmershahdev/marketclock/wiki): short guides for using the app and the API, setup and FAQ
+- [Releases](https://github.com/ahmershahdev/marketclock/releases): tagged versions; `v1.0.0` is the live launch
 - [docs/status.md](docs/status.md): current state, updated every session
 - [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md)
 
