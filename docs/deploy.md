@@ -73,6 +73,20 @@ git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin vX.Y.Z
 gh release create vX.Y.Z --verify-tag --title "vX.Y.Z" --generate-notes   # add --prerelease before 1.0
 ```
 
+## Images
+
+The `images` workflow builds both production images on every pull request and pushes them to
+GitHub Container Registry on `main` (tags: commit SHA and `latest`) and on release tags (tag: the
+version without the `v`):
+
+```bash
+docker pull ghcr.io/ahmershahdev/marketclock-api:latest
+docker pull ghcr.io/ahmershahdev/marketclock-web:latest
+```
+
+The web image is built with `API_URL=http://api:5000`, the API's name in `compose.prod.yaml`.
+`compose.prod.yaml` still builds from source; the published images are for pulling a known build.
+
 ## Wiki
 
 The GitHub wiki is a short user guide that links back to `docs/`; the repository wins when they
