@@ -56,3 +56,27 @@ docker compose -f compose.prod.yaml up -d --build
   the README.
 - Back up the `mysql-data` volume. Only the settlement cycles and official closures live there,
   and both can be rebuilt with `flask --app wsgi seed`.
+
+## Releases
+
+Semantic versions, tagged on `main`: `v0.x` until the live launch (pre-releases; the API may
+still change between minor versions), `v1.0.0` at launch, and after that a breaking API change
+needs a new major version and `/api/v2`.
+
+1. In a PR, set the version in `backend/pyproject.toml` and `frontend/package.json`.
+2. After the merge, tag the merge commit and publish the release; the notes list the merged pull
+   requests since the previous tag:
+
+```bash
+git checkout main && git pull
+git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin vX.Y.Z
+gh release create vX.Y.Z --verify-tag --title "vX.Y.Z" --generate-notes   # add --prerelease before 1.0
+```
+
+## Wiki
+
+The GitHub wiki is a short user guide that links back to `docs/`; the repository wins when they
+disagree. Only collaborators can edit it. Edit it by cloning
+`https://github.com/ahmershahdev/marketclock.wiki.git` (pages are `Page-Name.md`, plus
+`_Sidebar.md` and `_Footer.md`). When a change alters something a page describes (setup,
+environment variables, endpoints, error codes, data on file), update the page too.

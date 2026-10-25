@@ -15,7 +15,7 @@ a web app and public calendar pages. Owner: Syed Ahmer Shah, <https://ahmershah.
 | Starting a session | [docs/status.md](docs/status.md) |
 | What is done and what is left | [docs/roadmap.md](docs/roadmap.md) |
 | Endpoints, data model, sources, every decision | [docs/architecture.md](docs/architecture.md) |
-| Server, reverse proxy, releases | [docs/deploy.md](docs/deploy.md) |
+| Server, reverse proxy, releases, wiki | [docs/deploy.md](docs/deploy.md) |
 
 ## Stack
 
@@ -95,4 +95,7 @@ comprehensive). If a name or a small function can say it, rename instead of comm
   steps, scripts and stack versions.
 - Layout or route changes: check every page at 390 and 768 px for horizontal overflow and console
   errors before merging.
+- Changes to setup, environment variables, endpoints, error codes or data on file: update the
+  matching wiki page too (deploy.md "Wiki"). Releases are tagged `vX.Y.Z` on `main` (deploy.md
+  "Releases").
 - Update `docs/status.md` at the end of every session.

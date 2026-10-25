@@ -1,8 +1,12 @@
 # Project status
 
-Last updated: 2026-10-24. Update at the end of every work session.
+Last updated: 2026-10-25. Update at the end of every work session.
 
 ## Where we are
+
+- 2026-10-25: tagged `v0.1.0` (pre-release) on `main`; `v1.0.0` is the February launch. GitHub wiki
+  (11 pages) links back to `docs/`; release steps and wiki rules in [deploy.md](deploy.md#releases).
+  Milestones M1 to M5 closed on GitHub; M6 stays open until the deploy.
 
 - M1 skeleton: Flask app factory, env config, SQLAlchemy engine, Alembic (no tables yet), Redis
   cache with an in-memory double, one error shape, `GET /api/v1/health`. Docker Compose runs
