@@ -1,8 +1,14 @@
 name: images
 
+# Builds both production images on every pull request. On main, and on release tags, they are
+# also pushed to GitHub Container Registry as ghcr.io/ahmershahdev/marketclock-api and
+# marketclock-web: tagged with the commit SHA and latest on main, and with the version (0.2.0)
+# on a vX.Y.Z tag.
+
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
 
 permissions:
@@ -11,7 +17,40 @@ permissions:
 jobs:
   images:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    env:
+      REGISTRY: ghcr.io/ahmershahdev
     steps:
       - uses: actions/checkout@v7
-      - run: docker build --tag marketclock-api backend
-      - run: docker build --tag marketclock-web --build-arg API_URL=http://api:5000 frontend
+      - name: Build
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            tag="${GITHUB_REF_NAME#v}"
+          else
+            tag=latest
+          fi
+          labels=(
+            --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY"
+            --label "org.opencontainers.image.revision=$GITHUB_SHA"
+            --label "org.opencontainers.image.licenses=MIT"
+          )
+          docker build "${labels[@]}" \
+            --label "org.opencontainers.image.description=MarketClock API: trading days, early closes and settlement dates for 30 markets (Flask, gunicorn)" \
+            --tag "$REGISTRY/marketclock-api:$GITHUB_SHA" --tag "$REGISTRY/marketclock-api:$tag" \
+            backend
+          docker build "${labels[@]}" \
+            --label "org.opencontainers.image.description=MarketClock web app: calendars, settlement calculator and market pages (Next.js standalone)" \
+            --build-arg API_URL=http://api:5000 \
+            --tag "$REGISTRY/marketclock-web:$GITHUB_SHA" --tag "$REGISTRY/marketclock-web:$tag" \
+            frontend
+      - name: Push to GitHub Container Registry
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GH_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          for image in marketclock-api marketclock-web; do
+            docker push --all-tags "$REGISTRY/$image"
+          done
