@@ -1,7 +1,10 @@
 # Contributing
 
-MarketClock is in its planning stage. Issues and ideas are welcome; for code, please open an
+MarketClock is feature-complete and launches in February 2027. Issues and ideas are welcome; for code, please open an
 issue first so we can agree on the approach.
+
+Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md). Report problems to
+[support@ahmershah.dev](mailto:support@ahmershah.dev) with the subject "Code of conduct".
 
 ## Wrong market dates
 

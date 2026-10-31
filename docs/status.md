@@ -1,8 +1,12 @@
 # Project status
 
-Last updated: 2026-10-25. Update at the end of every work session.
+Last updated: 2026-10-31. Update at the end of every work session.
 
 ## Where we are
+
+- 2026-10-31: `CODE_OF_CONDUCT.md` (Contributor Covenant 3.0); reports go to
+  support@ahmershah.dev. Linked from README, CONTRIBUTING and the issue chooser. The GHCR images
+  from #32 (`marketclock-api`, `marketclock-web`) were reviewed and kept.
 
 - 2026-10-25: tagged `v0.1.0` (pre-release) on `main`; `v1.0.0` is the February launch. GitHub wiki
   (11 pages) links back to `docs/`; release steps and wiki rules in [deploy.md](deploy.md#releases).
