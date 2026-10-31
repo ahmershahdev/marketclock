@@ -329,7 +329,7 @@ compose.yaml         local stack; compose.prod.yaml for the server
 - [Wiki](https://github.com/ahmershahdev/marketclock/wiki): short guides for using the app and the API, setup and FAQ
 - [Releases](https://github.com/ahmershahdev/marketclock/releases): tagged versions; `v1.0.0` is the live launch
 - [docs/status.md](docs/status.md): current state, updated every session
-- [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) and [SECURITY.md](SECURITY.md)
 
 ## Related
 

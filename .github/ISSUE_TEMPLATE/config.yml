@@ -6,3 +6,6 @@ contact_links:
   - name: Security vulnerability
     url: https://github.com/ahmershahdev/marketclock/security/advisories/new
     about: Report security problems privately.
+  - name: Code of conduct report
+    url: https://github.com/ahmershahdev/marketclock/blob/main/CODE_OF_CONDUCT.md#reporting-an-issue
+    about: Report conduct problems privately by email, not in a public issue.
