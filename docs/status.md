@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-10-31. Update at the end of every work session.
+Last updated: 2026-11-02. Update at the end of every work session.
 
 ## Where we are
 
@@ -54,6 +54,16 @@ Last updated: 2026-10-31. Update at the end of every work session.
 2. February 2027: deploy with `docs/deploy.md` (the reverse proxy must set `X-Forwarded-For`
    for the rate limit), then Lighthouse on the live site (mobile was 50 to 73 locally) and
    Search Console.
+
+## Known issues
+
+- Dependabot alert GHSA-g3hv-75wg-m249 (`minimatch` below 11.0.1) is dismissed as tolerable risk.
+  It is dev tooling only: `eslint-config-next` pulls in eslint-plugin-import, -react and
+  -jsx-a11y, whose latest releases still depend on the `minimatch` 3 CommonJS API. Most uses
+  (`makeRe`, `Minimatch`) exist in 11, but eslint-plugin-react calls the module itself as a
+  function (`forbid-component-props`, `jsx-handler-names`), which 11 no longer exports, so an
+  npm override would break those rules. The patterns come from our own config, not user
+  input. Recheck when `eslint-config-next` or eslint-plugin-react move off 3.
 
 ## Open questions
 
