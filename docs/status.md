@@ -59,9 +59,11 @@ Last updated: 2026-11-02. Update at the end of every work session.
 
 - Dependabot alert GHSA-g3hv-75wg-m249 (`minimatch` below 11.0.1) is dismissed as tolerable risk.
   It is dev tooling only: `eslint-config-next` pulls in eslint-plugin-import, -react and
-  -jsx-a11y, whose latest releases still need `minimatch` 3 and call it as a function, which
-  11 no longer exports, so an npm override would break lint. The patterns come from our own
-  config, not user input. Recheck when `eslint-config-next` or those plugins move off 3.
+  -jsx-a11y, whose latest releases still depend on the `minimatch` 3 CommonJS API. Most uses
+  (`makeRe`, `Minimatch`) exist in 11, but eslint-plugin-react calls the module itself as a
+  function (`forbid-component-props`, `jsx-handler-names`), which 11 no longer exports, so an
+  npm override would break those rules. The patterns come from our own config, not user
+  input. Recheck when `eslint-config-next` or eslint-plugin-react move off 3.
 
 ## Open questions
 
