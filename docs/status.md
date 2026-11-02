@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-10-31. Update at the end of every work session.
+Last updated: 2026-11-02. Update at the end of every work session.
 
 ## Where we are
 
@@ -54,6 +54,14 @@ Last updated: 2026-10-31. Update at the end of every work session.
 2. February 2027: deploy with `docs/deploy.md` (the reverse proxy must set `X-Forwarded-For`
    for the rate limit), then Lighthouse on the live site (mobile was 50 to 73 locally) and
    Search Console.
+
+## Known issues
+
+- Dependabot alert GHSA-g3hv-75wg-m249 (`minimatch` below 11.0.1) is dismissed as tolerable risk.
+  It is dev tooling only: `eslint-config-next` pulls in eslint-plugin-import, -react and
+  -jsx-a11y, whose latest releases still need `minimatch` 3 and call it as a function, which
+  11 no longer exports, so an npm override would break lint. The patterns come from our own
+  config, not user input. Recheck when `eslint-config-next` or those plugins move off 3.
 
 ## Open questions
 
